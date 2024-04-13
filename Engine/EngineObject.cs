@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Shapes;
 
 namespace TempoEngine.Engine {
-    abstract class EngineObject {
+    class EngineObject {
         private Vector2 _position;
         private Vector2 _rotation;
         private double _temperature;
@@ -22,6 +22,6 @@ namespace TempoEngine.Engine {
             _thermalConductivity = 0.2;
         }
 
-        abstract public Polygon GetPolygon();
+        //abstract public Polygon GetPolygon();
     }
 }
