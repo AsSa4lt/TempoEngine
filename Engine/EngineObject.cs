@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Shapes;
 
 namespace TempoEngine.Engine {
-    class EngineObject {
+    public class EngineObject {
         private Vector2 _position;
         private Vector2 _rotation;
         private double _temperature;

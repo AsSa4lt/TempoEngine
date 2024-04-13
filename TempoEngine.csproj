@@ -9,8 +9,4 @@
     <UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="UIControls\" />
-  </ItemGroup>
-
 </Project>
