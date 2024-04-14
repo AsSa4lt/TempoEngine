@@ -15,7 +15,7 @@ namespace TempoEngine.Engine{
         private static TempoThread? _engineThread;
 
         // updates per second 
-        private static int _simulationRefreshRate;
+        private static readonly int _simulationRefreshRate = 100;
         
         // time of the simulation in microseconds
         private static long _simulationTime = 0;
@@ -78,7 +78,7 @@ namespace TempoEngine.Engine{
             }
         }
 
-        public static bool isRunning() {
+        public static bool IsRunning() {
             if (_engineLock == null) throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
                 return _isRunning;

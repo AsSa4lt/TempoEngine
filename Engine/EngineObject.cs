@@ -7,20 +7,12 @@ using System.Threading.Tasks;
 using System.Windows.Shapes;
 
 namespace TempoEngine.Engine {
-    public class EngineObject {
-        private Vector2 _position;
-        private Vector2 _rotation;
-        private double _temperature;
-        private double _thermalConductivity;
-        public readonly string Name;
-        
-        public EngineObject(string name) {
-            Name = name;
-            _position = new Vector2(0, 0);
-            _rotation = new Vector2(0, 0);
-            _temperature = 20;
-            _thermalConductivity = 0.2;
-        }
+    public class EngineObject(string name) {
+        //private Vector2 _position = new(0, 0);
+        //private Vector2 _rotation = new(0, 0);
+        //private double _temperature = 20;
+        //private double _thermalConductivity = 0.2;
+        public readonly string Name = name;
 
         //abstract public Polygon GetPolygon();
     }

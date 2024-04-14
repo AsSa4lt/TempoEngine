@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 
 namespace TempoEngine.Util {
-    internal class SystemInfo {
+    internal partial class SystemInfo {
         public static int GetRefreshRate() {
             // Get the handle to the device context (DC) for the primary screen
             IntPtr hdc = GetDC(IntPtr.Zero); // Passing IntPtr.Zero gets the DC for the entire screen
@@ -30,13 +30,14 @@ namespace TempoEngine.Util {
 
         const int VERTREFRESH = 116;
 
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetDC(IntPtr hWnd);
+        [LibraryImport("user32.dll")]
+        private static partial IntPtr GetDC(IntPtr hWnd);
 
-        [DllImport("user32.dll")]
-        private static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
+        [LibraryImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static partial bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
-        [DllImport("gdi32.dll")]
-        private static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+        [LibraryImport("gdi32.dll")]
+        private static partial int GetDeviceCaps(IntPtr hdc, int nIndex);
     }
 }

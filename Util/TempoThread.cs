@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace TempoEngine.Util {
     internal class TempoThread {
-        private Thread _thread;
+        private readonly Thread _thread;
         public readonly string Name;
         public TempoThread(string name, ThreadStart start) {
             Name = name;
-            _thread = new Thread(start);
-            _thread.Name = name;
+            _thread = new Thread(start) {
+                Name = name
+            };
         }
 
         public void Start() {
@@ -23,7 +24,7 @@ namespace TempoEngine.Util {
         }
 
         public void Abort() {
-            _thread.Abort();
+            //_thread.Abort();
         }
     }
 }

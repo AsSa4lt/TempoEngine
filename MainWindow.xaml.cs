@@ -18,9 +18,9 @@ namespace TempoEngine{
     /// </summary>
     public partial class MainWindow : Window{
 
-        private DispatcherTimer updateTimer;
+        private readonly DispatcherTimer updateTimer;
         private bool _objectsChanged = false;
-        private int windowRefreshRate = 60;
+        private readonly int _windowRefreshRate = 60;
 
         public MainWindow(){
             InitializeComponent();
@@ -28,10 +28,10 @@ namespace TempoEngine{
             // init engine(proccessor of the app with entity of main window)
             Engine.Engine.Init(this);
 
-            windowRefreshRate = Util.SystemInfo.GetRefreshRate();
+            _windowRefreshRate = Util.SystemInfo.GetRefreshRate();
             updateTimer = new DispatcherTimer();
             updateTimer.Tick += UpdateTimer_Tick;
-            updateTimer.Interval = TimeSpan.FromSeconds(1.0 / windowRefreshRate);
+            updateTimer.Interval = TimeSpan.FromSeconds(1.0 / _windowRefreshRate);
             ObjectsChanged();
             updateTimer.Start();
 
@@ -46,7 +46,7 @@ namespace TempoEngine{
         }
 
         public void Update() {
-            if (!Engine.Engine.isRunning() && !_objectsChanged) return;
+            if (!Engine.Engine.IsRunning() && !_objectsChanged) return;
             if(_objectsChanged) _objectsChanged = false;
 
             _engineObjectsList.Update(Engine.Engine.GetObjects());
