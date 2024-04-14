@@ -32,7 +32,9 @@ namespace TempoEngine{
             updateTimer = new DispatcherTimer();
             updateTimer.Tick += UpdateTimer_Tick;
             updateTimer.Interval = TimeSpan.FromSeconds(1.0 / windowRefreshRate);
+            ObjectsChanged();
             updateTimer.Start();
+
         }
 
         private void UpdateTimer_Tick(object sender, EventArgs e) {
@@ -44,7 +46,8 @@ namespace TempoEngine{
         }
 
         public void Update() {
-            if (!Engine.Engine.isRunning() || _objectsChanged) return;
+            if (!Engine.Engine.isRunning() && !_objectsChanged) return;
+            if(_objectsChanged) _objectsChanged = false;
 
             _engineObjectsList.Update(Engine.Engine.GetObjects());
 

@@ -5,14 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Shapes;
+using TempoEngine.Util;
 
 namespace TempoEngine.UIControls {
     internal class EngineCanva : Canvas {
-        public static int MinXIndex = -1000;
-        public static int MaxXIndex = 1000;
-        public static int MinYIndex = -1000;
-        public static int MaxYIndex = 1000;
-        public static int ZoomFactor = 100;
 
         private int _currentLeftXIndex;
         private int _currentRightXIndex;
@@ -22,11 +18,42 @@ namespace TempoEngine.UIControls {
         private bool drawGrid = true;
 
         public EngineCanva() : base() {
-            // call base constructor
             _currentLeftXIndex = -100;
             _currentRightXIndex = 100;
+
             _currentTopYIndex = 100;
             _currentBottomYIndex = -100;
+
+            Loaded += (sender, args) => {
+                SetCurrentIndeces();
+                Update();
+            };
+        }
+
+
+        public void SetCurrentIndeces() {
+            
+            // if canvas is not square, e need to adjust indexes for Y axis
+            double width = ActualWidth;
+            double height = ActualHeight;
+            double ratio = width / height;
+             
+            // get needed distance for Y axis
+            int yDistance = (int)((_currentRightXIndex - _currentLeftXIndex) / ratio);
+            // get current distance for Y axis
+            int currentYDistance = _currentTopYIndex - _currentBottomYIndex;
+            // calculate new indexes for Y axis
+            int yDelta = (yDistance - currentYDistance) / 2;
+            _currentTopYIndex += yDelta;
+            _currentBottomYIndex -= yDelta;
+
+        }
+
+        // on resize event, we need to recalculate indexes
+        protected override void OnRenderSizeChanged(System.Windows.SizeChangedInfo sizeInfo) {
+            base.OnRenderSizeChanged(sizeInfo);
+            SetCurrentIndeces();
+            Update();
         }
 
         // handle mouse scroll event
@@ -46,19 +73,35 @@ namespace TempoEngine.UIControls {
             int xSize = _currentRightXIndex - _currentLeftXIndex;
             int ySize = _currentTopYIndex - _currentBottomYIndex;
 
-            if(xSize == MaxXIndex - MinXIndex || ySize == MaxYIndex - MinYIndex)
+            if(xSize == CanvasParameters.MaxRightXIndex - CanvasParameters.MinLeftXIndex || ySize == CanvasParameters.MaxYTopIndex - CanvasParameters.MinYBottomIndex)
                 return;
 
             int xZoomDelta = -(xSize * delta / 100 + xSize) /2;
-            int yZoomDelta = -(ySize * delta / 100 + ySize) /2;
-            _currentRightXIndex = Math.Min(_currentRightXIndex + xZoomDelta, MaxXIndex);
-            _currentLeftXIndex = Math.Max(_currentLeftXIndex - xZoomDelta, MinXIndex);
-            _currentTopYIndex = Math.Min(_currentTopYIndex + yZoomDelta, MaxYIndex);
-            _currentBottomYIndex = Math.Max(_currentBottomYIndex - yZoomDelta, MinYIndex);
+            int yZoomDelta = -(ySize * delta / 100 + ySize) / 2;
+
+            if (xZoomDelta <= 0 || yZoomDelta <= 0)
+                return;    
+            _currentRightXIndex = Math.Min(_currentRightXIndex + xZoomDelta, CanvasParameters.MaxRightXIndex);
+            _currentLeftXIndex = Math.Max(_currentLeftXIndex - xZoomDelta, CanvasParameters.MinLeftXIndex);
+            _currentTopYIndex = Math.Min(_currentTopYIndex + yZoomDelta, CanvasParameters.MaxYTopIndex);
+            _currentBottomYIndex = Math.Max(_currentBottomYIndex - yZoomDelta, CanvasParameters.MinYBottomIndex);
         }
 
         private void ZoomIn(int delta) {
-/**/
+            int xSize = _currentRightXIndex - _currentLeftXIndex;
+            int ySize = _currentTopYIndex - _currentBottomYIndex;
+
+            if (xSize == CanvasParameters.MinRightXIndex - CanvasParameters.MaxLeftXIndex || ySize == CanvasParameters.MinYTopIndex - CanvasParameters.MaxYBottomIndex) return;
+            int xZoomDelta = -(xSize * delta / 100 - xSize) / 5;
+            int yZoomDelta = -(ySize * delta / 100 - ySize) / 5;
+
+            if (xZoomDelta >= 0 || yZoomDelta >= 0) return;
+
+            _currentRightXIndex = Math.Max(_currentRightXIndex + xZoomDelta, CanvasParameters.MinRightXIndex);
+            _currentLeftXIndex = Math.Min(_currentLeftXIndex - xZoomDelta, CanvasParameters.MaxLeftXIndex);
+            _currentTopYIndex = Math.Max(_currentTopYIndex + yZoomDelta, CanvasParameters.MinYTopIndex);
+            _currentBottomYIndex = Math.Min(_currentBottomYIndex - yZoomDelta, CanvasParameters.MaxYBottomIndex);
+
 
         }
 
@@ -93,8 +136,16 @@ namespace TempoEngine.UIControls {
             int deltaX = _currentRightXIndex - _currentLeftXIndex;
             if (deltaX > 1000)
                 step = 100;
+            else if (deltaX > 500)
+                step = 50;
+            else if (deltaX > 200)
+                step = 20;
             else if (deltaX > 100)
                 step = 10;
+            else if (deltaX > 50)
+                step = 5;
+            else if (deltaX > 20)
+                step = 2;
             else if (deltaX > 10)
                 step = 1;
 
@@ -118,9 +169,49 @@ namespace TempoEngine.UIControls {
                 Children.Add(line);
                 x += width / deltaX * step;
             }
+            // draw labels for vertical lines
+            x = (leftX - _currentLeftXIndex) * width / deltaX;
+            while (x < width) {
+                TextBlock textBlock = new TextBlock();
+                textBlock.Text = leftX.ToString();
+                textBlock.Foreground = System.Windows.Media.Brushes.Black;
+                SetLeft(textBlock, x);
+                SetTop(textBlock, height - 20);
+                Children.Add(textBlock);
+                leftX += step;
+                x += width / deltaX * step;
+            }
 
+            // draw horizontal lines
+            // get canvas size
+            // find nearest step for bottom y index
+            int bottomY = _currentBottomYIndex - _currentBottomYIndex % step;
+            // convert bottom y index to screen coordinates
+            double y = (bottomY - _currentBottomYIndex) * height / (_currentTopYIndex - _currentBottomYIndex);
+            // draw lines
+            while (y < height) {
+                Line line = new Line();
+                line.Stroke = System.Windows.Media.Brushes.LightGray;
+                line.X1 = 0;
+                line.X2 = width;
+                line.Y1 = y;
+                line.Y2 = y;
+                Children.Add(line);
+                y += height / (_currentTopYIndex - _currentBottomYIndex) * step;
+            }
 
-            
+            // draw labels for horizontal lines
+            y = (bottomY - _currentBottomYIndex) * height / (_currentTopYIndex - _currentBottomYIndex);
+            while (y < height) {
+                TextBlock textBlock = new TextBlock();
+                textBlock.Text = bottomY.ToString();
+                textBlock.Foreground = System.Windows.Media.Brushes.Black;
+                SetLeft(textBlock, 0);
+                SetTop(textBlock, y);
+                Children.Add(textBlock);
+                bottomY += step;
+                y += height / (_currentTopYIndex - _currentBottomYIndex) * step;
+            }
 
         }
 
