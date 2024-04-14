@@ -38,9 +38,9 @@
             </uiControls:EngineObjectsList>
             
             <!-- Canvas in the center -->
-            <Canvas Grid.Column="1" Background="Beige">
+            <uiControls:EngineCanva x:Name="_engineCanva" Grid.Column="1" Background="Beige">
                 <!-- This is where you'll draw your shapes -->
-            </Canvas>
+            </uiControls:EngineCanva>
 
             <!-- Properties of the objects on the right -->
             <StackPanel Grid.Column="2" Width="200" Background="LightBlue">
