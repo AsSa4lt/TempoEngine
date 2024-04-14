@@ -8,7 +8,7 @@ using System.Windows.Shapes;
 using TempoEngine.Util;
 
 namespace TempoEngine.UIControls {
-    internal class EngineCanva : Canvas {
+    internal class EngineCanvas : Canvas {
 
         private int _currentLeftXIndex;
         private int _currentRightXIndex;
@@ -17,7 +17,7 @@ namespace TempoEngine.UIControls {
 
         private bool drawGrid = true;
 
-        public EngineCanva() : base() {
+        public EngineCanvas() : base() {
             _currentLeftXIndex = -100;
             _currentRightXIndex = 100;
 
@@ -134,20 +134,13 @@ namespace TempoEngine.UIControls {
             int step = 1;
             
             int deltaX = _currentRightXIndex - _currentLeftXIndex;
-            if (deltaX > 1000)
-                step = 100;
-            else if (deltaX > 500)
-                step = 50;
-            else if (deltaX > 200)
-                step = 20;
-            else if (deltaX > 100)
-                step = 10;
-            else if (deltaX > 50)
-                step = 5;
-            else if (deltaX > 20)
-                step = 2;
-            else if (deltaX > 10)
-                step = 1;
+            if (deltaX > 1000)     step = 100;
+            else if (deltaX > 500) step = 50;
+            else if (deltaX > 200) step = 20;
+            else if (deltaX > 100) step = 10;
+            else if (deltaX > 50)  step = 5;
+            else if (deltaX > 20)  step = 2;
+            else if (deltaX > 10)  step = 1;
 
 
             // draw vertical lines
@@ -160,21 +153,23 @@ namespace TempoEngine.UIControls {
             double x = (leftX - _currentLeftXIndex) * width / deltaX;
             // draw lines
             while (x < width) {
-                Line line = new Line();
-                line.Stroke = System.Windows.Media.Brushes.LightGray;
-                line.X1 = x;
-                line.X2 = x;
-                line.Y1 = 0;
-                line.Y2 = height;
+                Line line = new Line {
+                    Stroke = System.Windows.Media.Brushes.LightGray,
+                    X1 = x,
+                    X2 = x,
+                    Y1 = 0,
+                    Y2 = height
+                };
                 Children.Add(line);
                 x += width / deltaX * step;
             }
             // draw labels for vertical lines
             x = (leftX - _currentLeftXIndex) * width / deltaX;
             while (x < width) {
-                TextBlock textBlock = new TextBlock();
-                textBlock.Text = leftX.ToString();
-                textBlock.Foreground = System.Windows.Media.Brushes.Black;
+                TextBlock textBlock = new TextBlock {
+                    Text = leftX.ToString(),
+                    Foreground = System.Windows.Media.Brushes.Black
+                };
                 SetLeft(textBlock, x);
                 SetTop(textBlock, height - 20);
                 Children.Add(textBlock);
@@ -190,12 +185,13 @@ namespace TempoEngine.UIControls {
             double y = (bottomY - _currentBottomYIndex) * height / (_currentTopYIndex - _currentBottomYIndex);
             // draw lines
             while (y < height) {
-                Line line = new Line();
-                line.Stroke = System.Windows.Media.Brushes.LightGray;
-                line.X1 = 0;
-                line.X2 = width;
-                line.Y1 = y;
-                line.Y2 = y;
+                Line line = new() {
+                    Stroke = System.Windows.Media.Brushes.LightGray,
+                    X1 = 0,
+                    X2 = width,
+                    Y1 = y,
+                    Y2 = y
+                };
                 Children.Add(line);
                 y += height / (_currentTopYIndex - _currentBottomYIndex) * step;
             }
@@ -203,9 +199,10 @@ namespace TempoEngine.UIControls {
             // draw labels for horizontal lines
             y = (bottomY - _currentBottomYIndex) * height / (_currentTopYIndex - _currentBottomYIndex);
             while (y < height) {
-                TextBlock textBlock = new TextBlock();
-                textBlock.Text = bottomY.ToString();
-                textBlock.Foreground = System.Windows.Media.Brushes.Black;
+                TextBlock textBlock = new() {
+                    Text = bottomY.ToString(),
+                    Foreground = System.Windows.Media.Brushes.Black
+                };
                 SetLeft(textBlock, 0);
                 SetTop(textBlock, y);
                 Children.Add(textBlock);
