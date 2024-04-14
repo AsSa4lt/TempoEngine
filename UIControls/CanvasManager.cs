@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using TempoEngine.Util;
 
 namespace TempoEngine.UIControls{
-    public class ZoomManager{
+    public class CanvasManager{
         public int CurrentLeftXIndex { get; private set; }
         public int CurrentRightXIndex { get; private set; }
         public int CurrentTopYIndex { get; private set; }
         public int CurrentBottomYIndex { get; private set; }
 
-        public ZoomManager() {
+        public CanvasManager() {
             ResetZoom();
         }
 
@@ -21,6 +21,62 @@ namespace TempoEngine.UIControls{
             CurrentRightXIndex = 100;
             CurrentTopYIndex = 100;
             CurrentBottomYIndex = -100;
+        }
+
+        private int getStep() {
+            int deltaX = CurrentRightXIndex - CurrentLeftXIndex;
+            int step = 1;
+            if (deltaX > 1000) step = 100;
+            else if (deltaX > 500) step = 50;
+            else if (deltaX > 200) step = 20;
+            else if (deltaX > 100) step = 10;
+            else if (deltaX > 50) step = 5;
+            else if (deltaX > 20) step = 2;
+            else if (deltaX > 10) step = 1;
+            return step;
+        }
+
+        public void Move(System.Windows.Input.Key key) {
+            int width = CurrentRightXIndex - CurrentLeftXIndex;
+            int height = CurrentTopYIndex - CurrentBottomYIndex;
+            int step = getStep();
+
+            switch (key) {
+                case System.Windows.Input.Key.A:
+                    CurrentLeftXIndex -= step;
+                    CurrentRightXIndex -= step;
+                    break;
+                case System.Windows.Input.Key.D:
+                    CurrentLeftXIndex += step;
+                    CurrentRightXIndex += step;
+                    break;
+                case System.Windows.Input.Key.W:
+                    CurrentTopYIndex += step;
+                    CurrentBottomYIndex += step;
+                    break;
+                case System.Windows.Input.Key.S:
+                    CurrentTopYIndex -= step;
+                    CurrentBottomYIndex -= step;
+                    break;
+            }
+
+            // check if we are out of bounds
+            if (CurrentLeftXIndex < CanvasParameters.MinLeftXIndex) {
+                CurrentLeftXIndex = CanvasParameters.MinLeftXIndex;
+                CurrentRightXIndex = CurrentLeftXIndex + width;
+            }
+            if (CurrentRightXIndex > CanvasParameters.MaxRightXIndex) {
+                CurrentRightXIndex = CanvasParameters.MaxRightXIndex;
+                CurrentLeftXIndex = CurrentRightXIndex - width;
+            }
+            if (CurrentTopYIndex > CanvasParameters.MaxYTopIndex) {
+                CurrentTopYIndex = CanvasParameters.MaxYTopIndex;
+                CurrentBottomYIndex = CurrentTopYIndex - height;
+            }
+            if (CurrentBottomYIndex < CanvasParameters.MinYBottomIndex) {
+                CurrentBottomYIndex = CanvasParameters.MinYBottomIndex;
+                CurrentTopYIndex = CurrentBottomYIndex + height;
+            }
         }
 
         public void ZoomIn(int delta) {

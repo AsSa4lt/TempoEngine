@@ -10,17 +10,18 @@ using TempoEngine.Util;
 namespace TempoEngine.UIControls {
     public class EngineCanvas : Canvas {
 
-        private readonly ZoomManager _zoomManager;
+        private readonly CanvasManager _canvasManager;
         private readonly GridDrawer _gridDrawer;
 
         private readonly bool drawGrid = true;
 
         public EngineCanvas() : base() {
-            _zoomManager = new ZoomManager();
+            _canvasManager = new CanvasManager();
             _gridDrawer = new GridDrawer(this);
+            this.Focusable = true;
 
             Loaded += (sender, args) => {
-                _zoomManager.AdjustForAspectRatio(ActualWidth, ActualHeight);
+                _canvasManager.AdjustForAspectRatio(ActualWidth, ActualHeight);
                 Update();
             };
         }
@@ -28,30 +29,39 @@ namespace TempoEngine.UIControls {
         // on resize event, we need to recalculate indexes
         protected override void OnRenderSizeChanged(System.Windows.SizeChangedInfo sizeInfo) {
             base.OnRenderSizeChanged(sizeInfo);
-            _zoomManager.AdjustForAspectRatio(ActualWidth, ActualHeight);
+            _canvasManager.AdjustForAspectRatio(ActualWidth, ActualHeight);
             Update();
         }
 
         // handle mouse scroll event
         protected override void OnMouseWheel(System.Windows.Input.MouseWheelEventArgs e) {
             base.OnMouseWheel(e);
-            if (e.Delta > 0) {
-                _zoomManager.ZoomIn(e.Delta);
-            } else {
-                _zoomManager.ZoomOut(e.Delta);
-            }
+            if (e.Delta > 0)
+                _canvasManager.ZoomIn(e.Delta);
+            else
+                _canvasManager.ZoomOut(e.Delta);
 
+            _canvasManager.AdjustForAspectRatio(ActualWidth, ActualHeight);
             Update();
         }
 
         // handle mouse click event
         protected override void OnMouseDown(System.Windows.Input.MouseButtonEventArgs e) {
             base.OnMouseDown(e);
+            Focus();
+
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed) {
                 //LeftClick();
             } else if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed) {
                 //RightClick();
             }
+        }
+
+
+        protected override void OnKeyDown(System.Windows.Input.KeyEventArgs e) {
+            base.OnKeyDown(e);
+            _canvasManager.Move(e.Key);
+            Update();
         }
 
 
@@ -62,7 +72,7 @@ namespace TempoEngine.UIControls {
                 
             // draw grid
             if(drawGrid)
-                _gridDrawer.DrawGrid(_zoomManager);
+                _gridDrawer.DrawGrid(_canvasManager);
         }
 
     }

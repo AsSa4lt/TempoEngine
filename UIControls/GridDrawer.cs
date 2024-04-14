@@ -16,7 +16,7 @@ namespace TempoEngine.UIControls
             _canvas = canvas;
         }
 
-        public void DrawGrid(ZoomManager manager) {
+        public void DrawGrid(CanvasManager manager) {
             int step = 1;
 
             int deltaX = manager.CurrentRightXIndex - manager.CurrentLeftXIndex;
@@ -37,6 +37,8 @@ namespace TempoEngine.UIControls
             int leftX = manager.CurrentLeftXIndex - manager.CurrentLeftXIndex % step;
             // convert left x index to screen coordinates
             double x = (leftX - manager.CurrentLeftXIndex) * width / deltaX;
+
+            if(x < 0) x += width / deltaX * step;
             // draw lines
             while (x < width) {
                 Line line = new() {
@@ -51,6 +53,8 @@ namespace TempoEngine.UIControls
             }
             // draw labels for vertical lines
             x = (leftX - manager.CurrentLeftXIndex) * width / deltaX;
+            if(x < 0) x += width / deltaX * step;
+
             while (x < width) {
                 TextBlock textBlock = new() {
                     Text = leftX.ToString(),
@@ -63,38 +67,49 @@ namespace TempoEngine.UIControls
                 x += width / deltaX * step;
             }
 
-            // draw horizontal lines
-            // get canvas size
-            // find nearest step for bottom y index
-            int bottomY = manager.CurrentBottomYIndex - manager.CurrentBottomYIndex % step;
-            // convert bottom y index to screen coordinates
-            double y = (bottomY - manager.CurrentBottomYIndex) * height / (manager.CurrentTopYIndex - manager.CurrentBottomYIndex);
-            // draw lines
-            while (y < height) {
+            // Starting from the top of the Canvas, which corresponds to the highest value of Y in the coordinate system
+            double yScreen = 0;
+            int currentYIndex = manager.CurrentTopYIndex;
+
+            // draw horizontal lines from top to bottom
+            while (yScreen < height) {
                 Line line = new() {
                     Stroke = System.Windows.Media.Brushes.LightGray,
                     X1 = 0,
                     X2 = width,
-                    Y1 = y,
-                    Y2 = y
+                    Y1 = yScreen,
+                    Y2 = yScreen
                 };
                 _canvas.Children.Add(line);
-                y += height / (manager.CurrentTopYIndex - manager.CurrentBottomYIndex) * step;
+
+                // Move to the next line position on the screen
+                yScreen += height / (manager.CurrentTopYIndex - manager.CurrentBottomYIndex) * step;
+
+                // Decrement the Y index for the next line
+                currentYIndex -= step;
             }
 
-            // draw labels for horizontal lines
-            y = (bottomY - manager.CurrentBottomYIndex) * height / (manager.CurrentTopYIndex - manager.CurrentBottomYIndex);
-            while (y < height) {
+            // Reset the screen Y position and Y index for labels
+            yScreen = 0;
+            currentYIndex = manager.CurrentTopYIndex;
+
+            // draw labels for horizontal lines from top to bottom (bigger number on top)
+            while (yScreen < height) {
                 TextBlock textBlock = new() {
-                    Text = bottomY.ToString(),
+                    Text = currentYIndex.ToString(),
                     Foreground = System.Windows.Media.Brushes.Black
                 };
-                Canvas.SetLeft(textBlock, 0);
-                Canvas.SetTop(textBlock, y);
+                Canvas.SetLeft(textBlock, 0); // Align labels to the left of the Canvas
+                Canvas.SetTop(textBlock, yScreen); // Position the label at the current screen Y coordinate
                 _canvas.Children.Add(textBlock);
-                bottomY += step;
-                y += height / (manager.CurrentTopYIndex - manager.CurrentBottomYIndex) * step;
+
+                // Move to the next label position on the screen
+                yScreen += height / (manager.CurrentTopYIndex - manager.CurrentBottomYIndex) * step;
+
+                // Decrement the Y index for the next label
+                currentYIndex -= step;
             }
+
         }
     }
 }
