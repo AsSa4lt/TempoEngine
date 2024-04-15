@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TempoEngine.Util{
-    static class CanvasParameters{
+    static class CanvasData {
         // X > 0 parameters
         public static int MinLeftXIndex = -1000;
         public static int MaxLeftXIndex = -10;

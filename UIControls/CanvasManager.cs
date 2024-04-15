@@ -61,38 +61,39 @@ namespace TempoEngine.UIControls{
             }
 
             // check if we are out of bounds
-            if (CurrentLeftXIndex < CanvasParameters.MinLeftXIndex) {
-                CurrentLeftXIndex = CanvasParameters.MinLeftXIndex;
+            if (CurrentLeftXIndex < CanvasData.MinLeftXIndex) {
+                CurrentLeftXIndex = CanvasData.MinLeftXIndex;
                 CurrentRightXIndex = CurrentLeftXIndex + width;
             }
-            if (CurrentRightXIndex > CanvasParameters.MaxRightXIndex) {
-                CurrentRightXIndex = CanvasParameters.MaxRightXIndex;
+            if (CurrentRightXIndex > CanvasData.MaxRightXIndex) {
+                CurrentRightXIndex = CanvasData.MaxRightXIndex;
                 CurrentLeftXIndex = CurrentRightXIndex - width;
             }
-            if (CurrentTopYIndex > CanvasParameters.MaxYTopIndex) {
-                CurrentTopYIndex = CanvasParameters.MaxYTopIndex;
+            if (CurrentTopYIndex > CanvasData.MaxYTopIndex) {
+                CurrentTopYIndex = CanvasData.MaxYTopIndex;
                 CurrentBottomYIndex = CurrentTopYIndex - height;
             }
-            if (CurrentBottomYIndex < CanvasParameters.MinYBottomIndex) {
-                CurrentBottomYIndex = CanvasParameters.MinYBottomIndex;
+            if (CurrentBottomYIndex < CanvasData.MinYBottomIndex) {
+                CurrentBottomYIndex = CanvasData.MinYBottomIndex;
                 CurrentTopYIndex = CurrentBottomYIndex + height;
             }
         }
+
 
         public void ZoomIn(int delta) {
             int xSize = CurrentRightXIndex - CurrentLeftXIndex;
             int ySize = CurrentTopYIndex - CurrentBottomYIndex;
 
-            if (xSize == CanvasParameters.MinRightXIndex - CanvasParameters.MaxLeftXIndex || ySize == CanvasParameters.MinYTopIndex - CanvasParameters.MaxYBottomIndex) return;
+            if (xSize == CanvasData.MinRightXIndex - CanvasData.MaxLeftXIndex || ySize == CanvasData.MinYTopIndex - CanvasData.MaxYBottomIndex) return;
             int xZoomDelta = -(xSize * delta / 100 - xSize) / 5;
             int yZoomDelta = -(ySize * delta / 100 - ySize) / 5;
 
             if (xZoomDelta >= 0 || yZoomDelta >= 0) return;
 
-            CurrentRightXIndex = Math.Max(CurrentRightXIndex + xZoomDelta, CanvasParameters.MinRightXIndex);
-            CurrentLeftXIndex = Math.Min(CurrentLeftXIndex - xZoomDelta, CanvasParameters.MaxLeftXIndex);
-            CurrentTopYIndex = Math.Max(CurrentTopYIndex + yZoomDelta, CanvasParameters.MinYTopIndex);
-            CurrentBottomYIndex = Math.Min(CurrentBottomYIndex - yZoomDelta, CanvasParameters.MaxYBottomIndex);
+            CurrentRightXIndex = Math.Max(CurrentRightXIndex + xZoomDelta, CanvasData.MinRightXIndex);
+            CurrentLeftXIndex = Math.Min(CurrentLeftXIndex - xZoomDelta, CanvasData.MaxLeftXIndex);
+            CurrentTopYIndex = Math.Max(CurrentTopYIndex + yZoomDelta, CanvasData.MinYTopIndex);
+            CurrentBottomYIndex = Math.Min(CurrentBottomYIndex - yZoomDelta, CanvasData.MaxYBottomIndex);
         }
 
         public void ZoomOut(int delta) {
@@ -100,7 +101,7 @@ namespace TempoEngine.UIControls{
             int xSize = CurrentRightXIndex - CurrentLeftXIndex;
             int ySize = CurrentTopYIndex - CurrentBottomYIndex;
 
-            if (xSize == CanvasParameters.MaxRightXIndex - CanvasParameters.MinLeftXIndex || ySize == CanvasParameters.MaxYTopIndex - CanvasParameters.MinYBottomIndex)
+            if (xSize == CanvasData.MaxRightXIndex - CanvasData.MinLeftXIndex || ySize == CanvasData.MaxYTopIndex - CanvasData.MinYBottomIndex)
                 return;
 
             int xZoomDelta = -(xSize * delta / 100 + xSize) / 2;
@@ -108,10 +109,10 @@ namespace TempoEngine.UIControls{
 
             if (xZoomDelta <= 0 || yZoomDelta <= 0)
                 return;
-            CurrentRightXIndex = Math.Min(CurrentRightXIndex + xZoomDelta, CanvasParameters.MaxRightXIndex);
-            CurrentLeftXIndex = Math.Max(CurrentLeftXIndex - xZoomDelta, CanvasParameters.MinLeftXIndex);
-            CurrentTopYIndex = Math.Min(CurrentTopYIndex + yZoomDelta, CanvasParameters.MaxYTopIndex);
-            CurrentBottomYIndex = Math.Max(CurrentBottomYIndex - yZoomDelta, CanvasParameters.MinYBottomIndex);
+            CurrentRightXIndex = Math.Min(CurrentRightXIndex + xZoomDelta, CanvasData.MaxRightXIndex);
+            CurrentLeftXIndex = Math.Max(CurrentLeftXIndex - xZoomDelta, CanvasData.MinLeftXIndex);
+            CurrentTopYIndex = Math.Min(CurrentTopYIndex + yZoomDelta, CanvasData.MaxYTopIndex);
+            CurrentBottomYIndex = Math.Max(CurrentBottomYIndex - yZoomDelta, CanvasData.MinYBottomIndex);
         }
 
         public void AdjustForAspectRatio(double width, double height) {

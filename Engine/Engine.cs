@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TempoEngine.UIControls;
 using TempoEngine.Util;
 using Point = System.Windows.Point;
 
@@ -27,7 +28,17 @@ namespace TempoEngine.Engine{
             _mainWindow = window;
 
             // add 3 objects to the engine
-            _objects.Add(new GrainTriangle("Triangle1", new Point(0,0), new Point(0,1), new Point(1,0)));
+            GrainTriangle obj1 = new GrainTriangle("Triangle1", new Point(0,0), new Point(0,1), new Point(1,0));
+            obj1.SetTemperature(200);
+            _objects.Add(obj1);
+            GrainTriangle obj2 = new GrainTriangle("Triangle2", new Point(1,0), new Point(0,1), new Point(1,1));
+            obj1.SetTemperature(50);
+            _objects.Add(obj2);
+            GrainTriangle obj3 = new GrainTriangle("Triangle3", new Point(2,2), new Point(4,4), new Point(2,0));
+            obj1.SetTemperature(0);
+            _objects.Add(obj3);
+
+
         }
 
         public static void Start() {
@@ -82,6 +93,21 @@ namespace TempoEngine.Engine{
             lock (_engineLock) {
                 return _isRunning;
             }
+        }
+
+        public static List<EngineObject> GetVisibleObjects(CanvasManager manager) {
+            List<EngineObject> visibleObjects = new();
+            if(_engineLock == null) throw new InvalidOperationException("Engine lock is not initialized");
+            if(_objects == null) throw new InvalidOperationException("Engine not initialized");
+
+            lock (_engineLock) {
+                foreach (var obj in _objects) {
+                    if (obj.isVisible(manager)) {
+                        visibleObjects.Add(obj);
+                    }
+                }
+            }
+            return visibleObjects;
         }
 
         public static List<EngineObject> GetObjects() {

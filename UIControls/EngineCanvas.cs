@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Shapes;
-using TempoEngine.Util;
+using TempoEngine.Engine;
+using Point = System.Windows.Point;
+
 
 namespace TempoEngine.UIControls {
     public class EngineCanvas : Canvas {
@@ -64,15 +62,52 @@ namespace TempoEngine.UIControls {
             Update();
         }
 
+        private void SetClipGeometry() {
+            this.Clip = new RectangleGeometry(new System.Windows.Rect(0, 0, this.ActualWidth, this.ActualHeight));
+        }
 
+
+        private Point ConvertToScreenCoordinates(Point point) {
+            // get ActualWidth and Height
+            double width = ActualWidth;
+            double height = ActualHeight;
+            // get manager indexes
+            int leftX = _canvasManager.CurrentLeftXIndex;
+            int rightX = _canvasManager.CurrentRightXIndex;
+            int topY = _canvasManager.CurrentTopYIndex;
+            int bottomY = _canvasManager.CurrentBottomYIndex;
+            // convert point to screen coordinates
+            double x = (point.X - leftX) * width / (rightX - leftX);
+            double y = height - (point.Y - bottomY) * height / (topY - bottomY);
+            return new Point(x, y);
+        }
 
         protected void Update() {
-           // clear canvas
-           Children.Clear();
-                
+            // clear canvas
+            Children.Clear();
+
+            List<EngineObject> objects = Engine.Engine.GetVisibleObjects(_canvasManager);
+
             // draw grid
-            if(drawGrid)
+            if (drawGrid)
                 _gridDrawer.DrawGrid(_canvasManager);
+
+
+            // get polygons
+            foreach (var obj in objects) {
+                Polygon polygon = obj.GetPolygon();
+                // convert polygon points to screen coordinates
+                for (int i = 0; i < polygon.Points.Count; i++) {
+                    polygon.Points[i] = ConvertToScreenCoordinates(polygon.Points[i]);
+                }
+                // add polygon to canvas
+                Children.Add(polygon);
+            }
+
+
+
+
+            SetClipGeometry();
         }
 
     }
