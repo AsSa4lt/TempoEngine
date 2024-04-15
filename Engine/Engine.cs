@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TempoEngine.Util;
+using Point = System.Windows.Point;
 
 namespace TempoEngine.Engine{
     static class Engine{
@@ -26,9 +27,7 @@ namespace TempoEngine.Engine{
             _mainWindow = window;
 
             // add 3 objects to the engine
-            _objects.Add(new EngineObject("Object1"));
-            _objects.Add(new EngineObject("Object2"));
-            _objects.Add(new EngineObject("Object3"));
+            _objects.Add(new GrainTriangle("Triangle1", new Point(0,0), new Point(0,1), new Point(1,0)));
         }
 
         public static void Start() {
