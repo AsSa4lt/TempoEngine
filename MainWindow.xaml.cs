@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using TempoEngine.Engine;
 using TempoEngine.UIControls;
+using Button = System.Windows.Controls.Button;
 
 namespace TempoEngine{
     /// <summary>
@@ -34,6 +35,10 @@ namespace TempoEngine{
             updateTimer.Interval = TimeSpan.FromSeconds(1.0 / _windowRefreshRate);
             ObjectsChanged();
             updateTimer.Start();
+            
+        }
+
+        private void ButtonWithImage_Click(object sender, RoutedEventArgs e) {
 
         }
 

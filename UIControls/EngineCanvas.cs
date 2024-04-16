@@ -16,7 +16,7 @@ namespace TempoEngine.UIControls {
         public EngineCanvas() : base() {
             _canvasManager = new CanvasManager();
             _gridDrawer = new GridDrawer(this);
-            this.Focusable = true;
+            Focusable = true;
 
             Loaded += (sender, args) => {
                 _canvasManager.AdjustForAspectRatio(ActualWidth, ActualHeight);
@@ -103,9 +103,6 @@ namespace TempoEngine.UIControls {
                 // add polygon to canvas
                 Children.Add(polygon);
             }
-
-
-
 
             SetClipGeometry();
         }
