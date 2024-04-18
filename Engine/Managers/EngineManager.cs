@@ -10,11 +10,6 @@ using Color = System.Windows.Media.Color;
 namespace TempoEngine.Engine.Managers{
 
     public static class EngineManager {
-
-        // Engine.md (1)
-        // Temperature is stored in Kelvin, based on wawe spectrum of light
-        // Violet - 0 degrees, Red is everything 200 degrees and above
-
         public static Brush GetColorFromTemperature(double temperature) {
             if (temperature < 0) throw new ArgumentException("Temperature cannot be less than 0");
 
