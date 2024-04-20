@@ -17,11 +17,11 @@ using UserControl = System.Windows.Controls.UserControl;
 namespace TempoEngine.UIControls
 {
     /// <summary>
-    /// Interaction logic for ControlPanel.xaml
+    /// Interaction logic for EngineUIBar.xaml
     /// </summary>
-    public partial class ControlPanel : UserControl
+    public partial class EngineUIBar : UserControl
     {
-        public ControlPanel()
+        public EngineUIBar()
         {
             InitializeComponent();
         }
