@@ -19,10 +19,8 @@ namespace TempoEngine.UIControls
     /// <summary>
     /// Interaction logic for EngineUIBar.xaml
     /// </summary>
-    public partial class EngineUIBar : UserControl
-    {
-        public EngineUIBar()
-        {
+    public partial class EngineUIBar : UserControl{
+        public EngineUIBar(){
             InitializeComponent();
         }
     }

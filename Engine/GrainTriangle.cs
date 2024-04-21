@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,7 +28,16 @@ namespace TempoEngine.Engine{
             polygon.Points.Add(pointB);
             polygon.Points.Add(pointC);
 
-            polygon.Fill = EngineManager.GetColorFromTemperature(_temperature);
+            if(!IsSelected)
+                polygon.Fill = EngineManager.GetColorFromTemperature(_temperature);
+            else {
+                // If the object is selected i want to add a visible border to the polygon
+                polygon.Stroke = System.Windows.Media.Brushes.Black;
+                polygon.StrokeThickness = 3;
+                // Also change the color of the polygon to a lighter shade
+                polygon.Fill = EngineManager.GetColorFromTemperature(_temperature).Clone();
+                polygon.Fill.Opacity = 0.5;
+            }
 
             return polygon;
         }
@@ -40,12 +50,27 @@ namespace TempoEngine.Engine{
             return false;
         }
 
-        public override bool isVisible(CanvasManager canvasManager) {
+        public override bool IsVisible(CanvasManager canvasManager) {
             // implement the visibility check
             if(isPointVisible(pointA, canvasManager) || isPointVisible(pointB, canvasManager) || isPointVisible(pointC, canvasManager)) {
                 return true;
             }
             return false;
+        }
+
+        public override void GetObjectVisibleArea(out Vector2 topLeft, out Vector2 bottomRight) {
+            // implement the visible area calculation
+            topLeft = new Vector2((float)Math.Min(pointA.X, Math.Min(pointB.X, pointC.X)), (float)Math.Min(pointA.Y, Math.Min(pointB.Y, pointC.Y)));
+            bottomRight = new Vector2((float)Math.Max(pointA.X, Math.Max(pointB.X, pointC.X)), (float)Math.Max(pointA.Y, Math.Max(pointB.Y, pointC.Y)));
+            // extend vectors 4x times bigger than the triangle
+            // get distance between left X and right X and multiply by 4
+            float xDistance = bottomRight.X - topLeft.X;
+            topLeft.X -= xDistance * 2;
+            bottomRight.X += xDistance * 2;
+            // get distance between top Y and bottom Y and multiply by 4
+            float yDistance = bottomRight.Y - topLeft.Y;
+            topLeft.Y -= yDistance * 2;
+            bottomRight.Y += yDistance * 2;
         }
     }
 }

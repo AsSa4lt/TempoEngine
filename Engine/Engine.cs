@@ -102,7 +102,7 @@ namespace TempoEngine.Engine{
 
             lock (_engineLock) {
                 foreach (var obj in _objects) {
-                    if (obj.isVisible(manager)) {
+                    if (obj.IsVisible(manager)) {
                         visibleObjects.Add(obj);
                     }
                 }

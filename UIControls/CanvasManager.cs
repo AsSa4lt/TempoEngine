@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using TempoEngine.Util;
@@ -79,6 +80,36 @@ namespace TempoEngine.UIControls{
             }
         }
 
+        public void ZoomToArea(Vector2 topLeft, Vector2 bottomRight) {
+            CurrentLeftXIndex = (int)topLeft.X;
+            CurrentRightXIndex = (int)bottomRight.X;
+            CurrentTopYIndex = (int)bottomRight.Y;
+            CurrentBottomYIndex = (int)topLeft.Y;
+            // check if we are out of bounds
+            if (CurrentLeftXIndex < CanvasData.MinLeftXIndex) {
+                CurrentLeftXIndex = CanvasData.MinLeftXIndex;
+            }
+            if (CurrentRightXIndex > CanvasData.MaxRightXIndex) {
+                CurrentRightXIndex = CanvasData.MaxRightXIndex;
+            }
+            if (CurrentTopYIndex > CanvasData.MaxYTopIndex) {
+                CurrentTopYIndex = CanvasData.MaxYTopIndex;
+            }
+            if (CurrentBottomYIndex < CanvasData.MinYBottomIndex) {
+                CurrentBottomYIndex = CanvasData.MinYBottomIndex;
+            }
+            // check for distance between indexes, if it is smaller than 10, we need to adjust indexes
+            if (CurrentRightXIndex - CurrentLeftXIndex < 10) {
+                int delta = 10 - (CurrentRightXIndex - CurrentLeftXIndex);
+                CurrentRightXIndex += delta / 2;
+                CurrentLeftXIndex -= delta / 2;
+            }
+            if (CurrentTopYIndex - CurrentBottomYIndex < 10) {
+                int delta = 10 - (CurrentTopYIndex - CurrentBottomYIndex);
+                CurrentTopYIndex += delta / 2;
+                CurrentBottomYIndex -= delta / 2;
+            }
+        }
 
         public void ZoomIn(int delta) {
             int xSize = CurrentRightXIndex - CurrentLeftXIndex;
@@ -107,8 +138,12 @@ namespace TempoEngine.UIControls{
             int xZoomDelta = -(xSize * delta / 100 + xSize) / 2;
             int yZoomDelta = -(ySize * delta / 100 + ySize) / 2;
 
-            if (xZoomDelta <= 0 || yZoomDelta <= 0)
-                return;
+            if (xZoomDelta <= 0 || yZoomDelta <= 0){
+                // then make it 10 and adjust indexes
+                xZoomDelta = 3;
+                // adjust y zoom delta to keep aspect ratio
+                yZoomDelta = (int)(xZoomDelta * (CurrentTopYIndex - CurrentBottomYIndex) / (CurrentRightXIndex - CurrentLeftXIndex));
+            }
             CurrentRightXIndex = Math.Min(CurrentRightXIndex + xZoomDelta, CanvasData.MaxRightXIndex);
             CurrentLeftXIndex = Math.Max(CurrentLeftXIndex - xZoomDelta, CanvasData.MinLeftXIndex);
             CurrentTopYIndex = Math.Min(CurrentTopYIndex + yZoomDelta, CanvasData.MaxYTopIndex);

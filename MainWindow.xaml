@@ -42,6 +42,7 @@
             <!-- Properties of the objects on the right -->
             <StackPanel Grid.Column="2" Width="200" Background="LightBlue">
                 <!-- Add property fields here -->
+                
             </StackPanel>
         </Grid>
     </Grid>

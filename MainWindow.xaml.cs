@@ -12,6 +12,7 @@ using System.Windows.Threading;
 using TempoEngine.Engine;
 using TempoEngine.UIControls;
 using Button = System.Windows.Controls.Button;
+using MessageBox = System.Windows.MessageBox;
 
 namespace TempoEngine{
     /// <summary>
@@ -35,7 +36,13 @@ namespace TempoEngine{
             updateTimer.Interval = TimeSpan.FromSeconds(1.0 / _windowRefreshRate);
             ObjectsChanged();
             updateTimer.Start();
-            
+
+            _engineObjectsList.OnSelectedObjectChanged = SelectedObjectChanged;
+        }
+
+        private void SelectedObjectChanged(EngineObject obj) {
+            // Implement the logic to handle the selection change
+            _engineCanva.ZoomToObject(obj);
         }
 
         private void ButtonWithImage_Click(object sender, RoutedEventArgs e) {

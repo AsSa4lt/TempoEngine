@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Numerics;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using TempoEngine.Engine;
@@ -27,7 +28,6 @@ namespace TempoEngine.UIControls {
         // on resize event, we need to recalculate indexes
         protected override void OnRenderSizeChanged(System.Windows.SizeChangedInfo sizeInfo) {
             base.OnRenderSizeChanged(sizeInfo);
-            _canvasManager.AdjustForAspectRatio(ActualWidth, ActualHeight);
             Update();
         }
 
@@ -39,7 +39,6 @@ namespace TempoEngine.UIControls {
             else
                 _canvasManager.ZoomOut(e.Delta);
 
-            _canvasManager.AdjustForAspectRatio(ActualWidth, ActualHeight);
             Update();
         }
 
@@ -66,6 +65,14 @@ namespace TempoEngine.UIControls {
             this.Clip = new RectangleGeometry(new System.Windows.Rect(0, 0, this.ActualWidth, this.ActualHeight));
         }
 
+        public void ZoomToObject(EngineObject obj) {
+            // get object data
+            Vector2 topLeft, bottomRight;
+            obj.GetObjectVisibleArea(out topLeft, out bottomRight);
+            _canvasManager.ZoomToArea(topLeft, bottomRight);
+            Update();
+        }
+
 
         private Point ConvertToScreenCoordinates(Point point) {
             // get ActualWidth and Height
@@ -85,6 +92,7 @@ namespace TempoEngine.UIControls {
         protected void Update() {
             // clear canvas
             Children.Clear();
+            _canvasManager.AdjustForAspectRatio(ActualWidth, ActualHeight);
 
             List<EngineObject> objects = Engine.Engine.GetVisibleObjects(_canvasManager);
 
@@ -103,7 +111,7 @@ namespace TempoEngine.UIControls {
                 // add polygon to canvas
                 Children.Add(polygon);
             }
-
+                
             SetClipGeometry();
         }
 
