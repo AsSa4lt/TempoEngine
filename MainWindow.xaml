@@ -39,11 +39,7 @@
                 <!-- This is where you'll draw your shapes -->
             </uiControls:EngineCanvas>
 
-            <!-- Properties of the objects on the right -->
-            <StackPanel Grid.Column="2" Width="200" Background="LightBlue">
-                <!-- Add property fields here -->
-                
-            </StackPanel>
+            <uiControls:EngineTabProperties x:Name="_engineTabProperties" Grid.Column="2" Width="200" Background="LightGray"/>
         </Grid>
     </Grid>
 </Window>

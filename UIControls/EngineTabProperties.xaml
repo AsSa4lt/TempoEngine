@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="TempoEngine.UIControls.EngineTabProperties"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TempoEngine.UIControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="1000" d:DesignWidth="200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="55"/>
+                <ColumnDefinition Width="140"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Name" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Grid.Column="1" VerticalAlignment="Center" Margin="5" MinWidth="100" KeyDown="TextBox_KeyDown"/>
+        </Grid>
+
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="55"/>
+                <ColumnDefinition Width="140"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Name" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Grid.Column="1" VerticalAlignment="Center" Margin="5" MinWidth="100" KeyDown="TextBox_KeyDown"/>
+        </Grid>
+    </Grid>
+</UserControl>
