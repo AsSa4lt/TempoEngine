@@ -89,7 +89,7 @@ namespace TempoEngine.UIControls {
             return new Point(x, y);
         }
 
-        protected void Update() {
+        public void Update() {
             // clear canvas
             Children.Clear();
             _canvasManager.AdjustForAspectRatio(ActualWidth, ActualHeight);

@@ -38,11 +38,16 @@ namespace TempoEngine{
             updateTimer.Start();
 
             _engineObjectsList.OnSelectedObjectChanged = SelectedObjectChanged;
+            _engineObjectsList.OnZoomToObject = ZoomToObject;
+        }
+
+        private void ZoomToObject(EngineObject obj) {
+            _engineCanva.ZoomToObject(obj);
         }
 
         private void SelectedObjectChanged(EngineObject obj) {
             // Implement the logic to handle the selection change
-            _engineCanva.ZoomToObject(obj);
+            _engineCanva.Update();
         }
 
         private void ButtonWithImage_Click(object sender, RoutedEventArgs e) {
