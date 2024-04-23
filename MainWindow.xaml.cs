@@ -48,6 +48,11 @@ namespace TempoEngine{
         private void SelectedObjectChanged(EngineObject obj) {
             // Implement the logic to handle the selection change
             _engineCanva.Update();
+            _engineTabProperties.SetObject(obj);
+            _engineTabProperties.Update();
+            obj.PropertyChanged += (sender, args) => {
+                _engineTabProperties.Update();
+            };
         }
 
         private void ButtonWithImage_Click(object sender, RoutedEventArgs e) {

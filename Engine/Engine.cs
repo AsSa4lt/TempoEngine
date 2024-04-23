@@ -42,7 +42,7 @@ namespace TempoEngine.Engine{
         }
 
         public static void Start() {
-            if(_engineLock == null) throw new InvalidOperationException("Engine lock is not initialized");
+            if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
                 _isRunning = true;
                 _engineThread = new TempoThread("EngineThread", Run);
@@ -50,7 +50,7 @@ namespace TempoEngine.Engine{
         }
 
         public static void Run() {
-            if(_engineLock == null) throw new InvalidOperationException("Engine lock is not initialized");
+            if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
 
             while (true) {
 
@@ -75,21 +75,21 @@ namespace TempoEngine.Engine{
 
 
         public static long GetSimulationTime() {
-            if (_engineLock == null) throw new InvalidOperationException("Engine lock is not initialized");
+            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
                 return _simulationTime;
             }
         }
 
         public static void Stop() {
-            if (_engineLock == null) throw new InvalidOperationException("Engine lock is not initialized");
+            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
                 _isRunning = false;
             }
         }
 
         public static bool IsRunning() {
-            if (_engineLock == null) throw new InvalidOperationException("Engine lock is not initialized");
+            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
                 return _isRunning;
             }
@@ -97,8 +97,8 @@ namespace TempoEngine.Engine{
 
         public static List<EngineObject> GetVisibleObjects(CanvasManager manager) {
             List<EngineObject> visibleObjects = new();
-            if(_engineLock == null) throw new InvalidOperationException("Engine lock is not initialized");
-            if(_objects == null) throw new InvalidOperationException("Engine not initialized");
+            if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
+            if(_objects == null)            throw new InvalidOperationException("Engine not initialized");
 
             lock (_engineLock) {
                 foreach (var obj in _objects) {
@@ -110,9 +110,33 @@ namespace TempoEngine.Engine{
             return visibleObjects;
         }
 
+        // All objects are named and the name is unique
+        public static bool isNameAvailable(string name) {
+            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
+            if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
+
+            lock (_engineLock) {
+                foreach (var obj in _objects) {
+                    if (obj.Name == name) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public static void AddObject(EngineObject obj) {
+            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
+            if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
+            if (!isNameAvailable(obj.Name)) throw new InvalidOperationException("Object name is not available");
+            lock (_engineLock) {
+                _objects.Add(obj);
+            }
+        }
+
         public static List<EngineObject> GetObjects() {
-            if (_engineLock == null) throw new InvalidOperationException("Engine lock is not initialized");
-            if (_objects == null) throw new InvalidOperationException("Engine not initialized");
+            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
+            if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
 
             lock (_engineLock) {
                 return _objects;

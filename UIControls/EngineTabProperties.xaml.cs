@@ -21,6 +21,7 @@ namespace TempoEngine.UIControls {
     /// </summary>
     public partial class EngineTabProperties : UserControl {
         private EngineObject? _selectedObject;
+        public Action PropertiesChanged;
         public EngineTabProperties() : base() {
             InitializeComponent();
             // On Loaded event, we need to update the properties tab
@@ -31,13 +32,34 @@ namespace TempoEngine.UIControls {
 
         public void Update() {
             if(_selectedObject == null) {
-
+                SetFieldsEnabled(false);
+                return;
             }
+
+            tbName.Text = _selectedObject.Name;
+
+        }
+
+        private void SetObjectParameters() {
+            if (_selectedObject == null) return;
+            tbName.Text = _selectedObject.Name;
+        }
+
+        public void SetObject(EngineObject obj) {
+            _selectedObject = obj;
         }
 
         // function to set are fields enabled or disabled
         private void SetFieldsEnabled(bool enabled) {
             
+        }
+
+        private void tbName_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+            if (_selectedObject == null)                        return;
+            if (e.Key != Key.Enter)                             return;
+            if (tbName.Text == _selectedObject.Name)            return;
+            if (!Engine.Engine.isNameAvailable(tbName.Text))    return;
+            _selectedObject.Name = tbName.Text;
         }
     }
 }

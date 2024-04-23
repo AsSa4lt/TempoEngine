@@ -15,8 +15,8 @@ namespace TempoEngine.UIControls {
         public Action<EngineObject>?OnZoomToObject;
 
         public EngineObjectsList() : base() {
-            this.MouseDoubleClick += ZoomToObject;
-            this.SelectionChanged += OnSelectionChanged;
+            MouseDoubleClick += ZoomToObject;
+            SelectionChanged += OnSelectionChanged;
         }
         public void Update(List<EngineObject> objects) {
             Clear();
@@ -32,7 +32,7 @@ namespace TempoEngine.UIControls {
                 _currentSelectedEngineObject = item;
                 _currentSelectedEngineObject.Select();
                 OnZoomToObject?.Invoke(_currentSelectedEngineObject);
-                this.Items.Refresh();
+                Items.Refresh();
             }
         }
 
