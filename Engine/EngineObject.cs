@@ -24,11 +24,6 @@ namespace TempoEngine.Engine {
             Name = name;
         }
 
-        public void SetTemperature(double temperature) {
-            _temperature = temperature;
-        }
-
-
         public void Select() {
             IsSelected = true;
         }

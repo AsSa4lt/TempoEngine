@@ -57,9 +57,16 @@ namespace TempoEngine.UIControls {
         private void tbName_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
             if (_selectedObject == null)                        return;
             if (e.Key != Key.Enter)                             return;
-            if (tbName.Text == _selectedObject.Name)            return;
             if (!Engine.Engine.isNameAvailable(tbName.Text))    return;
             _selectedObject.Name = tbName.Text;
+        }
+
+        private void tbTemperature_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+            if(_selectedObject == null) return;
+            if(e.Key != Key.Enter) return;
+            if(double.TryParse(tbTemperature.Text, out double temperature)) {
+                _selectedObject.Temperature = temperature;
+            }
         }
     }
 }
