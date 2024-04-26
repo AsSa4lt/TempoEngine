@@ -10,25 +10,36 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="55"/>
-                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="120"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="Name" Margin="5,0,5,0" HorizontalAlignment="Left"/>
-            <TextBox Grid.Column="1" Name="tbName" KeyDown="tbName_KeyDown"></TextBox>
+            <TextBox Grid.Column="1" Height="18" Width="110" Name="tbName" KeyDown="tbName_KeyDown" HorizontalAlignment="Right"></TextBox>
         
         </Grid>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="55"/>
-                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="120"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="T, K°" Margin="5,0,5,0" HorizontalAlignment="Left"/>
-            <TextBox Grid.Column="1" Name="tbTemperature" KeyDown="tbTemperature_KeyDown"></TextBox>
+            <TextBox Grid.Column="1" Height="18" Width="110" Name="tbTemperature" KeyDown="tbTemperature_KeyDown"  HorizontalAlignment="Right"></TextBox>
+        </Grid>
+
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="120"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="k, W/(m⋅K)" Margin="5,0,5,0" HorizontalAlignment="Left"/>
+            <TextBox Grid.Column="1" Height="18" Width="110" Name="tbThermalConductivity"  HorizontalAlignment="Right" KeyDown="tbThermalConductivity_KeyDown"></TextBox>
         </Grid>
     </Grid>
 </UserControl>

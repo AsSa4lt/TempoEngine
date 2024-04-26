@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TempoEngine.Engine;
+using Brushes = System.Windows.Media.Brushes;
 using UserControl = System.Windows.Controls.UserControl;
 
 namespace TempoEngine.UIControls {
@@ -36,22 +37,28 @@ namespace TempoEngine.UIControls {
                 return;
             }
 
-            tbName.Text = _selectedObject.Name;
+            SetFieldsEnabled(true);
 
+            SetObjectParameters();
         }
 
         private void SetObjectParameters() {
             if (_selectedObject == null) return;
             tbName.Text = _selectedObject.Name;
+            tbTemperature.Text = _selectedObject.Temperature.ToString();
+            tbThermalConductivity.Text = _selectedObject.ThermalConductivity.ToString();
         }
 
         public void SetObject(EngineObject obj) {
+            ClearFields();
             _selectedObject = obj;
         }
 
         // function to set are fields enabled or disabled
         private void SetFieldsEnabled(bool enabled) {
-            
+            tbName.IsEnabled = enabled;
+            tbTemperature.IsEnabled = enabled;
+            tbThermalConductivity.IsEnabled = enabled;
         }
 
         private void tbName_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
@@ -62,11 +69,27 @@ namespace TempoEngine.UIControls {
         }
 
         private void tbTemperature_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            if(_selectedObject == null) return;
-            if(e.Key != Key.Enter) return;
-            if(double.TryParse(tbTemperature.Text, out double temperature)) {
-                _selectedObject.Temperature = temperature;
-            }
+            if(_selectedObject == null)                         return;
+            if(e.Key != Key.Enter)                              return;
+            if(double.TryParse(tbTemperature.Text, out double temperature)) _selectedObject.Temperature = temperature;
+            else  tbTemperature.Background = Brushes.Red;
+        }
+
+        private void tbThermalConductivity_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+            if(_selectedObject == null)                         return;
+            if(e.Key != Key.Enter)                              return;
+            if(double.TryParse(tbThermalConductivity.Text, out double thermalConductivity)) _selectedObject.ThermalConductivity = thermalConductivity;
+            else tbThermalConductivity.Background = Brushes.Red;
+        }
+
+        private void ClearFields() {
+            tbName.Text = "";
+            tbTemperature.Text = "";
+            tbThermalConductivity.Text = "";
+
+            tbName.Background = Brushes.White;
+            tbTemperature.Background = Brushes.White;
+            tbThermalConductivity.Background = Brushes.White;
         }
     }
 }

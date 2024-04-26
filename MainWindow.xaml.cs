@@ -52,6 +52,7 @@ namespace TempoEngine{
             _engineTabProperties.Update();
             obj.PropertyChanged += (sender, args) => {
                 _engineTabProperties.Update();
+                _engineCanva.Update();
             };
         }
 
