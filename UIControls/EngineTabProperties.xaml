@@ -11,6 +11,11 @@
             <RowDefinition Height="25"/>
             <RowDefinition Height="25"/>
             <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -18,28 +23,71 @@
                 <ColumnDefinition Width="75"/>
                 <ColumnDefinition Width="120"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Name" Margin="5,0,5,0" HorizontalAlignment="Left"/>
+            <Label Grid.Column="0" Content="Name"  HorizontalAlignment="Left" FontWeight="Bold" FontSize="14"/>
             <TextBox Grid.Column="1" Height="18" Width="110" Name="tbName" KeyDown="tbName_KeyDown" HorizontalAlignment="Right"></TextBox>
         
         </Grid>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="75"/>
-                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="T, K°" Margin="5,0,5,0" HorizontalAlignment="Left"/>
-            <TextBox Grid.Column="1" Height="18" Width="110" Name="tbTemperature" KeyDown="tbTemperature_KeyDown"  HorizontalAlignment="Right"></TextBox>
+            <Label Grid.Column="0" Content="Position:" HorizontalAlignment="Left" FontWeight="Bold"/>
         </Grid>
 
-
         <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="65"/>
+                <ColumnDefinition Width="34"/>
+                <ColumnDefinition Width="65"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="X:" HorizontalAlignment="Left"/>
+            <TextBox Grid.Column="1" Height="18" Name="tbXPosition" KeyDown="tbTemperature_KeyDown"></TextBox>
+
+            <Label Grid.Column="2" Content="Y:" Margin="5,0,5,0" HorizontalAlignment="Left"/>
+            <TextBox Grid.Column="3" Height="18" Name="tbYPosition" KeyDown="tbTemperature_KeyDown"></TextBox>
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Size:" HorizontalAlignment="Left" FontWeight="Bold"/>
+        </Grid>
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="65"/>
+                <ColumnDefinition Width="34"/>
+                <ColumnDefinition Width="65"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="W:" HorizontalAlignment="Left"/>
+            <TextBox Grid.Column="1" Height="18" Name="tbWidth" KeyDown="tbTemperature_KeyDown"></TextBox>
+
+            <Label Grid.Column="2" Content="H:" Margin="5,0,5,0" HorizontalAlignment="Left"/>
+            <TextBox Grid.Column="3" Height="18" Name="tbHeight" KeyDown="tbTemperature_KeyDown"></TextBox>
+        </Grid>
+
+        <Grid Grid.Row="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="75"/>
                 <ColumnDefinition Width="120"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="k, W/(m⋅K)" Margin="5,0,5,0" HorizontalAlignment="Left"/>
+            <Label Grid.Column="0" Content="T, K°" HorizontalAlignment="Left" FontWeight="Bold"/>
+            <TextBox Grid.Column="1" Height="18" Width="110" Name="tbTemperature" KeyDown="tbTemperature_KeyDown"  HorizontalAlignment="Right"></TextBox>
+        </Grid>
+
+
+        <Grid Grid.Row="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="120"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="k, W/(m⋅K)" HorizontalAlignment="Left" FontWeight="Bold"/>
             <TextBox Grid.Column="1" Height="18" Width="110" Name="tbThermalConductivity"  HorizontalAlignment="Right" KeyDown="tbThermalConductivity_KeyDown"></TextBox>
         </Grid>
+        
     </Grid>
 </UserControl>

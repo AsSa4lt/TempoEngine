@@ -59,6 +59,10 @@ namespace TempoEngine.UIControls {
             tbName.IsEnabled = enabled;
             tbTemperature.IsEnabled = enabled;
             tbThermalConductivity.IsEnabled = enabled;
+            tbXPosition.IsEnabled = enabled;
+            tbYPosition.IsEnabled = enabled;
+            tbHeight.IsEnabled = enabled;
+            tbWidth.IsEnabled = enabled;
         }
 
         private void tbName_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
@@ -86,10 +90,18 @@ namespace TempoEngine.UIControls {
             tbName.Text = "";
             tbTemperature.Text = "";
             tbThermalConductivity.Text = "";
+            tbXPosition.Text = "";
+            tbYPosition.Text = "";
+            tbHeight.Text = "";
+            tbWidth.Text = "";
 
             tbName.Background = Brushes.White;
             tbTemperature.Background = Brushes.White;
             tbThermalConductivity.Background = Brushes.White;
+            tbXPosition.Background = Brushes.White;
+            tbYPosition.Background = Brushes.White;
+            tbHeight.Background = Brushes.White;
+            tbWidth.Background = Brushes.White;
         }
     }
 }
