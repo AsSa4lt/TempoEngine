@@ -38,7 +38,6 @@ namespace TempoEngine.UIControls {
             }
 
             SetFieldsEnabled(true);
-
             SetObjectParameters();
         }
 
