@@ -51,13 +51,10 @@ namespace TempoEngine{
             _engineTabProperties.SetObject(obj);
             _engineTabProperties.Update();
             obj.PropertyChanged += (sender, args) => {
+                _engineObjectsList.Update(Engine.Engine.GetObjects());
                 _engineTabProperties.Update();
                 _engineCanva.Update();
             };
-        }
-
-        private void ButtonWithImage_Click(object sender, RoutedEventArgs e) {
-
         }
 
         private void UpdateTimer_Tick(object sender, EventArgs e) {

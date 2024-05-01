@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using TempoEngine.Engine;
 using Brushes = System.Windows.Media.Brushes;
 using MessageBox = System.Windows.MessageBox;
-using TextBox = System.Windows.Forms.TextBox;
+using TextBox = System.Windows.Controls.TextBox;
 using UserControl = System.Windows.Controls.UserControl;
 
 namespace TempoEngine.UIControls {
@@ -67,11 +67,14 @@ namespace TempoEngine.UIControls {
         }
 
         private void tbName_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            if (_selectedObject == null)                        return;
-            if (e.Key != Key.Enter)                             return;
-            if (!Engine.Engine.isNameAvailable(tbName.Text))    { ShowErrorMessageBox("Name is not available"); 
-                                                                return; }
+            if(!basicInputCheck(tbName, e))                     return;
+            if (_selectedObject.Name != tbName.Text && !Engine.Engine.isNameAvailable(tbName.Text)) {
+                ShowErrorMessageBox("Name is not available");
+                tbName.Background = Brushes.Red;
+                return;
+            }
             _selectedObject.Name = tbName.Text;
+            tbName.Background = Brushes.White;
         }
 
         private void ShowErrorMessageBox(string text) {
@@ -79,23 +82,23 @@ namespace TempoEngine.UIControls {
         }
 
         private void tbTemperature_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            if(_selectedObject == null)                         return;
-            if(e.Key != Key.Enter)                              return;
-            if (double.TryParse(tbTemperature.Text, out double temperature)) { tbTemperature.Background = Brushes.White; _selectedObject.Temperature = temperature; }
+            if(!basicInputCheck(tbTemperature, e))              return;
+            tbTemperature.Background = Brushes.White;
+            if (double.TryParse(tbTemperature.Text, out double temperature)) _selectedObject.Temperature = temperature;
             else tbTemperature.Background = Brushes.Red;
         }
 
         private void tbThermalConductivity_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            if(_selectedObject == null)                         return;
-            if(e.Key != Key.Enter)                              return;
-            if(double.TryParse(tbThermalConductivity.Text, out double thermalConductivity)) { tbThermalConductivity.Background = Brushes.White; _selectedObject.ThermalConductivity = thermalConductivity;}
+            if(!basicInputCheck(tbThermalConductivity, e))      return;
+            tbThermalConductivity.Background = Brushes.White;
+            if(double.TryParse(tbThermalConductivity.Text, out double thermCond)) _selectedObject.ThermalConductivity = thermCond;
             else tbThermalConductivity.Background = Brushes.Red;
         }
 
-        private bool basicInputCheck(TextBox tb) {
-
-
-            return true;
+        private bool basicInputCheck(TextBox tb, System.Windows.Input.KeyEventArgs e) {
+            if(_selectedObject == null)      return false;
+            if (e.Key != Key.Enter)          return false;
+            else                             return true;
         }
 
         private void ClearFields() {

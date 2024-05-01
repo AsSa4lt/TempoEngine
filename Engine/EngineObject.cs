@@ -89,7 +89,7 @@ namespace TempoEngine.Engine {
             set {
                 if (_isSelected != value) {
                     _isSelected = value;
-                    OnPropertyChanged(nameof(IsSelected));
+                    //OnPropertyChanged(nameof(IsSelected));
                 }
             }
         }

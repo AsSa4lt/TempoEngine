@@ -26,7 +26,7 @@ namespace TempoEngine.UIControls {
         }
 
         private void ZoomToObject(object sender, MouseButtonEventArgs e) {
-            var item = this.SelectedItem as EngineObject;
+            var item = SelectedItem as EngineObject;
             if (item != null) {
                 _currentSelectedEngineObject?.Deselect();
                 _currentSelectedEngineObject = item;
