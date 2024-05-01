@@ -11,10 +11,11 @@ namespace TempoEngine.Engine{
     static class Engine{
         private static List<EngineObject>? _objects = [];
         // lock object for _objects
-        private static object? _engineLock;
-        private static MainWindow? _mainWindow;
-        private static bool _isRunning = false;
-        private static TempoThread? _engineThread;
+        private static object?          _engineLock;
+        private static MainWindow?      _mainWindow;
+        private static bool             _isRunning = false;
+        private static TempoThread?     _engineThread;
+        private static long             _lastUpdateTime = 0;
 
         // updates per second 
         private static readonly int _simulationRefreshRate = 100;
@@ -62,6 +63,7 @@ namespace TempoEngine.Engine{
                 }
                 // update logic
 
+
                 // check if elapsed time is less than the time of one update as 1/refresh rate
                 long elapsedTime = DateTime.Now.Ticks - startTime;
                 long timeToSleep = 1000000 / _simulationRefreshRate - elapsedTime;
@@ -70,6 +72,7 @@ namespace TempoEngine.Engine{
                     _simulationTime += 1000000 / _simulationRefreshRate;
                 }
                 if (timeToSleep > 0) { Thread.Sleep((int)(timeToSleep / 1000)); }
+                if (timeToSleep < 0) { Console.WriteLine("Simulation is running slow"); }
             }
         }
 
