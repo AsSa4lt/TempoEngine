@@ -98,7 +98,7 @@ namespace TempoEngine.Engine {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        abstract public Polygon GetPolygon();
+        abstract public List<Polygon> GetPolygons();
         abstract public bool IsVisible(CanvasManager canvasManager);
 
         abstract public void GetObjectVisibleArea(out Vector2 topLeft, out Vector2 bottomRight);

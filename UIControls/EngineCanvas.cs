@@ -103,13 +103,15 @@ namespace TempoEngine.UIControls {
 
             // get polygons
             foreach (var obj in objects) {
-                Polygon polygon = obj.GetPolygon();
+                List<Polygon> polygons = obj.GetPolygons();
                 // convert polygon points to screen coordinates
-                for (int i = 0; i < polygon.Points.Count; i++) {
-                    polygon.Points[i] = ConvertToScreenCoordinates(polygon.Points[i]);
+                foreach (Polygon polygon in polygons) {
+                    for (int i = 0; i < polygon.Points.Count; i++) {
+                        polygon.Points[i] = ConvertToScreenCoordinates(polygon.Points[i]);
+                    }
+                    // add polygon to canvas
+                    Children.Add(polygon);
                 }
-                // add polygon to canvas
-                Children.Add(polygon);
             }
                 
             SetClipGeometry();

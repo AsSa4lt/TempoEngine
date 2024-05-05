@@ -21,7 +21,8 @@ namespace TempoEngine.Engine{
             pointC = p_c;
         }
 
-        public override Polygon GetPolygon() {
+        public override List<Polygon> GetPolygons() {
+            List<Polygon> polygons = new List<Polygon>();
             // Create a triangle polygon
             Polygon polygon = new Polygon();
             polygon.Points.Add(pointA);
@@ -39,7 +40,8 @@ namespace TempoEngine.Engine{
                 polygon.Fill.Opacity = 0.5;
             }
 
-            return polygon;
+            polygons.Add(polygon);
+            return polygons;
         }
         
         private bool isPointVisible(Point point, CanvasManager canvasManager) {
