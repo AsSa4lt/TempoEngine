@@ -29,7 +29,7 @@ namespace TempoEngine.Engine{
             _mainWindow = window;
 
             // add 3 objects to the engine
-            GrainTriangle obj1 = new GrainTriangle("Triangle1", new Point(0,0), new Point(0,1), new Point(1,0));
+            /*GrainTriangle obj1 = new GrainTriangle("Triangle1", new Point(0,0), new Point(0,1), new Point(1,0));
             obj1.Temperature = 200;
             _objects.Add(obj1);
             GrainTriangle obj2 = new GrainTriangle("Triangle2", new Point(1,0), new Point(0,1), new Point(1,1));
@@ -37,7 +37,7 @@ namespace TempoEngine.Engine{
             _objects.Add(obj2);
             GrainTriangle obj3 = new GrainTriangle("Triangle3", new Point(2,2), new Point(4,4), new Point(2,0));
             obj1.Temperature = 0;
-            _objects.Add(obj3);
+            _objects.Add(obj3);*/
 
 
         }
@@ -47,6 +47,17 @@ namespace TempoEngine.Engine{
             lock (_engineLock) {
                 _isRunning = true;
                 _engineThread = new TempoThread("EngineThread", Run);
+            }
+        }
+
+        private static void prepareObjects() {
+            if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
+            if(_objects == null)            throw new InvalidOperationException("Engine not initialized");
+
+            lock (_engineLock) {
+                foreach (var obj in _objects) {
+                    obj.SetStartTemperature();
+                }
             }
         }
 
@@ -114,7 +125,7 @@ namespace TempoEngine.Engine{
         }
 
         // All objects are named and the name is unique
-        public static bool isNameAvailable(string name) {
+        public static bool IsNameAvailable(string name) {
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
 
@@ -131,7 +142,7 @@ namespace TempoEngine.Engine{
         public static void AddObject(EngineObject obj) {
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
-            if (!isNameAvailable(obj.Name)) throw new InvalidOperationException("Object name is not available");
+            if (!IsNameAvailable(obj.Name)) throw new InvalidOperationException("Object name is not available");
             lock (_engineLock) {
                 _objects.Add(obj);
             }
@@ -144,7 +155,16 @@ namespace TempoEngine.Engine{
             lock (_engineLock) {
                 return _objects;
             }
-        }   
+        }
+        
+        public static void ClearObjects() {
+            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
+            if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
+
+            lock (_engineLock) {
+                _objects.Clear();
+            }
+        }
 
     }
 }

@@ -68,7 +68,7 @@ namespace TempoEngine.UIControls {
 
         private void tbName_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
             if(!basicInputCheck(tbName, e))                     return;
-            if (_selectedObject.Name != tbName.Text && !Engine.Engine.isNameAvailable(tbName.Text)) {
+            if (_selectedObject.Name != tbName.Text && !Engine.Engine.IsNameAvailable(tbName.Text)) {
                 ShowErrorMessageBox("Name is not available");
                 tbName.Background = Brushes.Red;
                 return;

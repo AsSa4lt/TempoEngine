@@ -12,6 +12,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="src\OpenButton.png" />
+    <None Remove="src\SaveButton.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -27,7 +32,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="src\" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="src\OpenButton.png" />
+    <Resource Include="src\SaveButton.png" />
   </ItemGroup>
 
 </Project>

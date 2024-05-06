@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -30,13 +31,13 @@ namespace TempoEngine.Engine{
             polygon.Points.Add(pointC);
 
             if(!IsSelected)
-                polygon.Fill = EngineManager.GetColorFromTemperature(_temperature);
+                polygon.Fill = EngineManager.GetColorFromTemperature(_simulationTemperature);
             else {
                 // If the object is selected i want to add a visible border to the polygon
                 polygon.Stroke = System.Windows.Media.Brushes.Black;
                 polygon.StrokeThickness = 3;
                 // Also change the color of the polygon to a lighter shade
-                polygon.Fill = EngineManager.GetColorFromTemperature(_temperature).Clone();
+                polygon.Fill = EngineManager.GetColorFromTemperature(_simulationTemperature).Clone();
                 polygon.Fill.Opacity = 0.5;
             }
 
@@ -74,5 +75,65 @@ namespace TempoEngine.Engine{
             topLeft.Y -= yDistance * 2;
             bottomRight.Y += yDistance * 2;
         }
+
+        public override void SetStartTemperature() {
+            _currentTemperature = _simulationTemperature; 
+        }
+
+        public override string GetObjectType() {
+            return "GrainTriangle";
+        }
+
+        public override string GetJsonRepresentation() {
+            var settings = new JsonSerializerSettings {
+                Formatting = Formatting.Indented, // For better readability of the output JSON
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            return JsonConvert.SerializeObject(new {
+                Type = GetObjectType(),
+                Name,
+                PointA = pointA,
+                PointB = pointB,
+                PointC = pointC,
+                SimulationTemperature = _simulationTemperature,
+                CurrentTemperature = _currentTemperature,
+                ThermalConductivity = _thermalConductivity
+            }, settings);
+        }
+
+        public static GrainTriangle FromJson(string json) {
+            var settings = new JsonSerializerSettings {
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            var jObject = JsonConvert.DeserializeObject<dynamic>(json, settings);
+
+            string type = jObject.Type;
+            if (type != "GrainTriangle")
+                throw new InvalidOperationException("JSON is not of type GrainTriangle.");
+
+            Point pointA = ParsePoint(jObject.PointA.ToString());
+            Point pointB = ParsePoint(jObject.PointB.ToString());
+            Point pointC = ParsePoint(jObject.PointC.ToString());
+
+            string name = jObject.Name;
+            double simulationTemperature = (double)jObject.SimulationTemperature;
+            double currentTemperature = (double)jObject.CurrentTemperature;
+            double thermalConductivity = (double)jObject.ThermalConductivity;
+
+            return new GrainTriangle(name, pointA, pointB, pointC) {
+                _simulationTemperature = simulationTemperature,
+                _currentTemperature = currentTemperature,
+                _thermalConductivity = thermalConductivity
+            };
+        }
+
+        private static Point ParsePoint(string point) {
+            var parts = point.Split(',');
+            return new Point(double.Parse(parts[0]), double.Parse(parts[1]));
+        }
+
+
     }
 }

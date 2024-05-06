@@ -9,13 +9,15 @@
     <!-- Main grid with two rows: one for the top panel and one for the rest -->
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="30"/>
             <!-- For top buttons panel -->
             <RowDefinition Height="*"/>
             <!-- For content area -->
         </Grid.RowDefinitions>
 
-        <uiControls:EngineUIBar x:Name="_controlPanel" Grid.Row="0" />
+        <Grid Grid.Row="0">
+            <uiControls:EngineUIBar x:Name="_controlPanel" Grid.Row="0" />
+        </Grid>
 
 
         <!-- Content area with three columns: list, canvas, properties -->

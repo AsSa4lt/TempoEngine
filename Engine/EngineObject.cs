@@ -10,12 +10,13 @@ using TempoEngine.UIControls;
 
 namespace TempoEngine.Engine {
     public abstract class EngineObject : INotifyPropertyChanged {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
 
         protected Vector2 _position = new(0, 0);
         protected Vector2 _rotation = new(0, 0);
-        protected double _temperature = 200;
+        protected double _simulationTemperature = 200;
+        protected double _currentTemperature = 200;
         protected double _thermalConductivity = 0.2;
         private string _name;
         private bool _isSelected = false;
@@ -55,10 +56,10 @@ namespace TempoEngine.Engine {
         }
 
         public double Temperature {
-            get => _temperature;
+            get => _simulationTemperature;
             set {
-                if (_temperature != value) {
-                    _temperature = value;
+                if (_simulationTemperature != value) {
+                    _simulationTemperature = value;
                     OnPropertyChanged(nameof(Temperature));
                 }
             }
@@ -102,5 +103,11 @@ namespace TempoEngine.Engine {
         abstract public bool IsVisible(CanvasManager canvasManager);
 
         abstract public void GetObjectVisibleArea(out Vector2 topLeft, out Vector2 bottomRight);
+
+        abstract public void SetStartTemperature();
+
+        abstract public string GetObjectType();
+
+        abstract public string GetJsonRepresentation();
     }
 }

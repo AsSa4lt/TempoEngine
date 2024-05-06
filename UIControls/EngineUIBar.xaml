@@ -12,7 +12,11 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <Button Content="Button 1" Margin="5" Grid.Column="0"/>
-        <Button Content="Button 2" Margin="5" Grid.Column="1"/>
+        <Button Grid.Column="0" Margin="2" Background="Transparent" BorderThickness="0" Click="saveButtonClick">
+            <Image Source="../src/SaveButton.png"/>
+        </Button>
+        <Button Grid.Column="1" Margin="0" Background="Transparent" BorderThickness="0" Click="openButtonClick">
+            <Image Source="../src/OpenButton.png"/>
+        </Button>
     </Grid>
 </UserControl>
