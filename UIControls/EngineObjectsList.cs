@@ -12,7 +12,7 @@ namespace TempoEngine.UIControls {
     public class EngineObjectsList : System.Windows.Controls.ListView {
         private EngineObject? _currentSelectedEngineObject;
         public Action<EngineObject>? OnSelectedObjectChanged;
-        public Action<EngineObject>?OnZoomToObject;
+        public Action<EngineObject>? OnZoomToObject;
 
         public EngineObjectsList() : base() {
             MouseDoubleClick += ZoomToObject;

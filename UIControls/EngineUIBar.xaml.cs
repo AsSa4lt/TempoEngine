@@ -25,6 +25,8 @@ namespace TempoEngine.UIControls
     /// Interaction logic for EngineUIBar.xaml
     /// </summary>
     public partial class EngineUIBar : UserControl{
+        // callback to update the UI
+        public Action UpdateUI;
         public EngineUIBar(){
             InitializeComponent();
         }
@@ -58,6 +60,7 @@ namespace TempoEngine.UIControls
             if (result == true) {
                 string filename = openFileDialog.FileName;
                 FileManager.LoadFromFile(filename);
+                UpdateUI?.Invoke();
             }
         }
 
