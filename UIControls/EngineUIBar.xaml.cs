@@ -18,6 +18,7 @@ using Microsoft.Win32;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 using TempoEngine.Util;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+using MessageBox = System.Windows.MessageBox;
 
 namespace TempoEngine.UIControls
 {
@@ -27,6 +28,7 @@ namespace TempoEngine.UIControls
     public partial class EngineUIBar : UserControl{
         // callback to update the UI
         public Action UpdateUI;
+        public Action<EngineObject> DeleteSelected;
         public EngineUIBar(){
             InitializeComponent();
         }
@@ -61,6 +63,16 @@ namespace TempoEngine.UIControls
                 string filename = openFileDialog.FileName;
                 FileManager.LoadFromFile(filename);
                 UpdateUI?.Invoke();
+            }
+        }
+
+        private void clearButtonClick(object sender, RoutedEventArgs e) {
+            string message = "Are you sure you want to clear all data?";
+            string caption = "Confirm Clear";
+            MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes) {
+                Engine.Engine.ClearObjects();
+                DeleteSelected?.Invoke(null);
             }
         }
 

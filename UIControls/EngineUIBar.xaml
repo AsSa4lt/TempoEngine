@@ -10,6 +10,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <Button Grid.Column="0" Margin="2" Background="Transparent" BorderThickness="0" Click="saveButtonClick">
@@ -17,6 +18,10 @@
         </Button>
         <Button Grid.Column="1" Margin="0" Background="Transparent" BorderThickness="0" Click="openButtonClick">
             <Image Source="../src/OpenButton.png"/>
+        </Button>
+
+        <Button Grid.Column="2" Margin="0" Background="Transparent" BorderThickness="0" Click="clearButtonClick">
+            <Image  Margin="-3" Source="../src/ClearButton.png"/>
         </Button>
     </Grid>
 </UserControl>

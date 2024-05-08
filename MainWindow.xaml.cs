@@ -26,6 +26,7 @@ namespace TempoEngine {
             updateTimer.Start();
 
             _engineObjectsList.OnSelectedObjectChanged = SelectedObjectChanged;
+            _controlPanel.DeleteSelected = SelectedObjectChanged;
             _controlPanel.UpdateUI = UpdateAfterRead;
             _engineObjectsList.OnZoomToObject = ZoomToObject;
         }
@@ -39,6 +40,9 @@ namespace TempoEngine {
             _engineCanva.Update();
             _engineTabProperties.SetObject(obj);
             _engineTabProperties.Update();
+
+            if(obj == null) {  _engineObjectsList.Update(Engine.Engine.GetObjects()); return; }
+
             obj.PropertyChanged += (sender, args) => {
                 _engineObjectsList.Update(Engine.Engine.GetObjects());
                 _engineTabProperties.Update();
