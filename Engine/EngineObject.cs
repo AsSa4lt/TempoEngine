@@ -18,6 +18,7 @@ namespace TempoEngine.Engine {
         protected double _simulationTemperature = 200;
         protected double _currentTemperature = 200;
         protected double _thermalConductivity = 0.2;
+        protected double _mass = 1;
         private string _name;
         private bool _isSelected = false;
 

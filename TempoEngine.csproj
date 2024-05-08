@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="src\AddButton.png" />
     <None Remove="src\ClearButton.png" />
     <None Remove="src\OpenButton.png" />
     <None Remove="src\SaveButton.png" />
@@ -37,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="src\AddButton.png" />
     <Resource Include="src\ClearButton.png" />
     <Resource Include="src\OpenButton.png" />
     <Resource Include="src\SaveButton.png" />

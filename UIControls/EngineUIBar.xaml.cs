@@ -19,6 +19,7 @@ using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 using TempoEngine.Util;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using MessageBox = System.Windows.MessageBox;
+using Button = System.Windows.Controls.Button;
 
 namespace TempoEngine.UIControls
 {
@@ -76,5 +77,18 @@ namespace TempoEngine.UIControls
             }
         }
 
+        private void addButtonClick(object sender, RoutedEventArgs e) {
+            Button? button = sender as Button;
+            if (button != null && button.ContextMenu != null) {
+                button.ContextMenu.PlacementTarget = button;
+                button.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+                button.ContextMenu.IsOpen = true;
+            }
+        }
+
+        private void addTriangleClicked(object sender, RoutedEventArgs e) {
+            AddTriangleWIndow addTriangleWIndow = new AddTriangleWIndow();
+            addTriangleWIndow.ShowDialog();
+        }
     }
 }

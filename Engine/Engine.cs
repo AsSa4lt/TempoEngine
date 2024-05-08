@@ -29,7 +29,7 @@ namespace TempoEngine.Engine{
             _mainWindow = window;
 
             // add 3 objects to the engine
-            /*GrainTriangle obj1 = new GrainTriangle("Triangle1", new Point(0,0), new Point(0,1), new Point(1,0));
+            GrainTriangle obj1 = new GrainTriangle("Triangle1", new Point(0,0), new Point(0,1), new Point(1,0));
             obj1.Temperature = 200;
             _objects.Add(obj1);
             GrainTriangle obj2 = new GrainTriangle("Triangle2", new Point(1,0), new Point(0,1), new Point(1,1));
@@ -37,7 +37,7 @@ namespace TempoEngine.Engine{
             _objects.Add(obj2);
             GrainTriangle obj3 = new GrainTriangle("Triangle3", new Point(2,2), new Point(4,4), new Point(2,0));
             obj1.Temperature = 0;
-            _objects.Add(obj3);*/
+            _objects.Add(obj3);
 
 
         }
