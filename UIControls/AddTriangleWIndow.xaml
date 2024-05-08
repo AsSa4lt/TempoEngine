@@ -5,21 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TempoEngine.UIControls"
         mc:Ignorable="d"
-        Title="AddTriangleWIndow" Height="450" Width="200">
+        Title="AddTriangleWIndow" Height="450" Width="300" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
             <!-- For top buttons panel -->
             <RowDefinition Height="30"/>
             <!-- For content area -->
         </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Label Grid.Column="0" Content="Name"  HorizontalAlignment="Left" FontWeight="Bold" FontSize="14"/>
+            <TextBox Grid.Column="1" Height="18" Width="180" Name="tbName" HorizontalAlignment="Right"></TextBox>        
+        </Grid>
 
         <Grid Grid.Row="1">
+            <Label Grid.Column="0" Content="Mass"  HorizontalAlignment="Left" FontWeight="Bold" FontSize="14"/>
+            <TextBox Grid.Column="1" Height="18" Width="180" Name="tbMass" HorizontalAlignment="Right"></TextBox>
+        </Grid>
+
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
             <Button Grid.Column="0" Content="Add" Click="AddButton_Click"/>
             <Button Grid.Column="1" Content="Cancel" Click="CancelButton_Click"/>
         </Grid>
