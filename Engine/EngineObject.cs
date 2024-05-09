@@ -66,6 +66,16 @@ namespace TempoEngine.Engine {
             }
         }
 
+        public double Mass {
+            get => _mass;
+            set {
+                if (_mass != value) {
+                    _mass = value;
+                    OnPropertyChanged(nameof(Temperature));
+                }
+            }
+        }
+
         public double ThermalConductivity {
             get => _thermalConductivity;
             set {

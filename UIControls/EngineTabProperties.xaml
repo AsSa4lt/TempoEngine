@@ -16,6 +16,7 @@
             <RowDefinition Height="25"/>
             <RowDefinition Height="25"/>
             <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -88,6 +89,15 @@
             <Label Grid.Column="0" Content="k, W/(m⋅K)" HorizontalAlignment="Left" FontWeight="Bold"/>
             <TextBox Grid.Column="1" Height="18" Width="110" Name="tbThermalConductivity"  HorizontalAlignment="Right" KeyDown="tbThermalConductivity_KeyDown"></TextBox>
         </Grid>
-        
+
+        <Grid Grid.Row="7">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="120"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Mass" HorizontalAlignment="Left" FontWeight="Bold"/>
+            <TextBox Grid.Column="1" Height="18" Width="110" Name="tbMass"  HorizontalAlignment="Right" KeyDown="tbMass_KeyDown"></TextBox>
+        </Grid>
+
     </Grid>
 </UserControl>

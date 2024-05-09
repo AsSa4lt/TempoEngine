@@ -93,6 +93,7 @@ namespace TempoEngine.Engine{
             return JsonConvert.SerializeObject(new {
                 Type = GetObjectType(),
                 Name,
+                Mass = _mass,
                 PointA = pointA,
                 PointB = pointB,
                 PointC = pointC,
@@ -118,6 +119,7 @@ namespace TempoEngine.Engine{
             Point pointC = ParsePoint(jObject.PointC.ToString());
 
             string name = jObject.Name;
+            double mass = (double)jObject.Mass;
             double simulationTemperature = (double)jObject.SimulationTemperature;
             double currentTemperature = (double)jObject.CurrentTemperature;
             double thermalConductivity = (double)jObject.ThermalConductivity;
@@ -125,7 +127,8 @@ namespace TempoEngine.Engine{
             return new GrainTriangle(name, pointA, pointB, pointC) {
                 _simulationTemperature = simulationTemperature,
                 _currentTemperature = currentTemperature,
-                _thermalConductivity = thermalConductivity
+                _thermalConductivity = thermalConductivity,
+                _mass = mass
             };
         }
 

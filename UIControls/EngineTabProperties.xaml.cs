@@ -48,6 +48,7 @@ namespace TempoEngine.UIControls {
             tbName.Text = _selectedObject.Name;
             tbTemperature.Text = _selectedObject.Temperature.ToString();
             tbThermalConductivity.Text = _selectedObject.ThermalConductivity.ToString();
+            tbMass.Text = _selectedObject.Mass.ToString();
         }
 
         public void SetObject(EngineObject obj) {
@@ -64,6 +65,7 @@ namespace TempoEngine.UIControls {
             tbYPosition.IsEnabled            = enabled;
             tbHeight.IsEnabled               = enabled;
             tbWidth.IsEnabled                = enabled;
+            tbMass.IsEnabled                 = enabled;
         }
 
         private void tbName_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
@@ -109,6 +111,7 @@ namespace TempoEngine.UIControls {
             tbYPosition.Text                 = "";
             tbHeight.Text                    = "";
             tbWidth.Text                     = "";
+            tbMass.Text                      = "";
 
             tbName.Background                = Brushes.White;
             tbTemperature.Background         = Brushes.White;
@@ -117,6 +120,14 @@ namespace TempoEngine.UIControls {
             tbYPosition.Background           = Brushes.White;
             tbHeight.Background              = Brushes.White;
             tbWidth.Background               = Brushes.White;
+            tbMass.Background                = Brushes.White;
+        }
+
+        private void tbMass_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+            if(!basicInputCheck(tbMass, e))                     return;
+            tbMass.Background = Brushes.White;
+            if (double.TryParse(tbMass.Text, out double mass)) _selectedObject.Mass = mass;
+            else tbMass.Background = Brushes.Red;
         }
     }
 }
