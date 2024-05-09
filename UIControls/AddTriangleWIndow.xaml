@@ -97,7 +97,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="Add" Click="AddButton_Click" Background="#FF8FC366"/>
+            <Button Grid.Column="0" Content="Add" Click="AddButton_Click" Background="#FF8FC366" KeyDown="Button_KeyDown"/>
             <Button Grid.Column="1" Content="Cancel" Click="CancelButton_Click" Background="#FFFA7C7C"/>
         </Grid>
     </Grid>
