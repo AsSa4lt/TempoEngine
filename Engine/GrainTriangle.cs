@@ -22,6 +22,29 @@ namespace TempoEngine.Engine{
             pointC = p_c;
         }
 
+        public Point PointA {
+            get => pointA;
+            set {
+                pointA = value;
+                OnPropertyChanged(nameof(PointA));
+            }
+        }
+        public Point PointB {
+            get => pointB;
+            set {
+                pointB = value;
+                OnPropertyChanged(nameof(PointB));
+            }
+        }
+
+        public Point PointC {
+            get => pointC;
+            set {
+                pointC = value;
+                OnPropertyChanged(nameof(PointC));
+            }
+        }
+
         public override List<Polygon> GetPolygons() {
             List<Polygon> polygons = new List<Polygon>();
             // Create a triangle polygon
