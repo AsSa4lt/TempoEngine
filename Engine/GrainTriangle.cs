@@ -156,6 +156,40 @@ namespace TempoEngine.Engine{
             return "GrainTriangle";
         }
 
+
+        public static GrainTriangle FromJson(string json) {
+            var settings = new JsonSerializerSettings {
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            var jObject = JsonConvert.DeserializeObject<dynamic>(json, settings);
+
+            string type = jObject.Type;
+            if (type != "GrainTriangle")
+                throw new InvalidOperationException("JSON is not of type GrainTriangle.");
+
+            Point pointA = ParsePoint(jObject.PointA.ToString());
+            Point pointB = ParsePoint(jObject.PointB.ToString());
+            Point pointC = ParsePoint(jObject.PointC.ToString());
+
+            string name = jObject.Name;
+            double mass = (double)jObject.Mass;
+            double simulationTemperature = (double)jObject.SimulationTemperature;
+            double currentTemperature = (double)jObject.CurrentTemperature;
+            double thermalConductivity = (double)jObject.ThermalConductivity;
+
+            return new GrainTriangle(name, pointA, pointB, pointC) {
+                _simulationTemperature = simulationTemperature,
+                _currentTemperature = currentTemperature,
+                _thermalConductivity = thermalConductivity,
+                _mass = mass
+            };
+        }
+
+        private static Point ParsePoint(string point) {
+            var parts = point.Split(',');
+            return new Point(double.Parse(parts[0]), double.Parse(parts[1]));
+        }
         /**
          * Serializes the grain triangle to a JSON representation.
          * \return A JSON string representing the grain triangle.

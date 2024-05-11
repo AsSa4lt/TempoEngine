@@ -14,6 +14,7 @@ namespace TempoEngine {
 
         public MainWindow(){
             InitializeComponent();
+            log4net.Config.XmlConfigurator.Configure();
 
             // init engine(proccessor of the app with entity of main window)
             Engine.Engine.Init(this);
