@@ -1,0 +1,27 @@
+PROJECT_NAME           = "ThempoEngine"
+PROJECT_NUMBER         = "0.0.1"
+PROJECT_BRIEF          = "2D physics engine designed to simulate heat transfer across different materials using a visually intuitive approach."
+
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+
+INPUT                  = ./README.md  ./
+RECURSIVE              = YES
+FILE_PATTERNS          = *.cs
+
+HAVE_DOT               = YES
+CLASS_DIAGRAMS         = YES
+GRAPHICAL_HIERARCHY    = YES
+INHERIT_GRAPH          = YES
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+DOT_IMAGE_FORMAT       = png
+QUIET = NO
+WARN_LOGFILE = doxygen_warnings.log
+
+GENERATE_LATEX         = NO
+GENERATE_TREEVIEW      = YES
+USE_MDFILE_AS_MAINPAGE = ./README.md
+
+BRIEF_MEMBER_DESC      = YES

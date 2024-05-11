@@ -12,16 +12,40 @@ using TempoEngine.UIControls;
 using Point = System.Windows.Point;
 
 namespace TempoEngine.Engine{
+    /**
+     * \class GrainTriangle
+     * \brief Represents a triangular grain object within the simulation engine.
+     *
+     * The GrainTriangle class extends \ref EngineObject and encapsulates the properties
+     * and behavior of a triangle-shaped grain in the simulation, including thermal properties,
+     * position, and selection state. It includes methods for rendering, visibility checks, and serialization.
+     * 
+     * \see EngineObject
+     * \see CanvasManager
+     */
     public class GrainTriangle : EngineObject {
-        Point pointA;
-        Point pointB;
-        Point pointC;
+        private Point pointA;
+        private Point pointB;
+        private Point pointC;
+
+        /**
+         * Constructs a GrainTriangle with specified vertices and name.
+         * \param name The name of the grain triangle.
+         * \param p_a Vertex A of the triangle.
+         * \param p_b Vertex B of the triangle.
+         * \param p_c Vertex C of the triangle.
+         */
         public GrainTriangle(string name, Point p_a, Point p_b, Point p_c) : base(name) {
             pointA = p_a;
             pointB = p_b;
             pointC = p_c;
         }
 
+        /**
+         * Gets or sets the position of vertex A.
+         * Triggers a property changed event when set.
+         * \see OnPropertyChanged
+         */
         public Point PointA {
             get => pointA;
             set {
@@ -29,6 +53,11 @@ namespace TempoEngine.Engine{
                 OnPropertyChanged(nameof(PointA));
             }
         }
+
+        /**
+         * Gets or sets the position of vertex B.
+         * Triggers a property changed event when set.
+         */
         public Point PointB {
             get => pointB;
             set {
@@ -37,6 +66,10 @@ namespace TempoEngine.Engine{
             }
         }
 
+        /**
+         * Gets or sets the position of vertex C.
+         * Triggers a property changed event when set.
+         */
         public Point PointC {
             get => pointC;
             set {
@@ -45,21 +78,23 @@ namespace TempoEngine.Engine{
             }
         }
 
+        /**
+         * Generates the polygons that visually represent the triangle.
+         * This method overrides the abstract method defined in \ref EngineObject.
+         * \return List of polygons constituting the triangle's visual representation.
+         */
         public override List<Polygon> GetPolygons() {
             List<Polygon> polygons = new List<Polygon>();
-            // Create a triangle polygon
             Polygon polygon = new Polygon();
             polygon.Points.Add(pointA);
             polygon.Points.Add(pointB);
             polygon.Points.Add(pointC);
 
-            if(!IsSelected)
+            if (!IsSelected)
                 polygon.Fill = EngineManager.GetColorFromTemperature(_simulationTemperature);
             else {
-                // If the object is selected i want to add a visible border to the polygon
                 polygon.Stroke = System.Windows.Media.Brushes.Black;
                 polygon.StrokeThickness = 3;
-                // Also change the color of the polygon to a lighter shade
                 polygon.Fill = EngineManager.GetColorFromTemperature(_simulationTemperature).Clone();
                 polygon.Fill.Opacity = 0.5;
             }
@@ -67,49 +102,67 @@ namespace TempoEngine.Engine{
             polygons.Add(polygon);
             return polygons;
         }
-        
+
+        /**
+         * Checks if a given point is visible within the current canvas manager's view.
+         * \param point The point to check for visibility.
+         * \param canvasManager The canvas manager providing the current view context.
+         * \return True if the point is visible, otherwise false.
+         */
         private bool isPointVisible(Point point, CanvasManager canvasManager) {
-            // implement the point visibility check
-            if(point.X >= canvasManager.CurrentLeftXIndex && point.X <= canvasManager.CurrentRightXIndex 
-                && point.Y >= canvasManager.CurrentBottomYIndex && point.Y <= canvasManager.CurrentTopYIndex)
-                return true;
-            return false;
+            return point.X >= canvasManager.CurrentLeftXIndex && point.X <= canvasManager.CurrentRightXIndex &&
+                   point.Y >= canvasManager.CurrentBottomYIndex && point.Y <= canvasManager.CurrentTopYIndex;
         }
 
+        /**
+         * Determines whether any of the triangle's vertices are visible in the current view.
+         * \param canvasManager The canvas manager providing the current view context.
+         * \return True if any vertex is visible, otherwise false.
+         */
         public override bool IsVisible(CanvasManager canvasManager) {
-            // implement the visibility check
-            if(isPointVisible(pointA, canvasManager) || isPointVisible(pointB, canvasManager) || isPointVisible(pointC, canvasManager)) {
-                return true;
-            }
-            return false;
+            return isPointVisible(pointA, canvasManager) || isPointVisible(pointB, canvasManager) || isPointVisible(pointC, canvasManager);
         }
 
+        /**
+         * Calculates the bounding box that encompasses the triangle.
+         * \param[out] topLeft The top-left corner of the bounding box.
+         * \param[out] bottomRight The bottom-right corner of the bounding box.
+         */
         public override void GetObjectVisibleArea(out Vector2 topLeft, out Vector2 bottomRight) {
-            // implement the visible area calculation
             topLeft = new Vector2((float)Math.Min(pointA.X, Math.Min(pointB.X, pointC.X)), (float)Math.Min(pointA.Y, Math.Min(pointB.Y, pointC.Y)));
             bottomRight = new Vector2((float)Math.Max(pointA.X, Math.Max(pointB.X, pointC.X)), (float)Math.Max(pointA.Y, Math.Max(pointB.Y, pointC.Y)));
-            // extend vectors 4x times bigger than the triangle
-            // get distance between left X and right X and multiply by 4
+
             float xDistance = bottomRight.X - topLeft.X;
             topLeft.X -= xDistance * 2;
             bottomRight.X += xDistance * 2;
-            // get distance between top Y and bottom Y and multiply by 4
+
             float yDistance = bottomRight.Y - topLeft.Y;
             topLeft.Y -= yDistance * 2;
             bottomRight.Y += yDistance * 2;
         }
 
+        /**
+         * Sets the initial temperature of the grain to the simulation temperature.
+         */
         public override void SetStartTemperature() {
-            _currentTemperature = _simulationTemperature; 
+            _currentTemperature = _simulationTemperature;
         }
 
+        /**
+         * Provides the type identifier for GrainTriangle objects.
+         * \return A string identifier for the type.
+         */
         public override string GetObjectType() {
             return "GrainTriangle";
         }
 
+        /**
+         * Serializes the grain triangle to a JSON representation.
+         * \return A JSON string representing the grain triangle.
+         */
         public override string GetJsonRepresentation() {
             var settings = new JsonSerializerSettings {
-                Formatting = Formatting.Indented, // For better readability of the output JSON
+                Formatting = Formatting.Indented,
                 NullValueHandling = NullValueHandling.Ignore
             };
 
@@ -125,41 +178,5 @@ namespace TempoEngine.Engine{
                 ThermalConductivity = _thermalConductivity
             }, settings);
         }
-
-        public static GrainTriangle FromJson(string json) {
-            var settings = new JsonSerializerSettings {
-                NullValueHandling = NullValueHandling.Ignore
-            };
-
-            var jObject = JsonConvert.DeserializeObject<dynamic>(json, settings);
-
-            string type = jObject.Type;
-            if (type != "GrainTriangle")
-                throw new InvalidOperationException("JSON is not of type GrainTriangle.");
-
-            Point pointA = ParsePoint(jObject.PointA.ToString());
-            Point pointB = ParsePoint(jObject.PointB.ToString());
-            Point pointC = ParsePoint(jObject.PointC.ToString());
-
-            string name = jObject.Name;
-            double mass = (double)jObject.Mass;
-            double simulationTemperature = (double)jObject.SimulationTemperature;
-            double currentTemperature = (double)jObject.CurrentTemperature;
-            double thermalConductivity = (double)jObject.ThermalConductivity;
-
-            return new GrainTriangle(name, pointA, pointB, pointC) {
-                _simulationTemperature = simulationTemperature,
-                _currentTemperature = currentTemperature,
-                _thermalConductivity = thermalConductivity,
-                _mass = mass
-            };
-        }
-
-        private static Point ParsePoint(string point) {
-            var parts = point.Split(',');
-            return new Point(double.Parse(parts[0]), double.Parse(parts[1]));
-        }
-
-
     }
 }

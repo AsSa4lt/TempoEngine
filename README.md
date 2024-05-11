@@ -1,4 +1,9 @@
-# TempoEngine
+# ThempoEngine Documentation
+
+Welcome to the documentation of ThempoEngine, a 2D physics engine designed to simulate heat transfer across different materials using a visually intuitive approach.
+
+## Overview
+
 TempoEngine is a 2D physics engine designed to simulate heat transfer across different materials using a visually intuitive approach. 
 The engine supports various forms of heat transfer mechanisms including conduction, convection, and radiation, 
 presenting them in a visually engaging manner that changes color based on the temperature of the objects.
@@ -19,3 +24,9 @@ the thermal conductivity of the material, and the simulation timestep.
 
 Temperature Updates
 Temperatures of individual triangles are updated based on net heat gain or loss, integrating effects from conduction, convection, and radiation.
+
+## Features
+
+- **Dynamic Simulation**: Real-time simulation of heat transfer.
+- **Customizable Materials**: Users can define the thermal properties of materials.
+- **Interactive Visuals**: Real-time graphical representation of temperature changes.
