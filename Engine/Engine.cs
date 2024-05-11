@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,8 @@ using Point = System.Windows.Point;
 
 namespace TempoEngine.Engine{
     static class Engine{
+        private static readonly ILog log = LogManager.GetLogger(typeof(Engine));
+
         private static List<EngineObject>? _objects = [];
         // lock object for _objects
         private static object?          _engineLock;
@@ -28,6 +31,8 @@ namespace TempoEngine.Engine{
             _engineLock = new object();
             _mainWindow = window;
 
+            log.Info("Engine initialized");
+
             // add 3 objects to the engine
             GrainTriangle obj1 = new GrainTriangle("Triangle1", new Point(0,0), new Point(0,1), new Point(1,0));
             obj1.Temperature = 200;
@@ -45,6 +50,7 @@ namespace TempoEngine.Engine{
         public static void Start() {
             if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
+                log.Info("Engine started");
                 _isRunning = true;
                 _engineThread = new TempoThread("EngineThread", Run);
             }
@@ -98,6 +104,7 @@ namespace TempoEngine.Engine{
         public static void Stop() {
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
+                log.Info("Engine stopped");
                 _isRunning = false;
             }
         }
@@ -164,6 +171,7 @@ namespace TempoEngine.Engine{
             lock (_engineLock) {
                 _objects.Clear();
             }
+            log.Info("All objects cleared");
         }
 
     }

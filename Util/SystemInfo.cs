@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -9,6 +10,7 @@ using System.Windows.Forms;
 
 namespace TempoEngine.Util {
     internal partial class SystemInfo {
+        private static readonly ILog log = LogManager.GetLogger(typeof(FileManager));
         public static int GetRefreshRate() {
             // Get the handle to the device context (DC) for the primary screen
             IntPtr hdc = GetDC(IntPtr.Zero); // Passing IntPtr.Zero gets the DC for the entire screen
@@ -21,6 +23,8 @@ namespace TempoEngine.Util {
 
             // Release the device context
             ReleaseDC(IntPtr.Zero, hdc);
+
+            log.Info("Current refresh rate: " + refreshRate + " Hz");
 
             return refreshRate;
         }

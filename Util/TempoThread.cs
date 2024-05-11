@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace TempoEngine.Util {
     internal class TempoThread {
         private readonly Thread _thread;
         public readonly string Name;
+        private static readonly ILog log = LogManager.GetLogger(typeof(FileManager));
+
         public TempoThread(string name, ThreadStart start) {
             Name = name;
             _thread = new Thread(start) {
@@ -17,10 +20,12 @@ namespace TempoEngine.Util {
 
         public void Start() {
             _thread.Start();
+            log.Info("Thread " + Name + " started");
         }
 
         public void Join() {
             _thread.Join();
+            log.Info("Thread " + Name + " joined");
         }
 
         public void Abort() {
