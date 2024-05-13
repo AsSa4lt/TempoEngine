@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TempoEngine.Engine;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 
 namespace TempoEngine.UIControls {
@@ -36,15 +37,18 @@ namespace TempoEngine.UIControls {
             }
         }
 
+
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (SelectedItem != null) { 
-                var selectedObject = SelectedItem as EngineObject ?? throw new Exception("Selected object is not an EngineObject");
+            var selectedObject = SelectedItem as EngineObject;
+            if (selectedObject != null && (_currentSelectedEngineObject == null || selectedObject.Name != _currentSelectedEngineObject.Name)) { 
                 _currentSelectedEngineObject?.Deselect();
                 _currentSelectedEngineObject = selectedObject;
                 _currentSelectedEngineObject.Select();
                 OnSelectedObjectChanged?.Invoke(_currentSelectedEngineObject);
             }
         }
+
+        
         public void Clear() {
             Items.Clear();
         }
