@@ -212,5 +212,9 @@ namespace TempoEngine.Engine{
                 ThermalConductivity = _thermalConductivity
             }, settings);
         }
+
+        public override bool IsIntersecting(EngineObject obj) {
+            throw new NotImplementedException();
+        }
     }
 }

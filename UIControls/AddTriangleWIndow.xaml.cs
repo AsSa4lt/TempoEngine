@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TempoEngine.Engine;
+using Brushes = System.Windows.Media.Brushes;
+using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
 
 namespace TempoEngine.UIControls {
@@ -20,11 +22,12 @@ namespace TempoEngine.UIControls {
     /// </summary>
     public partial class AddTriangleWIndow : Window {
         GrainTriangle _newTriangle;
+        public Action OnObjectAdded;
         public AddTriangleWIndow() {
             InitializeComponent();
             _newTriangle = new GrainTriangle("New Triangle", new Point(0, 0), new Point(0, 0), new Point(0, 0));
             int i = 0;
-            while (!Engine.Engine.IsNameAvailable($"New triangle {1}")) i++;
+            while (!Engine.Engine.IsNameAvailable($"New triangle {i}")) i++;
             _newTriangle.Name = $"New triangle {i}";
             Loaded += OnLoaded;
         }
@@ -38,14 +41,97 @@ namespace TempoEngine.UIControls {
             tbPointBYPosition.Text = _newTriangle.PointB.Y.ToString();
             tbPointCXPosition.Text = _newTriangle.PointC.X.ToString();
             tbPointCYPosition.Text = _newTriangle.PointC.Y.ToString();
+            tbMass.Text = _newTriangle.Mass.ToString();
+            tbTemperature.Text = _newTriangle.Temperature.ToString();
+            tbThermalConductivity.Text = _newTriangle.ThermalConductivity.ToString();
+        }
+
+        private void ClearColors() {
+            tbName.Background                = Brushes.White;
+            tbPointAXPosition.Background     = Brushes.White;
+            tbPointAYPosition.Background     = Brushes.White;
+            tbPointBXPosition.Background     = Brushes.White;
+            tbPointBYPosition.Background     = Brushes.White;
+            tbPointCXPosition.Background     = Brushes.White;
+            tbPointCYPosition.Background     = Brushes.White;
+            tbMass.Background                = Brushes.White;
+            tbTemperature.Background         = Brushes.White;
+            tbThermalConductivity.Background = Brushes.White;
+        }
+
+        private void CheckObject(out string errorMessage) {
+            errorMessage = "";
+            if(_newTriangle.Name == "") {
+                errorMessage = "Name cannot be empty";
+                tbName.Background = Brushes.Red;
+            }
+
+            if(!Engine.Engine.IsNameAvailable(_newTriangle.Name)) {
+                errorMessage = "Name already exists";
+                tbName.Background = Brushes.Red;
+            }
+
+            if (!Engine.Engine.IsPositionAvailable(_newTriangle)) {
+                errorMessage = "Position is not available";
+                tbPointAXPosition.Background = Brushes.Red;
+                tbPointAYPosition.Background = Brushes.Red;
+                tbPointBXPosition.Background = Brushes.Red;
+                tbPointBYPosition.Background = Brushes.Red;
+                tbPointCXPosition.Background = Brushes.Red;
+                tbPointCYPosition.Background = Brushes.Red;
+            }
+
+            if(_newTriangle.Mass <= 0) {
+                errorMessage = "Mass must be greater than 0";
+                tbMass.Background = Brushes.Red;
+            }
+
+            if(_newTriangle.Temperature < 0) {
+                errorMessage = "Temperature must be greater than or equal to 0";
+                tbTemperature.Background = Brushes.Red;
+            }
+
+            if(_newTriangle.ThermalConductivity < 0) {
+                errorMessage = "Thermal conductivity must be greater than or equal to 0";
+                tbThermalConductivity.Background = Brushes.Red;
+            }
+
+            if(_newTriangle.PointA == _newTriangle.PointB || _newTriangle.PointA == _newTriangle.PointC || _newTriangle.PointB == _newTriangle.PointC) {
+                errorMessage = "Points cannot be the same";
+                tbPointAXPosition.Background = Brushes.Red;
+                tbPointAYPosition.Background = Brushes.Red;
+                tbPointBXPosition.Background = Brushes.Red;
+                tbPointBYPosition.Background = Brushes.Red;
+                tbPointCXPosition.Background = Brushes.Red;
+                tbPointCYPosition.Background = Brushes.Red;
+            }
+
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e) {
+            ClearColors();
+            
+            _newTriangle.Name                   = tbName.Text;
+            _newTriangle.PointA                 = new Point(double.Parse(tbPointAXPosition.Text), double.Parse(tbPointAYPosition.Text));
+            _newTriangle.PointB                 = new Point(double.Parse(tbPointBXPosition.Text), double.Parse(tbPointBYPosition.Text));
+            _newTriangle.PointC                 = new Point(double.Parse(tbPointCXPosition.Text), double.Parse(tbPointCYPosition.Text));
+            _newTriangle.Mass                   = double.Parse(tbMass.Text);
+            _newTriangle.Temperature            = double.Parse(tbTemperature.Text);
+            _newTriangle.ThermalConductivity    = double.Parse(tbThermalConductivity.Text);
 
+            CheckObject(out string errorMessage);
+
+            if(errorMessage != "") {
+                MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            Engine.Engine.AddObject(_newTriangle);
+            OnObjectAdded?.Invoke();
+            Close();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e) {
-            // Close the window
             Close();
         }
 

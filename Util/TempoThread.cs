@@ -9,7 +9,7 @@ namespace TempoEngine.Util {
     internal class TempoThread {
         private readonly Thread _thread;
         public readonly string Name;
-        private static readonly ILog log = LogManager.GetLogger(typeof(FileManager));
+        private static readonly ILog log = LogManager.GetLogger(typeof(TempoThread));
 
         public TempoThread(string name, ThreadStart start) {
             Name = name;

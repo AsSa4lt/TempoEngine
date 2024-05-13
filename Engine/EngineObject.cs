@@ -170,5 +170,8 @@ namespace TempoEngine.Engine {
 
         /// Gets a JSON string representing the object's state. Must be implemented by subclasses.
         abstract public string GetJsonRepresentation();
+
+        /// Determines if the object is intersecting with another object. Must be implemented by subclasses.
+        abstract public bool IsIntersecting(EngineObject obj);
     }
 }

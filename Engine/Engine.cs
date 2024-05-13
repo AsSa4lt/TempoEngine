@@ -116,6 +116,12 @@ namespace TempoEngine.Engine{
             }
         }
 
+        /// TODO: Implement the logic for this function
+        /// Check if the position is available for the object, if not return false
+        public static bool IsPositionAvailable(EngineObject obj) {
+            return true;
+        }
+
         public static List<EngineObject> GetVisibleObjects(CanvasManager manager) {
             List<EngineObject> visibleObjects = new();
             if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");

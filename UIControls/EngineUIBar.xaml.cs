@@ -88,6 +88,7 @@ namespace TempoEngine.UIControls
 
         private void addTriangleClicked(object sender, RoutedEventArgs e) {
             AddTriangleWIndow addTriangleWIndow = new AddTriangleWIndow();
+            addTriangleWIndow.OnObjectAdded = UpdateUI;
             addTriangleWIndow.ShowDialog();
         }
     }
