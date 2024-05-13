@@ -161,6 +161,15 @@ namespace TempoEngine.Engine{
             }
         }
 
+        public static void RemoveObject(EngineObject obj) {
+            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
+            if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
+
+            lock (_engineLock) {
+                _objects.Remove(obj);
+            }
+        }
+
         public static List<EngineObject> GetObjects() {
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             if (_objects == null)           throw new InvalidOperationException("Engine not initialized");

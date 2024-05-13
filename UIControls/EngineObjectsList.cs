@@ -14,7 +14,7 @@ namespace TempoEngine.UIControls {
         private EngineObject? _currentSelectedEngineObject;
         public Action<EngineObject>? OnSelectedObjectChanged;
         public Action<EngineObject>? OnZoomToObject;
-
+        public Action? OnDeleteObject;
         public EngineObjectsList() : base() {
             MouseDoubleClick += ZoomToObject;
             SelectionChanged += OnSelectionChanged;
@@ -34,6 +34,17 @@ namespace TempoEngine.UIControls {
                 _currentSelectedEngineObject.Select();
                 OnZoomToObject?.Invoke(_currentSelectedEngineObject);
                 Items.Refresh();
+            }
+        }
+
+        // On delete key press, delete the selected object
+        protected override void OnKeyDown(KeyEventArgs e) {
+            if (e.Key == Key.Delete) {
+                var item = SelectedItem as EngineObject;
+                if (item != null) {
+                    Engine.Engine.RemoveObject(item);
+                    OnDeleteObject?.Invoke();
+                }
             }
         }
 

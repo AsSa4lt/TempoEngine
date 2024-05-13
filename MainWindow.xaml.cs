@@ -28,7 +28,8 @@ namespace TempoEngine {
 
             _engineObjectsList.OnSelectedObjectChanged = SelectedObjectChanged;
             _controlPanel.DeleteSelected = SelectedObjectChanged;
-            _controlPanel.UpdateUI = UpdateAfterRead;
+            _controlPanel.UpdateUI = UpdateAll;
+            _engineObjectsList.OnDeleteObject = UpdateAllAfterChangeProperties;
             _engineObjectsList.OnZoomToObject = ZoomToObject;
         }
 
@@ -51,7 +52,12 @@ namespace TempoEngine {
             };
         }
 
-        private void UpdateAfterRead() {
+        private void UpdateAllAfterChangeProperties() {
+            _engineTabProperties.SetObject(null);
+            UpdateAll();
+        }
+
+        private void UpdateAll() {
             _engineObjectsList.Update(Engine.Engine.GetObjects());
             _engineTabProperties.Update();
             _engineCanva.Update();
