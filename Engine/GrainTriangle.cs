@@ -24,6 +24,10 @@ namespace TempoEngine.Engine{
      * \see CanvasManager
      */
     public class GrainTriangle : EngineObject {
+        private Point pointA;
+        private Point pointB;
+        private Point pointC;
+
         /**
          * Constructs a GrainTriangle with specified vertices and name.
          * \param name The name of the grain triangle.
@@ -37,7 +41,42 @@ namespace TempoEngine.Engine{
             pointC = p_c;
         }
 
+        /**
+         * Gets or sets the position of vertex A.
+         * Triggers a property changed event when set.
+         * \see OnPropertyChanged
+         */
+        public Point PointA {
+            get => pointA;
+            set {
+                pointA = value;
+                OnPropertyChanged(nameof(PointA));
+            }
+        }
 
+        /**
+         * Gets or sets the position of vertex B.
+         * Triggers a property changed event when set.
+         */
+        public Point PointB {
+            get => pointB;
+            set {
+                pointB = value;
+                OnPropertyChanged(nameof(PointB));
+            }
+        }
+
+        /**
+         * Gets or sets the position of vertex C.
+         * Triggers a property changed event when set.
+         */
+        public Point PointC {
+            get => pointC;
+            set {
+                pointC = value;
+                OnPropertyChanged(nameof(PointC));
+            }
+        }
 
         /**
          * Generates the polygons that visually represent the triangle.

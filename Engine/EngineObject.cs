@@ -49,14 +49,6 @@ namespace TempoEngine.Engine {
         /// Selection state of the object.
         private bool _isSelected = false;
 
-
-        // The worst thing i have ever done
-        // I am so sorry
-        // It was done beacuse i need to access the points in the TabProperties
-        private Point pointA;
-        private Point pointB;
-        private Point pointC;
-
         /**
          * Constructor for creating a new EngineObject.
          * \param name The name of the engine object.
@@ -157,46 +149,6 @@ namespace TempoEngine.Engine {
                     _isSelected = value;
                     OnPropertyChanged(nameof(IsSelected));
                 }
-            }
-        }
-
-
-
-
-        /**
-         * Gets or sets the position of vertex A.
-         * Triggers a property changed event when set.
-         * \see OnPropertyChanged
-         */
-        public Point PointA {
-            get => pointA;
-            set {
-                pointA = value;
-                OnPropertyChanged(nameof(PointA));
-            }
-        }
-
-        /**
-         * Gets or sets the position of vertex B.
-         * Triggers a property changed event when set.
-         */
-        public Point PointB {
-            get => pointB;
-            set {
-                pointB = value;
-                OnPropertyChanged(nameof(PointB));
-            }
-        }
-
-        /**
-         * Gets or sets the position of vertex C.
-         * Triggers a property changed event when set.
-         */
-        public Point PointC {
-            get => pointC;
-            set {
-                pointC = value;
-                OnPropertyChanged(nameof(PointC));
             }
         }
 

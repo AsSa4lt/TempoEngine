@@ -15,16 +15,16 @@ using System.Windows.Shapes;
 using TempoEngine.Engine;
 using Brushes = System.Windows.Media.Brushes;
 using MessageBox = System.Windows.MessageBox;
+using Point = System.Windows.Point;
 using TextBox = System.Windows.Controls.TextBox;
 using UserControl = System.Windows.Controls.UserControl;
-
 namespace TempoEngine.UIControls {
     /// <summary>
     /// Interaction logic for EngineTabProperties.xaml
     /// </summary>
     public partial class EngineTabProperties : UserControl {
         private EngineObject? _selectedObject;
-        public Action PropertiesChanged;
+        private bool _isTriangleMode = false;
         public EngineTabProperties() : base() {
             InitializeComponent();
             // On Loaded event, we need to update the properties tab
@@ -49,18 +49,23 @@ namespace TempoEngine.UIControls {
             tbTemperature.Text = _selectedObject.Temperature.ToString();
             tbThermalConductivity.Text = _selectedObject.ThermalConductivity.ToString();
             tbMass.Text = _selectedObject.Mass.ToString();
+            if (_isTriangleMode) {
+                GrainTriangle triangle = (GrainTriangle) _selectedObject;
+                pointAX.Text = triangle.PointA.X.ToString();
+                pointAY.Text = triangle.PointA.Y.ToString();
+                pointBX.Text = triangle.PointB.X.ToString();
+                pointBY.Text = triangle.PointB.Y.ToString();
+                pointCX.Text = triangle.PointC.X.ToString();
+                pointCY.Text = triangle.PointC.Y.ToString();
+            }
         }
 
         public void SetObject(EngineObject obj) {
             ClearFields();
             _selectedObject = obj;
             if (obj == null) return;
-            if(obj.GetObjectType() == ObjectType.GrainTriangle) {
-                setTriangleMode(true);
-            } else {
-                setTriangleMode(false);
-            }
-
+            _isTriangleMode = obj.GetObjectType() == ObjectType.GrainTriangle;
+            setTriangleMode(_isTriangleMode);
         }
 
         // function to set are fields enabled or disabled
@@ -171,26 +176,69 @@ namespace TempoEngine.UIControls {
         }
 
         private void pointAX_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-
+            //// TODO: Check for available position
+            // Cast to GrainTriangle, set Point
+            GrainTriangle triangle = (GrainTriangle)_selectedObject;
+            try {
+                Point pointA = new Point(double.Parse(pointAX.Text), triangle.PointA.Y);
+                triangle.PointA = pointA;
+            }catch(Exception ex) {
+               
+            }
         }
 
         private void pointAY_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+            //// TODO: Check for available position
+            GrainTriangle triangle = (GrainTriangle)_selectedObject;
+            try {
+                Point pointA = new Point(triangle.PointA.X, double.Parse(pointAY.Text));
+                triangle.PointA = pointA;
+            }catch(Exception ex) {
 
+            }
         }
 
         private void pointBX_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+            //// TODO: Check for available position
+            GrainTriangle triangle = (GrainTriangle)_selectedObject;
+            try {
+                Point pointB = new Point(double.Parse(pointBX.Text), triangle.PointB.Y);
+                triangle.PointA = pointB;
+            } catch (Exception ex) {
 
+            }
         }
         private void pointBY_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+            //// TODO: Check for available position
+            GrainTriangle triangle = (GrainTriangle)_selectedObject;
+            try {
+                Point pointB = new Point(triangle.PointB.X, double.Parse(pointBY.Text));
+                triangle.PointB = pointB;
+            } catch(Exception ex) {
 
+            }
         }
 
         private void pointCX_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+            //// TODO: Check for available position
+            GrainTriangle triangle = (GrainTriangle)_selectedObject;
+            try {
+                Point pointC = new Point(double.Parse(pointCX.Text), triangle.PointC.Y);
+                triangle.PointC = pointC;
+            }catch(Exception ex) {
 
+            }
         }
 
         private void pointCY_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+            //// TODO: Check for available position
+            GrainTriangle triangle = (GrainTriangle)_selectedObject;
+            try {
+                Point pointC = new Point(triangle.PointC.X, double.Parse(pointCY.Text));
+                triangle.PointC = pointC;
+            }catch(Exception ex) {
 
+            }
         }
     }
 }
