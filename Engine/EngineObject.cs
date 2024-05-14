@@ -9,14 +9,18 @@ using System.Windows.Shapes;
 using TempoEngine.UIControls;
 
 namespace TempoEngine.Engine {
+    public enum ObjectType {
+        GrainTriangle
+    }
+
     /**
- * \class EngineObject
- * \brief Abstract base class for all engine objects in the TempoEngine.
- *
- * EngineObject serves as the foundational class for objects in the simulation engine, providing
- * common properties like position, rotation, and temperature, and abstract methods that must be
- * implemented by derived classes to fit specific needs of the engine.
- */
+     * \class EngineObject
+     * \brief Abstract base class for all engine objects in the TempoEngine.
+     *
+     * EngineObject serves as the foundational class for objects in the simulation engine, providing
+     * common properties like position, rotation, and temperature, and abstract methods that must be
+     * implemented by derived classes to fit specific needs of the engine.
+     */
     public abstract class EngineObject : INotifyPropertyChanged {
         /// Event triggered when a property changes.
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -166,8 +170,10 @@ namespace TempoEngine.Engine {
         abstract public void SetStartTemperature();
 
         /// Gets the type of the object as a string. Must be implemented by subclasses.
-        abstract public string GetObjectType();
+        abstract public string GetObjectTypeString();
 
+        /// Gets the type of the object as an ObjectType enum. Must be implemented by subclasses.
+        abstract public ObjectType GetObjectType();
         /// Gets a JSON string representing the object's state. Must be implemented by subclasses.
         abstract public string GetJsonRepresentation();
 

@@ -152,7 +152,7 @@ namespace TempoEngine.Engine{
          * Provides the type identifier for GrainTriangle objects.
          * \return A string identifier for the type.
          */
-        public override string GetObjectType() {
+        public override string GetObjectTypeString() {
             return "GrainTriangle";
         }
 
@@ -201,7 +201,7 @@ namespace TempoEngine.Engine{
             };
 
             return JsonConvert.SerializeObject(new {
-                Type = GetObjectType(),
+                Type = GetObjectTypeString(),
                 Name,
                 Mass = _mass,
                 PointA = pointA,
@@ -215,6 +215,10 @@ namespace TempoEngine.Engine{
 
         public override bool IsIntersecting(EngineObject obj) {
             throw new NotImplementedException();
+        }
+
+        public override ObjectType GetObjectType() {
+            return ObjectType.GrainTriangle;
         }
     }
 }

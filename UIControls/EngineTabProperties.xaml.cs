@@ -54,6 +54,13 @@ namespace TempoEngine.UIControls {
         public void SetObject(EngineObject obj) {
             ClearFields();
             _selectedObject = obj;
+            if (obj == null) return;
+            if(obj.GetObjectType() == ObjectType.GrainTriangle) {
+                setTriangleMode(true);
+            } else {
+                setTriangleMode(false);
+            }
+
         }
 
         // function to set are fields enabled or disabled
@@ -66,6 +73,33 @@ namespace TempoEngine.UIControls {
             tbHeight.IsEnabled               = enabled;
             tbWidth.IsEnabled                = enabled;
             tbMass.IsEnabled                 = enabled;
+            pointAX.IsEnabled                = enabled;
+            pointAY.IsEnabled                = enabled;
+            pointBX.IsEnabled                = enabled;
+            pointBY.IsEnabled                = enabled;
+            pointCX.IsEnabled                = enabled;
+            pointCY.IsEnabled                = enabled;
+        }
+
+        private void setTriangleMode(bool isTriangleMode) {
+            Visibility triangleControlsVisibility = isTriangleMode ? Visibility.Visible : Visibility.Hidden;
+            Visibility otherControlVisibility = isTriangleMode ? Visibility.Hidden : Visibility.Visible;
+            labelPoints.Visibility = triangleControlsVisibility;
+            pointAX.Visibility = triangleControlsVisibility;
+            pointAY.Visibility = triangleControlsVisibility;
+            pointBX.Visibility = triangleControlsVisibility;
+            pointBY.Visibility = triangleControlsVisibility;
+            pointCX.Visibility = triangleControlsVisibility;
+            pointCY.Visibility = triangleControlsVisibility;
+
+            positionLabel.Visibility = otherControlVisibility;
+            xPositionLabel.Visibility = otherControlVisibility;
+            yPositionLabel.Visibility = otherControlVisibility;
+            tbXPosition.Visibility = otherControlVisibility;
+            tbYPosition.Visibility = otherControlVisibility;
+            sizeLabel.Visibility = otherControlVisibility;
+            heightLabel.Visibility = otherControlVisibility;
+            widthLabel.Visibility = otherControlVisibility;
         }
 
         private void tbName_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
@@ -121,6 +155,12 @@ namespace TempoEngine.UIControls {
             tbHeight.Background              = Brushes.White;
             tbWidth.Background               = Brushes.White;
             tbMass.Background                = Brushes.White;
+            pointAX.Background               = Brushes.White;
+            pointAY.Background               = Brushes.White;
+            pointBX.Background               = Brushes.White;
+            pointBY.Background               = Brushes.White;
+            pointCX.Background               = Brushes.White;
+            pointCY.Background               = Brushes.White;
         }
 
         private void tbMass_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
@@ -128,6 +168,29 @@ namespace TempoEngine.UIControls {
             tbMass.Background = Brushes.White;
             if (double.TryParse(tbMass.Text, out double mass)) _selectedObject.Mass = mass;
             else tbMass.Background = Brushes.Red;
+        }
+
+        private void pointAX_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+
+        }
+
+        private void pointAY_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+
+        }
+
+        private void pointBX_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+
+        }
+        private void pointBY_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+
+        }
+
+        private void pointCX_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+
+        }
+
+        private void pointCY_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+
         }
     }
 }
