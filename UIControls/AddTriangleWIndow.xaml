@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TempoEngine.UIControls"
         mc:Ignorable="d"
-        Title="AddTriangleWIndow" Height="366" Width="300" ResizeMode="NoResize">
+        Title="AddTriangleWIndow" Height="397" Width="300" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
@@ -93,6 +94,11 @@
         </Grid>
 
         <Grid Grid.Row="10">
+            <Label Grid.Column="0" Content="C, J/(K*Kg)"  HorizontalAlignment="Left" FontWeight="Bold" FontSize="14"/>
+            <TextBox Grid.Column="1" Height="18" Width="180" Name="tbHeatCapacity" HorizontalAlignment="Right"></TextBox>
+        </Grid>
+
+        <Grid Grid.Row="11">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>

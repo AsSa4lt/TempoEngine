@@ -43,6 +43,9 @@ namespace TempoEngine.Engine {
         /// Mass of the object.
         protected double _mass = 1;
 
+        /// Specificc hear capacity of the object. J/(K*kg)
+        protected double _specificHeatCapacity = 1;
+
         /// Name of the object.
         private string _name;
 
@@ -115,6 +118,17 @@ namespace TempoEngine.Engine {
                 if (_mass != value) {
                     _mass = value;
                     OnPropertyChanged(nameof(Temperature)); // Possibly should be OnPropertyChanged(nameof(Mass));
+                }
+            }
+        }
+
+        /// Gets or sets the specific heat capacity of the object.
+        public double SpecificHeatCapacity {
+            get => _specificHeatCapacity;
+            set {
+                if (_specificHeatCapacity != value) {
+                    _specificHeatCapacity = value;
+                    OnPropertyChanged(nameof(SpecificHeatCapacity));
                 }
             }
         }

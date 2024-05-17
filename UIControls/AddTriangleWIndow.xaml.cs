@@ -44,6 +44,7 @@ namespace TempoEngine.UIControls {
             tbMass.Text = _newTriangle.Mass.ToString();
             tbTemperature.Text = _newTriangle.Temperature.ToString();
             tbThermalConductivity.Text = _newTriangle.ThermalConductivity.ToString();
+            tbHeatCapacity.Text = _newTriangle.SpecificHeatCapacity.ToString();
         }
 
         private void ClearColors() {
@@ -57,6 +58,7 @@ namespace TempoEngine.UIControls {
             tbMass.Background                = Brushes.White;
             tbTemperature.Background         = Brushes.White;
             tbThermalConductivity.Background = Brushes.White;
+            tbHeatCapacity.Background        = Brushes.White;
         }
 
         private void CheckObject(out string errorMessage) {
@@ -96,6 +98,11 @@ namespace TempoEngine.UIControls {
                 tbThermalConductivity.Background = Brushes.Red;
             }
 
+            if(_newTriangle.SpecificHeatCapacity <= 0) {
+                errorMessage = "Specific heat capacity must be greater than 0";
+                tbHeatCapacity.Background = Brushes.Red;
+            }
+
             if(_newTriangle.PointA == _newTriangle.PointB || _newTriangle.PointA == _newTriangle.PointC || _newTriangle.PointB == _newTriangle.PointC) {
                 errorMessage = "Points cannot be the same";
                 tbPointAXPosition.Background = Brushes.Red;
@@ -118,6 +125,7 @@ namespace TempoEngine.UIControls {
             _newTriangle.Mass                   = double.Parse(tbMass.Text);
             _newTriangle.Temperature            = double.Parse(tbTemperature.Text);
             _newTriangle.ThermalConductivity    = double.Parse(tbThermalConductivity.Text);
+            _newTriangle.SpecificHeatCapacity   = double.Parse(tbHeatCapacity.Text);
 
             CheckObject(out string errorMessage);
 

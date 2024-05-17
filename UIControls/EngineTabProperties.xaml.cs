@@ -58,6 +58,7 @@ namespace TempoEngine.UIControls {
                 pointCX.Text = triangle.PointC.X.ToString();
                 pointCY.Text = triangle.PointC.Y.ToString();
             }
+            tbHeatCapacity.Text = _selectedObject.SpecificHeatCapacity.ToString();
         }
 
         public void SetObject(EngineObject obj) {
@@ -78,6 +79,7 @@ namespace TempoEngine.UIControls {
             tbHeight.IsEnabled               = enabled;
             tbWidth.IsEnabled                = enabled;
             tbMass.IsEnabled                 = enabled;
+            tbHeatCapacity.IsEnabled         = enabled;
             pointAX.IsEnabled                = enabled;
             pointAY.IsEnabled                = enabled;
             pointBX.IsEnabled                = enabled;
@@ -151,6 +153,7 @@ namespace TempoEngine.UIControls {
             tbHeight.Text                    = "";
             tbWidth.Text                     = "";
             tbMass.Text                      = "";
+            tbHeatCapacity.Text              = "";
 
             tbName.Background                = Brushes.White;
             tbTemperature.Background         = Brushes.White;
@@ -166,6 +169,7 @@ namespace TempoEngine.UIControls {
             pointBY.Background               = Brushes.White;
             pointCX.Background               = Brushes.White;
             pointCY.Background               = Brushes.White;
+            tbHeatCapacity.Background        = Brushes.White;
         }
 
         private void tbMass_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
@@ -239,6 +243,13 @@ namespace TempoEngine.UIControls {
             }catch(Exception ex) {
 
             }
+        }
+
+        private void tbHeatCapacity_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+            if(!basicInputCheck(tbHeatCapacity, e))             return;
+            tbHeatCapacity.Background = Brushes.White;
+            if (double.TryParse(tbHeatCapacity.Text, out double heatCapacity)) _selectedObject.SpecificHeatCapacity = heatCapacity;
+            else tbHeatCapacity.Background = Brushes.Red;
         }
     }
 }

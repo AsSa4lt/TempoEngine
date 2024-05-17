@@ -30,3 +30,4 @@ Temperatures of individual triangles are updated based on net heat gain or loss,
 - **Dynamic Simulation**: Real-time simulation of heat transfer.
 - **Customizable Materials**: Users can define the thermal properties of materials.
 - **Interactive Visuals**: Real-time graphical representation of temperature changes.
+\
