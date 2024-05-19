@@ -12,10 +12,32 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Column="0" Margin="2" Background="Transparent" BorderThickness="0" Click="addButtonClick">
-            <Image Source="../src/AddButton.png"/>
+        <Button Grid.Column="0" Margin="2"  Name = "addButton"  Background="Transparent" BorderThickness="0" Click="addButtonClick">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Image Source="../src/AddButton.png" Opacity="{TemplateBinding Opacity}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
             <Button.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="GrainTriangle" Click="addTriangleClicked"/>
@@ -25,15 +47,131 @@
             </Button.ContextMenu>
         </Button>
 
-        <Button Grid.Column="1" Margin="2" Background="Transparent" BorderThickness="0" Click="saveButtonClick">
-            <Image Source="../src/SaveButton.png"/>
-        </Button>
-        <Button Grid.Column="2" Margin="0" Background="Transparent" BorderThickness="0" Click="openButtonClick">
-            <Image Source="../src/OpenButton.png"/>
+        <Button Grid.Column="1" Margin="2" Name = "saveButton"  Background="Transparent" BorderThickness="0" Click="saveButtonClick">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Image Source="../src/SaveButton.png" Opacity="{TemplateBinding Opacity}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
         </Button>
 
-        <Button Grid.Column="3" Margin="0" Background="Transparent" BorderThickness="0" Click="clearButtonClick">
-            <Image  Margin="-3" Source="../src/ClearButton.png"/>
+        <Button Grid.Column="2" Margin="0" Name="openButton" Background="Transparent" BorderThickness="0" Click="openButtonClick">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Image Source="../src/OpenButton.png" Opacity="{TemplateBinding Opacity}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
+
+        <Button Grid.Column="3" Margin="0" Name = "clearButton"  Background="Transparent" BorderThickness="0" Click="clearButtonClick">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Image Source="../src/ClearButton.png" Opacity="{TemplateBinding Opacity}" Margin="-3"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <Button Grid.Column="5" Margin="1" Name = "startButton"  Background="Transparent" BorderThickness="0" Click="startButton_Click">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Image Source="../src/StartButton.png" Opacity="{TemplateBinding Opacity}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <Button Grid.Column="6" Margin="0" Name = "pauseButton"  Background="Transparent" BorderThickness="0" Click="pauseButton_Click">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Image Source="../src/PauseButton.png" Opacity="{TemplateBinding Opacity}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <Button Grid.Column="7" Margin="0" Name = "stopButton"  Background="Transparent" BorderThickness="0" Click="stopButton_Click">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Image Source="../src/StopButton.png" Opacity="{TemplateBinding Opacity}" Margin="-2"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
         </Button>
     </Grid>
 </UserControl>

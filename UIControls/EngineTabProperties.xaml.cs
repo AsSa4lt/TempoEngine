@@ -25,6 +25,7 @@ namespace TempoEngine.UIControls {
     public partial class EngineTabProperties : UserControl {
         private EngineObject? _selectedObject;
         private bool _isTriangleMode = false;
+        private bool isEnabled = true;
         public EngineTabProperties() : base() {
             InitializeComponent();
             // On Loaded event, we need to update the properties tab
@@ -34,13 +35,21 @@ namespace TempoEngine.UIControls {
         }
 
         public void Update() {
-            if(_selectedObject == null) {
+            if (_selectedObject == null) {
                 SetFieldsEnabled(false);
                 return;
             }
             ClearFields();
-            SetFieldsEnabled(true);
+            if(isEnabled)
+                SetFieldsEnabled(true);
             SetObjectParameters();
+        }
+
+        public void Enable(bool IsEnabled) {
+            isEnabled = IsEnabled;
+            if(!isEnabled) {
+                SetFieldsEnabled(false);
+            }
         }
 
         private void SetObjectParameters() {

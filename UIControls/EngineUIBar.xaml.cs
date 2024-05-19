@@ -30,8 +30,51 @@ namespace TempoEngine.UIControls
         // callback to update the UI
         public Action UpdateUI;
         public Action<EngineObject> DeleteSelected;
+        public Action EngineModeChanged;
         public EngineUIBar(){
             InitializeComponent();
+            Loaded += (sender, args) => {
+                SetStoppedMode();
+            };
+        }
+
+        private void SetStoppedMode() {
+            // set engine controls
+            startButton.IsEnabled = true;
+            stopButton.IsEnabled = false;
+            pauseButton.IsEnabled = false;
+
+            // set ui controls
+            addButton.IsEnabled = true;
+            saveButton.IsEnabled = true;
+            openButton.IsEnabled = true;
+            clearButton.IsEnabled = true;
+        }
+
+        private void SetRunningMode() {
+            // set engine controls
+            startButton.IsEnabled = false;
+            stopButton.IsEnabled = true;
+            pauseButton.IsEnabled = true;
+
+            // set ui controls
+            addButton.IsEnabled = false;
+            saveButton.IsEnabled = false;
+            openButton.IsEnabled = false;
+            clearButton.IsEnabled = false;
+        }
+
+        private void SetPausedMode() {
+            // set engine controls
+            startButton.IsEnabled = true;
+            stopButton.IsEnabled = true;
+            pauseButton.IsEnabled = false;
+
+            // set ui controls
+            addButton.IsEnabled = false;
+            saveButton.IsEnabled = false;
+            openButton.IsEnabled = false;
+            clearButton.IsEnabled = false;
         }
 
         private void saveButtonClick(object sender, RoutedEventArgs e) {
@@ -90,6 +133,24 @@ namespace TempoEngine.UIControls
             AddTriangleWIndow addTriangleWIndow = new AddTriangleWIndow();
             addTriangleWIndow.OnObjectAdded = UpdateUI;
             addTriangleWIndow.ShowDialog();
+        }
+
+        private void startButton_Click(object sender, RoutedEventArgs e) {
+            Engine.Engine.Start();
+            EngineModeChanged?.Invoke();
+            SetRunningMode();
+        }
+
+        private void stopButton_Click(object sender, RoutedEventArgs e) {
+            Engine.Engine.Stop();
+            EngineModeChanged?.Invoke();
+            SetStoppedMode();
+        }
+
+        private void pauseButton_Click(object sender, RoutedEventArgs e) {
+            Engine.Engine.Pause();
+            EngineModeChanged?.Invoke();
+            SetPausedMode();
         }
     }
 }

@@ -16,7 +16,6 @@ namespace TempoEngine.Engine{
         // lock object for _objects
         private static object?          _engineLock;
         private static MainWindow?      _mainWindow;
-        private static bool             _isRunning = false;
         private static TempoThread?     _engineThread;
         private static long             _lastUpdateTime = 0;
 
@@ -24,7 +23,15 @@ namespace TempoEngine.Engine{
         private static readonly int _simulationRefreshRate = 100;
         
         // time of the simulation in microseconds
-        private static long _simulationTime = 0;
+        private static long _simulationTime = 0; 
+
+        public enum EngineMode {
+            Stopped,
+            Running,
+            Paused
+        }
+
+        public static EngineMode Mode { get; private set; } = EngineMode.Stopped;
 
         public static void Init(MainWindow window){
             _objects = [];
@@ -51,7 +58,7 @@ namespace TempoEngine.Engine{
             if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
                 log.Info("Engine started");
-                _isRunning = true;
+                Mode = EngineMode.Running;
                 _engineThread = new TempoThread("EngineThread", Run);
             }
         }
@@ -76,7 +83,7 @@ namespace TempoEngine.Engine{
                 long startTime = DateTime.Now.Ticks;
 
                 lock(_engineLock) {
-                    if (!_isRunning) break;
+                    if (Mode != EngineMode.Running) break;
                 }
                 // update logic
 
@@ -105,14 +112,22 @@ namespace TempoEngine.Engine{
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
                 log.Info("Engine stopped");
-                _isRunning = false;
+                Mode = EngineMode.Stopped;
+            }
+        }
+
+        public static void Pause() {
+            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
+            lock (_engineLock) {
+                log.Info("Engine paused");
+                Mode = EngineMode.Paused;
             }
         }
 
         public static bool IsRunning() {
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
-                return _isRunning;
+                return Mode == EngineMode.Running;
             }
         }
 

@@ -31,10 +31,21 @@ namespace TempoEngine {
             _controlPanel.UpdateUI = UpdateAll;
             _engineObjectsList.OnDeleteObject = UpdateAllAfterChangeProperties;
             _engineObjectsList.OnZoomToObject = ZoomToObject;
+            _controlPanel.EngineModeChanged = EngineModeChanged;
         }
 
         private void ZoomToObject(EngineObject obj) {
             _engineCanva.ZoomToObject(obj);
+        }
+
+        private void EngineModeChanged() {
+            if(Engine.Engine.Mode != Engine.Engine.EngineMode.Stopped) {
+                _engineObjectsList.Enable(false);
+                _engineTabProperties.Enable(false);
+            } else {
+                _engineObjectsList.Enable(true);
+                _engineTabProperties.Enable(true);
+            }
         }
 
         private void SelectedObjectChanged(EngineObject obj) {
