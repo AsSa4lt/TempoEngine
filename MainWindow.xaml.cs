@@ -87,6 +87,7 @@ namespace TempoEngine {
             if(_objectsChanged) _objectsChanged = false;
 
             _engineObjectsList.Update(Engine.Engine.GetObjects());
+            _controlPanel.Update();
 
         }
 

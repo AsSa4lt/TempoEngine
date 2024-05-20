@@ -17,6 +17,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
 
         <Button Grid.Column="0" Margin="2"  Name = "addButton"  Background="Transparent" BorderThickness="0" Click="addButtonClick">
@@ -173,5 +174,7 @@
                 </Style>
             </Button.Style>
         </Button>
+
+        <Label Grid.Column = "8" Margin="-3" Name = "timeLabel"  Width = "100" Content="00:00:00" FontWeight="Bold" FontSize="18"> </Label>
     </Grid>
 </UserControl>

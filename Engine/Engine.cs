@@ -60,6 +60,7 @@ namespace TempoEngine.Engine{
                 log.Info("Engine started");
                 Mode = EngineMode.Running;
                 _engineThread = new TempoThread("EngineThread", Run);
+                _engineThread.Start();
             }
         }
 

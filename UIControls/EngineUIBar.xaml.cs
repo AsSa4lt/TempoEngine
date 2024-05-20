@@ -31,6 +31,8 @@ namespace TempoEngine.UIControls
         public Action UpdateUI;
         public Action<EngineObject> DeleteSelected;
         public Action EngineModeChanged;
+
+
         public EngineUIBar(){
             InitializeComponent();
             Loaded += (sender, args) => {
@@ -49,6 +51,16 @@ namespace TempoEngine.UIControls
             saveButton.IsEnabled = true;
             openButton.IsEnabled = true;
             clearButton.IsEnabled = true;
+        }
+
+        public void Update() {
+            long currentTime = Engine.Engine.GetSimulationTime();
+            ushort ms = (ushort)(currentTime / 1000 % 1000 / 10);
+            ushort s = (ushort)(currentTime / 1000 / 1000 % 60);
+            ushort m = (ushort)(currentTime / 1000 / 1000 / 60 % 60);
+            StringBuilder sb = new StringBuilder();
+            sb.Append(m.ToString("D2")).Append(":").Append(s.ToString("D2")).Append(":").Append(ms.ToString("D2"));
+            timeLabel.Content = sb.ToString();
         }
 
         private void SetRunningMode() {
