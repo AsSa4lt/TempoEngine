@@ -45,8 +45,32 @@ namespace TempoEngine.Engine.Managers{
                     double timeTransfer = Engine.EngineIntervalUpdate;
                     double heatTransfer = coeficient * touchLength * temperatureDifference * timeTransfer;
                     obj1Triangles[i].CurrentTemperature -= heatTransfer / obj1Triangles[i].SpecificHeatCapacity;
+                    obj1Triangles[i].CurrentTemperature = Math.Max(0, obj1Triangles[i].CurrentTemperature);
                     obj2Triangles[j].CurrentTemperature += heatTransfer / obj2Triangles[j].SpecificHeatCapacity;
+                    obj2Triangles[j].CurrentTemperature = Math.Max(0, obj2Triangles[j].CurrentTemperature);
                 }
+            }
+        }
+
+        public static readonly double StefanBoltzmannConst = 5.67 * Math.Pow(10, -8);
+        public static void TranferRadation(EngineObject obj1, List<EngineObject> objects) {
+            List<GrainTriangle> objTriangles = obj1.GetTriangles();
+
+            for(int i = 0; i < objTriangles.Count; i++) {
+                GrainTriangle triangle = objTriangles[i];
+                // calculated by Stefan-Boltzmann law of radiation and multiplied by the engine update interval
+                double energyRadiationLoss = StefanBoltzmannConst * Math.E * triangle.GetPerimeter() * Math.Pow(triangle.CurrentTemperature, 4) * Engine.EngineIntervalUpdate;
+                for(int j = 0; j < objects.Count; j++) {
+                    List<GrainTriangle> otherTriangles = objects[j].GetTriangles();
+                    for(int k = 0; k < otherTriangles.Count; k++) {
+                        // calculate by radiation absobtion formula
+                        double energyRadiationAbsobtion = StefanBoltzmannConst * Math.E * (Math.Pow(otherTriangles[k].CurrentTemperature, 4) - Math.Pow(triangle.CurrentTemperature, 4)) * Engine.EngineIntervalUpdate;
+                        otherTriangles[k].CurrentTemperature += energyRadiationAbsobtion / otherTriangles[k].SpecificHeatCapacity;
+                        otherTriangles[k].CurrentTemperature = Math.Max(0, otherTriangles[k].CurrentTemperature);
+                    }
+                }
+                triangle.CurrentTemperature -= energyRadiationLoss / triangle.SpecificHeatCapacity;
+                triangle.CurrentTemperature = Math.Max(0, triangle.CurrentTemperature);
             }
         }
 

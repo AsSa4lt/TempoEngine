@@ -47,7 +47,7 @@ namespace TempoEngine.Engine{
             obj1.SimulationTemperature = 200;
             _objects.Add(obj1);
             GrainTriangle obj2 = new GrainTriangle("Triangle2", new Point(1,0), new Point(0,1), new Point(1,1));
-            obj1.SimulationTemperature = 50;
+            obj2.SimulationTemperature = 50;
             _objects.Add(obj2);
             GrainTriangle obj3 = new GrainTriangle("Triangle3", new Point(2,2), new Point(4,4), new Point(2,0));
             obj1.SimulationTemperature = 0;
@@ -55,7 +55,6 @@ namespace TempoEngine.Engine{
 
 
         }
-
         public static void Start() {
             if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
@@ -98,6 +97,7 @@ namespace TempoEngine.Engine{
                         EngineObject obj1 = _objects[i];
                         EngineObject obj2 = _objects[j];
                         EngineManager.TranferHeatBetweenTwoObjects(obj1, obj2);
+                        EngineManager.TranferRadation(obj1, _objects);
                     }
                 }
 

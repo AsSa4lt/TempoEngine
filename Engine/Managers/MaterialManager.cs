@@ -8,7 +8,7 @@ namespace TempoEngine.Engine.Managers {
     internal class MaterialManager {
 
         public static double GetCoeficientFromMaterial(GrainTriangle obj1, GrainTriangle obj2) {
-            return 0.2;
+            return 406;
         }
     }
 }

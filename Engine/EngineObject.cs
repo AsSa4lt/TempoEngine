@@ -44,10 +44,13 @@ namespace TempoEngine.Engine {
         protected double _mass = 1;
 
         /// Specificc hear capacity of the object. J/(K*kg)
-        protected double _specificHeatCapacity = 1;
+        protected double _specificHeatCapacity = 4200;
 
         /// Name of the object.
         private string _name;
+
+        /// It's time consuming to calculate the area of an object, so we cache it.
+        protected double _cachedArea = -1; // -1 means not yet calculated
 
         /// Selection state of the object.
         private bool _isSelected = false;
@@ -181,6 +184,7 @@ namespace TempoEngine.Engine {
         /// Called to notify observers of property changes.
         protected void OnPropertyChanged(string propertyName) {
             if (Engine.Mode != Engine.EngineMode.Running) {
+                _cachedArea = -1;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }

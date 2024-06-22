@@ -217,6 +217,23 @@ namespace TempoEngine.Engine{
             }, settings);
         }
 
+        public double GetPerimeter() {
+            // get the sum of the lengths of the three sides
+            Line line1 = new Line(pointA, pointB);
+            Line line2 = new Line(pointB, pointC);
+            Line line3 = new Line(pointC, pointA);
+            return line1.Length() + line2.Length() + line3.Length();
+        }
+
+        public double GetNormalizedArea() {
+            if(_cachedArea != -1)
+                return _cachedArea;
+            double normalizedPerimeter = GetPerimeter() / Math.Pow(1000, 2);
+            double normalizedArea = normalizedPerimeter * 0.001;
+            _cachedArea = normalizedArea;
+            return _cachedArea;
+        }
+
         public override bool IsIntersecting(EngineObject obj) {
             throw new NotImplementedException();
         }
