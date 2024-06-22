@@ -34,5 +34,21 @@ namespace TempoEngine.Engine.Managers{
             return new SolidColorBrush(Color.FromRgb(red, green, blue));
         }
 
+        public static void TranferHeatBetweenTwoObjects(EngineObject obj1, EngineObject obj2) {
+            List<GrainTriangle> obj1Triangles = obj1.GetTriangles();
+            List<GrainTriangle> obj2Triangles = obj2.GetTriangles();
+            for(int i = 0; i < obj1Triangles.Count; i++) {
+                for(int j = 0; j < obj2Triangles.Count; j++) {
+                    double touchLength = obj1Triangles[i].GetLengthTouch(obj2Triangles[j]);
+                    double coeficient = MaterialManager.GetCoeficientFromMaterial(obj1Triangles[i], obj2Triangles[j]);
+                    double temperatureDifference = obj1Triangles[i].Temperature - obj2Triangles[j].Temperature;
+                    double timeTransfer = Engine.EngineIntervalUpdate;
+                    double heatTransfer = coeficient * touchLength * temperatureDifference * timeTransfer;
+                    obj1Triangles[i].Temperature -= heatTransfer / obj1Triangles[i].SpecificHeatCapacity;
+                    obj2Triangles[j].Temperature += heatTransfer / obj2Triangles[j].SpecificHeatCapacity;
+                }
+            }
+        }
+
     }
 }

@@ -168,11 +168,16 @@ namespace TempoEngine.Engine {
 
         /// Called to notify observers of property changes.
         protected void OnPropertyChanged(string propertyName) {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (Engine.Mode != Engine.EngineMode.Running) {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         /// Returns polygons representing the object's shape. Must be implemented by subclasses.
         abstract public List<Polygon> GetPolygons();
+
+        /// Returns the object's triangles. Must be implemented by subclasses.
+        abstract public List<GrainTriangle> GetTriangles();
 
         /// Determines if the object is visible on the given canvas. Must be implemented by subclasses.
         abstract public bool IsVisible(CanvasManager canvasManager);

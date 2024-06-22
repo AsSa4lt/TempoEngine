@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TempoEngine.UIControls;
 using TempoEngine.Util;
+using TempoEngine.Engine.Managers;
 using Point = System.Windows.Point;
 
 namespace TempoEngine.Engine{
@@ -18,6 +19,7 @@ namespace TempoEngine.Engine{
         private static MainWindow?      _mainWindow;
         private static TempoThread?     _engineThread;
         private static long             _lastUpdateTime = 0;
+        public static double            EngineIntervalUpdate = 0;
 
         // updates per second 
         private static readonly int _simulationRefreshRate = 100;
@@ -58,7 +60,9 @@ namespace TempoEngine.Engine{
             if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
                 log.Info("Engine started");
+                prepareObjects();
                 Mode = EngineMode.Running;
+                EngineIntervalUpdate = 1/(double)Util.SystemInfo.GetRefreshRate();
                 _engineThread = new TempoThread("EngineThread", Run);
                 _engineThread.Start();
             }
@@ -88,6 +92,14 @@ namespace TempoEngine.Engine{
                 }
                 // update logic
 
+                // simplify the logic for now
+                for(int i = 0; i < _objects.Count; i++) {
+                    for(int j = i + 1; j < _objects.Count; j++) {
+                        EngineObject obj1 = _objects[i];
+                        EngineObject obj2 = _objects[j];
+                        EngineManager.TranferHeatBetweenTwoObjects(obj1, obj2);
+                    }
+                }
 
                 // check if elapsed time is less than the time of one update as 1/refresh rate
                 long elapsedTime = DateTime.Now.Ticks - startTime;
@@ -113,6 +125,7 @@ namespace TempoEngine.Engine{
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
                 log.Info("Engine stopped");
+                _simulationTime = 0;
                 Mode = EngineMode.Stopped;
             }
         }

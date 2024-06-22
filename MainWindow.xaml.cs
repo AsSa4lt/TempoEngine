@@ -86,8 +86,11 @@ namespace TempoEngine {
             if (!Engine.Engine.IsRunning() && !_objectsChanged) return;
             if(_objectsChanged) _objectsChanged = false;
 
-            _engineObjectsList.Update(Engine.Engine.GetObjects());
+            if(Engine.Engine.Mode != Engine.Engine.EngineMode.Running)
+                _engineObjectsList.Update(Engine.Engine.GetObjects());
             _controlPanel.Update();
+            _engineCanva.Update();
+            _engineTabProperties.Update();
 
         }
 

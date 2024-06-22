@@ -260,5 +260,10 @@ namespace TempoEngine.Engine{
             // we should divide by 2 since we are double counting the overlap
             return totalLength/2;
         }
+
+        public override List<GrainTriangle> GetTriangles() {
+            List<GrainTriangle> grainTriangles = [this];
+            return grainTriangles;
+        }
     }
 }

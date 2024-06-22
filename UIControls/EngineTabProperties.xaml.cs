@@ -55,7 +55,8 @@ namespace TempoEngine.UIControls {
         private void SetObjectParameters() {
             if (_selectedObject == null) return;
             tbName.Text = _selectedObject.Name;
-            tbTemperature.Text = _selectedObject.Temperature.ToString();
+            // show only two decimal places for temperature
+            tbTemperature.Text = Math.Round(_selectedObject.Temperature, 2).ToString();
             tbThermalConductivity.Text = _selectedObject.ThermalConductivity.ToString();
             tbMass.Text = _selectedObject.Mass.ToString();
             if (_isTriangleMode) {
