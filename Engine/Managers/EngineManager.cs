@@ -39,37 +39,32 @@ namespace TempoEngine.Engine.Managers{
             List<GrainTriangle> obj2Triangles = obj2.GetTriangles();
             for(int i = 0; i < obj1Triangles.Count; i++) {
                 for(int j = 0; j < obj2Triangles.Count; j++) {
-                    double touchLength = obj1Triangles[i].GetLengthTouch(obj2Triangles[j]);
+                    // Heat transfer formula is calculated by the formula Q = k * A * deltaT * t / d
+                    double area = obj1Triangles[i].GetLengthTouch(obj2Triangles[j]) / 1000 * EngineObject.Width;
                     double coeficient = MaterialManager.GetCoeficientFromMaterial(obj1Triangles[i], obj2Triangles[j]);
                     double temperatureDifference = obj1Triangles[i].CurrentTemperature - obj2Triangles[j].CurrentTemperature;
                     double timeTransfer = Engine.EngineIntervalUpdate;
-                    double heatTransfer = coeficient * touchLength * temperatureDifference * timeTransfer;
-                    obj1Triangles[i].CurrentTemperature -= heatTransfer / obj1Triangles[i].SpecificHeatCapacity;
+                    // FIXME: I need to calculate thickness of the object??????????????
+                    double heatTransfer = coeficient * area * temperatureDifference * timeTransfer * EngineObject.Width;
+                    double massObj1 = obj1Triangles[i].GetMass();
+                    double massObj2 = obj2Triangles[j].GetMass();
+                    obj1Triangles[i].CurrentTemperature -= heatTransfer / MaterialManager.GetSpecificHeatCapacity(obj1Triangles[i]) / massObj1;
                     obj1Triangles[i].CurrentTemperature = Math.Max(0, obj1Triangles[i].CurrentTemperature);
-                    obj2Triangles[j].CurrentTemperature += heatTransfer / obj2Triangles[j].SpecificHeatCapacity;
+                    obj2Triangles[j].CurrentTemperature += heatTransfer / MaterialManager.GetSpecificHeatCapacity(obj2Triangles[j]) / massObj2;
                     obj2Triangles[j].CurrentTemperature = Math.Max(0, obj2Triangles[j].CurrentTemperature);
                 }
             }
         }
 
         public static readonly double StefanBoltzmannConst = 5.67 * Math.Pow(10, -8);
-        public static void TranferRadation(EngineObject obj1, List<EngineObject> objects) {
-            List<GrainTriangle> objTriangles = obj1.GetTriangles();
+        public static void TransferRadiationHeatLooseToAir(EngineObject obj) {
+            List<GrainTriangle> objTriangles = obj.GetTriangles();
 
             for(int i = 0; i < objTriangles.Count; i++) {
                 GrainTriangle triangle = objTriangles[i];
                 // calculated by Stefan-Boltzmann law of radiation and multiplied by the engine update interval
-                double energyRadiationLoss = StefanBoltzmannConst * Math.E * triangle.GetPerimeter() * Math.Pow(triangle.CurrentTemperature, 4) * Engine.EngineIntervalUpdate;
-                for(int j = 0; j < objects.Count; j++) {
-                    List<GrainTriangle> otherTriangles = objects[j].GetTriangles();
-                    for(int k = 0; k < otherTriangles.Count; k++) {
-                        // calculate by radiation absobtion formula
-                        double energyRadiationAbsobtion = StefanBoltzmannConst * Math.E * (Math.Pow(otherTriangles[k].CurrentTemperature, 4) - Math.Pow(triangle.CurrentTemperature, 4)) * Engine.EngineIntervalUpdate;
-                        otherTriangles[k].CurrentTemperature += energyRadiationAbsobtion / otherTriangles[k].SpecificHeatCapacity;
-                        otherTriangles[k].CurrentTemperature = Math.Max(0, otherTriangles[k].CurrentTemperature);
-                    }
-                }
-                triangle.CurrentTemperature -= energyRadiationLoss / triangle.SpecificHeatCapacity;
+                double energyRadiationLoss = StefanBoltzmannConst * triangle.GetNormalizedSideArea() * (Math.Pow(triangle.CurrentTemperature, 4) - Math.Pow(Engine.AirTemperature, 4)) * Engine.EngineIntervalUpdate;
+                triangle.CurrentTemperature -= energyRadiationLoss / triangle.SpecificHeatCapacity / triangle.GetMass();
                 triangle.CurrentTemperature = Math.Max(0, triangle.CurrentTemperature);
             }
         }

@@ -22,6 +22,8 @@ namespace TempoEngine.Engine {
      * implemented by derived classes to fit specific needs of the engine.
      */
     public abstract class EngineObject : INotifyPropertyChanged {
+        public static readonly double Width = 0.001;
+
         /// Event triggered when a property changes.
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -50,7 +52,13 @@ namespace TempoEngine.Engine {
         private string _name;
 
         /// It's time consuming to calculate the area of an object, so we cache it.
-        protected double _cachedArea = -1; // -1 means not yet calculated
+        protected double _cachedSideArea = -1; // -1 means not yet calculated
+
+        /// Cached volume of the object.
+        protected double _cachedVolume = -1; // -1 means not yet calculated
+
+        // Cached mass of the object.
+        protected double _cachedMass = -1; // -1 means not yet calculated
 
         /// Selection state of the object.
         private bool _isSelected = false;
@@ -184,7 +192,9 @@ namespace TempoEngine.Engine {
         /// Called to notify observers of property changes.
         protected void OnPropertyChanged(string propertyName) {
             if (Engine.Mode != Engine.EngineMode.Running) {
-                _cachedArea = -1;
+                _cachedSideArea = -1;
+                _cachedVolume = -1;
+                _cachedMass = -1;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }

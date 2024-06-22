@@ -35,6 +35,8 @@ namespace TempoEngine.Engine{
 
         public static EngineMode Mode { get; private set; } = EngineMode.Stopped;
 
+        public static readonly double AirTemperature = 293;
+
         public static void Init(MainWindow window){
             _objects = [];
             _engineLock = new object();
@@ -93,11 +95,11 @@ namespace TempoEngine.Engine{
 
                 // simplify the logic for now
                 for(int i = 0; i < _objects.Count; i++) {
-                    for(int j = i + 1; j < _objects.Count; j++) {
+                    EngineManager.TransferRadiationHeatLooseToAir(_objects[i]);
+                    for (int j = i + 1; j < _objects.Count; j++) {
                         EngineObject obj1 = _objects[i];
                         EngineObject obj2 = _objects[j];
                         EngineManager.TranferHeatBetweenTwoObjects(obj1, obj2);
-                        EngineManager.TranferRadation(obj1, _objects);
                     }
                 }
 

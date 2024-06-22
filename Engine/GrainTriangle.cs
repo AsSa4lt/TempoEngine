@@ -225,14 +225,37 @@ namespace TempoEngine.Engine{
             return line1.Length() + line2.Length() + line3.Length();
         }
 
-        public double GetNormalizedArea() {
-            if(_cachedArea != -1)
-                return _cachedArea;
+        /// IT'S NOT AN AREA OF A TRIANGLE
+        public double GetNormalizedSideArea() {
+            if(_cachedSideArea != -1)
+                return _cachedSideArea;
             double normalizedPerimeter = GetPerimeter() / Math.Pow(1000, 2);
-            double normalizedArea = normalizedPerimeter * 0.001;
-            _cachedArea = normalizedArea;
-            return _cachedArea;
+            double normalizedSideArea = normalizedPerimeter * Width;
+            _cachedSideArea = normalizedSideArea;
+            return _cachedSideArea;
         }
+
+        private double GetNormalizedAre() {
+            return Math.Abs(pointA.X * (pointB.Y - pointC.Y) + pointB.X * (pointC.Y - pointA.Y) + pointC.X * (pointA.Y - pointB.Y)) / 2.0 * Math.Pow(0.001, 2);
+        }
+
+        public double GetNormalizedVolume() {
+            if(_cachedVolume != -1)
+                return _cachedVolume;
+            double normalizedArea = GetNormalizedAre() * Width;
+            double normalizedVolume = normalizedArea * Width;
+            _cachedVolume = normalizedVolume;
+            return _cachedVolume;
+        }
+
+        public double GetMass() {
+            if(_cachedMass != -1)
+                return _cachedMass;
+            double mass = GetNormalizedVolume() * MaterialManager.GetDensity(this);
+            _cachedMass = mass;
+            return _cachedMass;
+        }
+
 
         public override bool IsIntersecting(EngineObject obj) {
             throw new NotImplementedException();
