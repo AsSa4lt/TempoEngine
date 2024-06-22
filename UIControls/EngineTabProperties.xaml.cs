@@ -56,7 +56,7 @@ namespace TempoEngine.UIControls {
             if (_selectedObject == null) return;
             tbName.Text = _selectedObject.Name;
             // show only two decimal places for temperature
-            tbTemperature.Text = Math.Round(_selectedObject.Temperature, 2).ToString();
+            tbTemperature.Text = Math.Round(_selectedObject.CurrentTemperature, 2).ToString();
             tbThermalConductivity.Text = _selectedObject.ThermalConductivity.ToString();
             tbMass.Text = _selectedObject.Mass.ToString();
             if (_isTriangleMode) {
@@ -137,7 +137,7 @@ namespace TempoEngine.UIControls {
         private void tbTemperature_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
             if(!basicInputCheck(tbTemperature, e))              return;
             tbTemperature.Background = Brushes.White;
-            if (double.TryParse(tbTemperature.Text, out double temperature)) _selectedObject.Temperature = temperature;
+            if (double.TryParse(tbTemperature.Text, out double temperature)) _selectedObject.SimulationTemperature = temperature;
             else tbTemperature.Background = Brushes.Red;
         }
 

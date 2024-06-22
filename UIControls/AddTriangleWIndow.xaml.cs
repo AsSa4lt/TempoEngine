@@ -42,7 +42,7 @@ namespace TempoEngine.UIControls {
             tbPointCXPosition.Text = _newTriangle.PointC.X.ToString();
             tbPointCYPosition.Text = _newTriangle.PointC.Y.ToString();
             tbMass.Text = _newTriangle.Mass.ToString();
-            tbTemperature.Text = _newTriangle.Temperature.ToString();
+            tbTemperature.Text = _newTriangle.SimulationTemperature.ToString();
             tbThermalConductivity.Text = _newTriangle.ThermalConductivity.ToString();
             tbHeatCapacity.Text = _newTriangle.SpecificHeatCapacity.ToString();
         }
@@ -88,7 +88,7 @@ namespace TempoEngine.UIControls {
                 tbMass.Background = Brushes.Red;
             }
 
-            if(_newTriangle.Temperature < 0) {
+            if(_newTriangle.SimulationTemperature < 0) {
                 errorMessage = "Temperature must be greater than or equal to 0";
                 tbTemperature.Background = Brushes.Red;
             }
@@ -123,7 +123,7 @@ namespace TempoEngine.UIControls {
             _newTriangle.PointB                 = new Point(double.Parse(tbPointBXPosition.Text), double.Parse(tbPointBYPosition.Text));
             _newTriangle.PointC                 = new Point(double.Parse(tbPointCXPosition.Text), double.Parse(tbPointCYPosition.Text));
             _newTriangle.Mass                   = double.Parse(tbMass.Text);
-            _newTriangle.Temperature            = double.Parse(tbTemperature.Text);
+            _newTriangle.SimulationTemperature  = double.Parse(tbTemperature.Text);
             _newTriangle.ThermalConductivity    = double.Parse(tbThermalConductivity.Text);
             _newTriangle.SpecificHeatCapacity   = double.Parse(tbHeatCapacity.Text);
 

@@ -41,11 +41,11 @@ namespace TempoEngine.Engine.Managers{
                 for(int j = 0; j < obj2Triangles.Count; j++) {
                     double touchLength = obj1Triangles[i].GetLengthTouch(obj2Triangles[j]);
                     double coeficient = MaterialManager.GetCoeficientFromMaterial(obj1Triangles[i], obj2Triangles[j]);
-                    double temperatureDifference = obj1Triangles[i].Temperature - obj2Triangles[j].Temperature;
+                    double temperatureDifference = obj1Triangles[i].CurrentTemperature - obj2Triangles[j].CurrentTemperature;
                     double timeTransfer = Engine.EngineIntervalUpdate;
                     double heatTransfer = coeficient * touchLength * temperatureDifference * timeTransfer;
-                    obj1Triangles[i].Temperature -= heatTransfer / obj1Triangles[i].SpecificHeatCapacity;
-                    obj2Triangles[j].Temperature += heatTransfer / obj2Triangles[j].SpecificHeatCapacity;
+                    obj1Triangles[i].CurrentTemperature -= heatTransfer / obj1Triangles[i].SpecificHeatCapacity;
+                    obj2Triangles[j].CurrentTemperature += heatTransfer / obj2Triangles[j].SpecificHeatCapacity;
                 }
             }
         }

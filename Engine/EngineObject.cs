@@ -100,13 +100,25 @@ namespace TempoEngine.Engine {
             }
         }
 
+        /// Gets or sets the current temperature.
+        public double CurrentTemperature {
+            get => _currentTemperature;
+            set {
+                if (_currentTemperature != value) {
+                    _currentTemperature = value;
+                    OnPropertyChanged(nameof(CurrentTemperature));
+                }
+            }
+        }
+
         /// Gets or sets the simulation temperature.
-        public double Temperature {
+        public double SimulationTemperature {
             get => _simulationTemperature;
             set {
                 if (_simulationTemperature != value) {
                     _simulationTemperature = value;
-                    OnPropertyChanged(nameof(Temperature));
+                    _currentTemperature = value;
+                    OnPropertyChanged(nameof(SimulationTemperature));
                 }
             }
         }
@@ -117,7 +129,7 @@ namespace TempoEngine.Engine {
             set {
                 if (_mass != value) {
                     _mass = value;
-                    OnPropertyChanged(nameof(Temperature)); // Possibly should be OnPropertyChanged(nameof(Mass));
+                    OnPropertyChanged(nameof(Mass)); // Possibly should be OnPropertyChanged(nameof(Mass));
                 }
             }
         }
