@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using log4net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,8 @@ namespace TempoEngine.Engine{
         private Point pointA;
         private Point pointB;
         private Point pointC;
+
+        private static readonly ILog log = LogManager.GetLogger(typeof(GrainTriangle));
 
         /**
          * Constructs a GrainTriangle with specified vertices and name.
@@ -219,6 +222,43 @@ namespace TempoEngine.Engine{
 
         public override ObjectType GetObjectType() {
             return ObjectType.GrainTriangle;
+        }
+
+        public override double GetLengthTouch(EngineObject obj) {
+            // we need to assert that the other object is a grain triangle
+            if (obj.GetObjectType() != ObjectType.GrainTriangle) {
+                // log error with logger
+                log.Debug("GetLengthTouch can only be calculated between two GrainTriangles");
+                throw new InvalidOperationException("GetLengthTouch can only be calculated between two GrainTriangles");
+            }
+            // downcast the object to a grain triangle
+            GrainTriangle other = (GrainTriangle)obj;
+            // check the object is not null and that the two triangles are not the same
+            if (other == null || this.Name == other.Name) {
+                return 0;
+            }
+
+            // Define the edges of each triangle
+            Line[] edgesThis = [
+                new Line(this.pointA, this.pointB),
+                new Line(this.pointB, this.pointC),
+                new Line(this.pointC, this.pointA)
+            ];
+            Line[] edgesOther = [
+                new Line(other.pointA, other.pointB),
+                new Line(other.pointB, other.pointC),
+                new Line(other.pointC, other.pointA)
+            ];
+
+            double totalLength = 0;
+            foreach (Line edgeThis in edgesThis) {
+                foreach (Line edgeOther in edgesOther) {
+                    totalLength += Line.CalculateOverlap(edgeThis, edgeOther);
+                }
+            }
+
+            // we should divide by 2 since we are double counting the overlap
+            return totalLength/2;
         }
     }
 }

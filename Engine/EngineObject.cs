@@ -193,5 +193,8 @@ namespace TempoEngine.Engine {
 
         /// Determines if the object is intersecting with another object. Must be implemented by subclasses.
         abstract public bool IsIntersecting(EngineObject obj);
+
+        /// Determines the area(length) of the intersection between two objects. Must be implemented by subclasses.
+        abstract public double GetLengthTouch(EngineObject obj);
     }
 }
