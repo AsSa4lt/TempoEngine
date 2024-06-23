@@ -20,9 +20,7 @@ namespace TempoEngine.Engine.Examples {
             Engine.AddObject(obj3);
         }
 
-        public static void RectangleWithTempDifference() {
-            int width = 10;
-            int height = 10;
+        public static void RectangleWithTempDifference(int width, int height) {
             double maxTemperature = 1000.0;
 
             // Calculate the center position
@@ -50,7 +48,7 @@ namespace TempoEngine.Engine.Examples {
                     // Create triangle
                     GrainTriangle triangle = new GrainTriangle($"Triangle_{x}_{y}", p1, p2, p3);
                     triangle.SimulationTemperature = temperature;
-                    GrainTriangle simetricalTriangle = new GrainTriangle($"Triangle_{x}_{y}2", p2, p3, p4);
+                    GrainTriangle simetricalTriangle = new GrainTriangle($"Triangle_{x}_{y}S", p2, p3, p4);
                     simetricalTriangle.SimulationTemperature = temperature;
 
 

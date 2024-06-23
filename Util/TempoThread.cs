@@ -28,6 +28,10 @@ namespace TempoEngine.Util {
             log.Info("Thread " + Name + " joined");
         }
 
+        public void SetPriority(ThreadPriority priority) {
+            _thread.Priority = priority;
+        }
+
         public void Abort() {
             //_thread.Abort();
         }

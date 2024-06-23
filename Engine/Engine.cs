@@ -42,7 +42,7 @@ namespace TempoEngine.Engine{
             _objects = [];
             _engineLock = new object();
             _mainWindow = window;
-            SimpleExamples.RectangleWithTempDifference();
+            SimpleExamples.RectangleWithTempDifference(20, 20);
 
             log.Info("Engine initialized");
 
@@ -57,6 +57,7 @@ namespace TempoEngine.Engine{
                 Mode = EngineMode.Running;
                 EngineIntervalUpdate = 1/(double)Util.SystemInfo.GetRefreshRate();
                 _engineThread = new TempoThread("EngineThread", Run);
+                _engineThread.SetPriority(ThreadPriority.Highest);
                 _engineThread.Start();
             }
         }
