@@ -57,6 +57,30 @@ namespace TempoEngine.Engine.Managers{
         }
 
         public static readonly double StefanBoltzmannConst = 5.67 * Math.Pow(10, -8);
+
+
+        // For two objects, transfer radiation heat between them calculated as
+        // Q = σ*A*e`*(T1^4 - T2^4)*t. Area is simplified now as the sum of the two areas, it's not true
+        public static void TransferRadiationBetweenTwoObjects(EngineObject obj1, EngineObject obj2) {
+            List<GrainTriangle> obj1Triangles = obj1.GetTriangles();
+            List<GrainTriangle> obj2Triangles = obj2.GetTriangles();
+            for (int i = 0; i < obj1Triangles.Count; i++) {
+                for (int j = 0; j < obj2Triangles.Count; j++) {
+                    // Heat transfer formula is calculated by th
+                    double area = (obj1Triangles[i].GetNormalizedSideArea() + obj2Triangles[j].GetNormalizedSideArea());
+                    double coeficient = MaterialManager.GetEmmisivityBetweenTwoObjects(obj1Triangles[i], obj2Triangles[j]);
+                    double tempDif = Math.Pow(obj1Triangles[i].CurrentTemperature,4) - Math.Pow(obj2Triangles[j].CurrentTemperature, 4);
+                    double timeTransfer = Engine.EngineIntervalUpdate;
+                    double heatTransfer = StefanBoltzmannConst * area * coeficient * tempDif * timeTransfer;
+                    double massObj1 = obj1Triangles[i].GetMass();
+                    double massObj2 = obj2Triangles[j].GetMass();
+                    obj1Triangles[i].CurrentTemperature -= heatTransfer / MaterialManager.GetSpecificHeatCapacity(obj1Triangles[i]) / massObj1;
+                    obj1Triangles[i].CurrentTemperature = Math.Max(0, obj1Triangles[i].CurrentTemperature);
+                    obj2Triangles[j].CurrentTemperature += heatTransfer / MaterialManager.GetSpecificHeatCapacity(obj2Triangles[j]) / massObj2;
+                    obj2Triangles[j].CurrentTemperature = Math.Max(0, obj2Triangles[j].CurrentTemperature);
+                }
+            }
+        }
         public static void TransferRadiationHeatLooseToAir(EngineObject obj) {
             List<GrainTriangle> objTriangles = obj.GetTriangles();
 

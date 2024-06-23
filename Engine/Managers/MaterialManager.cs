@@ -20,8 +20,12 @@ namespace TempoEngine.Engine.Managers {
             return 2700;
         }
 
-        public static double GetEmmisivity(GrainTriangle obj) {
-            return 0.08;
+
+        // calculated as e'=(e1*e2)/(e1+e2 - e1*e2)
+        // 03 is the default value for the emissivity of the object for aluminium  
+        public static double GetEmmisivityBetweenTwoObjects(GrainTriangle obj1, GrainTriangle obj2) {
+            return 0.3;
         }
+
     }
 }

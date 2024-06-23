@@ -1,28 +1,44 @@
-﻿// Engine.md (1)
-// Temperature is stored in Kelvin, based on wawe spectrum of light
-// Violet - 0 degrees, Red is everything 200 degrees and above
+﻿# Heat Transfer Calculations
 
-Objects
-    - all objects have unique Name used for object identification
-    - all objects has width of 1 mm
-    - 1 cell is 1 mm long and 1 mm wide
+## Overview
+This project involves detailed calculations of heat transfer through radiation. The objects involved in this simulation are assumed to have unique properties such as names for identification and uniform dimensions (width of 1 mm and each cell measuring 1 mm by 1 mm).
 
+## Multi-threaded Calculation Strategy
+- **Grouping**: Objects are divided into groups based on the number of processor threads available.
+- **Parallel Processing**: Each group is processed in a separate thread to optimize performance and computation speed.
 
-Calculations:
-All objects will be divided in group
-Group count depends on count of my processor threads
-Each group will be calculated in separate thread
-One object with all other objects
+## Radiation Heat Transfer
 
+### Emission Calculation
+The rate of heat transfer by radiation emitted from an object is governed by the Stefan-Boltzmann law of radiation:
 
-1) Radiation  calculation
-The rate of heat transfer by emitted radiation is determined by the Stefan-Boltzmann law of radiation: 
-Q/t=σeAT4 Q t = σ e A T 4 , where σ = 5.67 × 10−8 J/s · m2 · K4 is the Stefan-Boltzmann constant, 
-A is the surface area of the object, and T is its absolute temperature in kelvin.
+\[ Q/t = \sigma \cdot e \cdot A \cdot T^4 \]
 
-Radiation absorbed by object is calculated by formula:
-The net rate of heat transfer by radiation (absorption minus emission) is related to both the temperature of the object and the temperature of its surroundings. Assuming that an object with a temperature T1 is surrounded by an environment with uniform temperature T2, the net rate of heat transfer by radiation is
+Where:
+- \( \sigma = 5.67 \times 10^{-8} \) J/s · m² · K⁴ (Stefan-Boltzmann constant),
+- \( A \) is the surface area of the object,
+- \( T \) is the absolute temperature of the object in kelvin,
+- \( e \) is the emissivity of the material.
 
-Qnet/t=σe(T^4_2−T^4_1) where e is the emissivity of the object alone. In other words, 
-it does not matter whether the surroundings are white, gray, or black; 
-the balance of radiation into and out of the object depends on how well it emits and absorbs radiation.
+### Absorption Calculation
+The net rate of heat transfer by radiation (considering both absorption and emission) for an object at temperature \( T_1 \) surrounded by an environment at temperature \( T_2 \) is given by:
+
+\[ Q_{\text{net}}/t = \sigma \cdot e \cdot (T_2^4 - T_1^4) \]
+
+This calculation assumes that the surroundings have a uniform temperature and that the object's emissivity is the only factor affecting its radiation interaction.
+
+### Radiative Heat Exchange Between Two Objects
+For two objects exchanging heat through radiation, assuming no intervening medium absorbs the radiation, the heat transfer can be modeled using the following equation for gray bodies:
+
+\[ Q = \sigma \cdot A \cdot \frac{e_1 \cdot e_2}{e_1 + e_2 - e_1 \cdot e_2} \cdot (T_2^4 - T_1^4) \]
+
+Where:
+- \( e_1 \) and \( e_2 \) are the emissivities of the two objects,
+- \( T_1 \) and \( T_2 \) are their respective temperatures.
+
+## Temperature Representation
+- Temperatures are represented using color codes:
+  - **Violet**: 0 degrees (as a baseline temperature).
+  - **Red**: Represents temperatures of 200 degrees and above.
+
+These calculations form the core of the thermal analysis in this project, aiming to provide accurate predictions of heat interactions under various conditions.
