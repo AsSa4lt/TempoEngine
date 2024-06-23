@@ -94,11 +94,11 @@ namespace TempoEngine.Engine{
             polygon.Points.Add(pointC);
 
             if (!IsSelected)
-                polygon.Fill = EngineManager.GetColorFromTemperature(_currentTemperature);
+                polygon.Fill = ColorManager.GetColorFromTemperature(_currentTemperature);
             else {
                 polygon.Stroke = System.Windows.Media.Brushes.Black;
                 polygon.StrokeThickness = 3;
-                polygon.Fill = EngineManager.GetColorFromTemperature(_currentTemperature).Clone();
+                polygon.Fill = ColorManager.GetColorFromTemperature(_currentTemperature).Clone();
                 if(Engine.Mode != Engine.EngineMode.Running)
                     polygon.Fill.Opacity = 0.5;
             }
