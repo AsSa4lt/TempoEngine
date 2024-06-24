@@ -43,7 +43,7 @@ namespace TempoEngine.Engine{
             _objects = [];
             _engineLock = new object();
             _mainWindow = window;
-            SimpleExamples.RectangleWithTempDifference(20, 20);
+            SimpleExamples.RectangleWithTempDifference(5, 5);
 
             log.Info("Engine initialized");
 

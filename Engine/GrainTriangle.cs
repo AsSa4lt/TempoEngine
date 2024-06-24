@@ -154,6 +154,7 @@ namespace TempoEngine.Engine{
         public void ApplyEnergyDelta() {
             CurrentTemperature = _currentTemperature + _energyDelta / MaterialManager.GetSpecificHeatCapacity(this) / GetMass();
             CurrentTemperature = Math.Max(0, CurrentTemperature);
+            _energyDelta = 0;
         }
 
         /**
