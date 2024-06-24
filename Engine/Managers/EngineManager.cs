@@ -16,7 +16,7 @@ namespace TempoEngine.Engine.Managers{
             for(int i = 0; i < obj1Triangles.Count; i++) {
                 for(int j = 0; j < obj2Triangles.Count; j++) {
                     // Heat transfer formula is calculated by the formula Q = k * A * deltaT * t / d
-                    double area = obj1Triangles[i].GetLengthTouch(obj2Triangles[j]) / 1000 * EngineObject.Width;
+                    double area = obj1Triangles[i].GetLengthTouch(obj2Triangles[j]) / 10000 * EngineObject.Width;
                     double coeficient = MaterialManager.GetCoeficientFromMaterial(obj1Triangles[i], obj2Triangles[j]);
                     double temperatureDifference = obj1Triangles[i].CurrentTemperature - obj2Triangles[j].CurrentTemperature;
                     double timeTransfer = Engine.EngineIntervalUpdate;
@@ -24,10 +24,8 @@ namespace TempoEngine.Engine.Managers{
                     double heatTransfer = coeficient * area * temperatureDifference * timeTransfer * EngineObject.Width;
                     double massObj1 = obj1Triangles[i].GetMass();
                     double massObj2 = obj2Triangles[j].GetMass();
-                    obj1Triangles[i].CurrentTemperature -= heatTransfer / MaterialManager.GetSpecificHeatCapacity(obj1Triangles[i]) / massObj1;
-                    obj1Triangles[i].CurrentTemperature = Math.Max(0, obj1Triangles[i].CurrentTemperature);
-                    obj2Triangles[j].CurrentTemperature += heatTransfer / MaterialManager.GetSpecificHeatCapacity(obj2Triangles[j]) / massObj2;
-                    obj2Triangles[j].CurrentTemperature = Math.Max(0, obj2Triangles[j].CurrentTemperature);
+                    obj1Triangles[i].AddEnergyDelta(-heatTransfer);
+                    obj2Triangles[j].AddEnergyDelta(heatTransfer);
                 }
             }
         }

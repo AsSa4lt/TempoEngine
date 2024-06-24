@@ -20,6 +20,7 @@ using TempoEngine.Util;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using MessageBox = System.Windows.MessageBox;
 using Button = System.Windows.Controls.Button;
+using log4net;
 
 namespace TempoEngine.UIControls
 {
@@ -31,6 +32,7 @@ namespace TempoEngine.UIControls
         public Action UpdateUI;
         public Action<EngineObject> DeleteSelected;
         public Action EngineModeChanged;
+        private static readonly ILog log = LogManager.GetLogger(typeof(EngineUIBar));
 
 
         public EngineUIBar(){
@@ -54,13 +56,9 @@ namespace TempoEngine.UIControls
         }
 
         public void Update() {
-            long currentTime = Engine.Engine.GetSimulationTime();
-            ushort ms = (ushort)(currentTime / 1000 % 1000 / 10);
-            ushort s = (ushort)(currentTime / 1000 / 1000 % 60);
-            ushort m = (ushort)(currentTime / 1000 / 1000 / 60 % 60);
-            StringBuilder sb = new StringBuilder();
-            sb.Append(m.ToString("D2")).Append(":").Append(s.ToString("D2")).Append(":").Append(ms.ToString("D2"));
-            timeLabel.Content = sb.ToString();
+            long currentTime = Engine.Engine.GetSimulationTimeUnsafe() / 1000;
+            TimeSpan time = TimeSpan.FromMilliseconds(currentTime);
+            timeLabel.Content = time.ToString(@"mm\:ss\:ff");
         }
 
         private void SetRunningMode() {

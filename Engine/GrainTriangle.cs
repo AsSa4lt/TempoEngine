@@ -28,6 +28,7 @@ namespace TempoEngine.Engine{
         private Point pointA;
         private Point pointB;
         private Point pointC;
+        private double _energyDelta = 0;
 
         private static readonly ILog log = LogManager.GetLogger(typeof(GrainTriangle));
 
@@ -145,6 +146,16 @@ namespace TempoEngine.Engine{
             bottomRight.Y += yDistance * 2;
         }
 
+
+        public void AddEnergyDelta(double energyDelta) {
+            _energyDelta += energyDelta;
+        }
+
+        public void ApplyEnergyDelta() {
+            CurrentTemperature = _currentTemperature + _energyDelta / MaterialManager.GetSpecificHeatCapacity(this) / GetMass();
+            CurrentTemperature = Math.Max(0, CurrentTemperature);
+        }
+
         /**
          * Sets the initial temperature of the grain to the simulation temperature.
          */
@@ -239,6 +250,7 @@ namespace TempoEngine.Engine{
             return Math.Abs(pointA.X * (pointB.Y - pointC.Y) + pointB.X * (pointC.Y - pointA.Y) + pointC.X * (pointA.Y - pointB.Y)) / 2.0 * Math.Pow(0.001, 2);
         }
 
+ 
         public double GetNormalizedVolume() {
             if(_cachedVolume != -1)
                 return _cachedVolume;

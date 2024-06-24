@@ -21,6 +21,7 @@ namespace TempoEngine.Engine{
         private static TempoThread?     _engineThread;
         private static long             _lastUpdateTime = 0;
         public static double            EngineIntervalUpdate = 0;
+         static int frames = 0;
 
         // updates per second 
         private static readonly int _simulationRefreshRate = 100;
@@ -88,11 +89,19 @@ namespace TempoEngine.Engine{
 
                 // simplify the logic for now
                 for(int i = 0; i < _objects.Count; i++) {
-                    EngineManager.TransferRadiationHeatLooseToAir(_objects[i]);
+                    //EngineManager.TransferRadiationHeatLooseToAir(_objects[i]);
                     for (int j = i + 1; j < _objects.Count; j++) {
                         EngineObject obj1 = _objects[i];
                         EngineObject obj2 = _objects[j];
                         EngineManager.TranferHeatBetweenTwoObjects(obj1, obj2);
+                    }
+                }
+
+                // apply results to the UI
+                for(int i = 0; i < _objects.Count; i++) {
+                    List<GrainTriangle> list = _objects[i].GetTriangles();
+                    for(int j = 0; j < list.Count; j++) {
+                        list[j].ApplyEnergyDelta();
                     }
                 }
 
@@ -102,9 +111,17 @@ namespace TempoEngine.Engine{
                 // update time of the simulation
                 lock (_engineLock) {
                     _simulationTime += 1000000 / _simulationRefreshRate;
+                    frames++;
                 }
-                if (timeToSleep > 0) { Thread.Sleep((int)(timeToSleep / 1000)); }
-                if (timeToSleep < 0) { Console.WriteLine("Simulation is running slow"); }
+
+                while(timeToSleep > 0) {
+                    Thread.Sleep((int)(timeToSleep / 1000));
+                    elapsedTime = DateTime.Now.Ticks - startTime;
+                    timeToSleep = 1000000 / _simulationRefreshRate - elapsedTime;
+                }
+
+                //if (timeToSleep > 0) { Thread.Sleep((int)(timeToSleep / 1000)); }
+                if (timeToSleep < 0) { log.Info($"Simulation is too slow, time is {-timeToSleep}"); }
             }
         }
 
@@ -114,6 +131,10 @@ namespace TempoEngine.Engine{
             lock (_engineLock) {
                 return _simulationTime;
             }
+        }
+
+        public static long GetSimulationTimeUnsafe() {
+            return _simulationTime;
         }
 
         public static void Stop() {
