@@ -20,8 +20,6 @@ namespace TempoEngine.Engine.Managers{
                     if (!(obj1Triangles[i].AreTouching(obj2Triangles[j])))
                         continue;
                     double temperatureDifference = obj1Triangles[i].CurrentTemperature - obj2Triangles[j].CurrentTemperature;
-                    if(temperatureDifference < 0.01)
-                        continue;
 
                     double coeficient = MaterialManager.GetCoeficientFromMaterial(obj1Triangles[i], obj2Triangles[j]);
                     double timeTransfer = Engine.EngineIntervalUpdate;
