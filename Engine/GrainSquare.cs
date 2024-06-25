@@ -267,5 +267,9 @@ namespace TempoEngine.Engine{
             List<GrainSquare> grainTriangles = [this];
             return grainTriangles;
         }
+
+        public override List<GrainSquare> GetExternalSquares() {
+            return new List<GrainSquare> {this};
+        }
     }
 }

@@ -30,6 +30,9 @@ namespace TempoEngine.Engine{
         // time of the simulation in microseconds
         private static long _simulationTime = 0; 
 
+        // should we optimize the engine by setting adjacent squares to be touching
+        public static bool OptimizeTouching = true;
+
         public enum EngineMode {
             Stopped,
             Running,
@@ -64,6 +67,28 @@ namespace TempoEngine.Engine{
             }
         }
 
+        private static void OptimiseAdjacentSquares() {
+            if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
+            if(_objects == null)            throw new InvalidOperationException("Engine not initialized");
+
+            lock (_engineLock) {
+                for (int i = 0; i < _objects.Count; i++) {
+                    List<GrainSquare> firstExternal = _objects[i].GetExternalSquares();
+                    for (int j = i + 1; j < _objects.Count; j++) {
+                        List<GrainSquare> secondExternal = _objects[j].GetExternalSquares();
+                        for (int k = 0; k < firstExternal.Count; k++) {
+                            for (int l = 0; l < secondExternal.Count; l++) {
+                                if (firstExternal[k].AreTouching(secondExternal[l])) {
+                                    //firstExternal[k].SetTouching(true);
+                                    //secondExternal[l].SetTouching(true);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private static void prepareObjects() {
             if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
             if(_objects == null)            throw new InvalidOperationException("Engine not initialized");
@@ -71,6 +96,9 @@ namespace TempoEngine.Engine{
             lock (_engineLock) {
                 foreach (var obj in _objects) {
                     obj.SetStartTemperature();
+                }
+                if (OptimizeTouching) {
+                    OptimiseAdjacentSquares();
                 }
             }
         }
