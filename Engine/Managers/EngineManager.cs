@@ -11,19 +11,22 @@ namespace TempoEngine.Engine.Managers{
     public static class EngineManager {
 
         public static void TranferHeatBetweenTwoObjects(EngineObject obj1, EngineObject obj2) {
-            List<GrainTriangle> obj1Triangles = obj1.GetTriangles();
-            List<GrainTriangle> obj2Triangles = obj2.GetTriangles();
+            List<GrainSquare> obj1Triangles = obj1.GetTriangles();
+            List<GrainSquare> obj2Triangles = obj2.GetTriangles();
             for(int i = 0; i < obj1Triangles.Count; i++) {
                 for(int j = 0; j < obj2Triangles.Count; j++) {
                     // Heat transfer formula is calculated by the formula Q = k * A * deltaT * t / d
-                    double area = obj1Triangles[i].GetLengthTouch(obj2Triangles[j]) / 10000 * EngineObject.Width;
-                    double coeficient = MaterialManager.GetCoeficientFromMaterial(obj1Triangles[i], obj2Triangles[j]);
+                    double area = Engine.GridStep;
+                    if (!(obj1Triangles[i].AreTouching(obj2Triangles[j])))
+                        continue;
                     double temperatureDifference = obj1Triangles[i].CurrentTemperature - obj2Triangles[j].CurrentTemperature;
+                    if(temperatureDifference < 0.01)
+                        continue;
+
+                    double coeficient = MaterialManager.GetCoeficientFromMaterial(obj1Triangles[i], obj2Triangles[j]);
                     double timeTransfer = Engine.EngineIntervalUpdate;
                     // FIXME: I need to calculate thickness of the object??????????????
-                    double heatTransfer = coeficient * area * temperatureDifference * timeTransfer * EngineObject.Width;
-                    double massObj1 = obj1Triangles[i].GetMass();
-                    double massObj2 = obj2Triangles[j].GetMass();
+                    double heatTransfer = coeficient * area * temperatureDifference * timeTransfer * EngineObject.Width * EngineObject.Width;
                     obj1Triangles[i].AddEnergyDelta(-heatTransfer);
                     obj2Triangles[j].AddEnergyDelta(heatTransfer);
                 }
@@ -36,8 +39,8 @@ namespace TempoEngine.Engine.Managers{
         // For two objects, transfer radiation heat between them calculated as
         // Q = σ*A*e`*(T1^4 - T2^4)*t. Area is simplified now as the sum of the two areas, it's not true
         public static void TransferRadiationBetweenTwoObjects(EngineObject obj1, EngineObject obj2) {
-            List<GrainTriangle> obj1Triangles = obj1.GetTriangles();
-            List<GrainTriangle> obj2Triangles = obj2.GetTriangles();
+            List<GrainSquare> obj1Triangles = obj1.GetTriangles();
+            List<GrainSquare> obj2Triangles = obj2.GetTriangles();
             for (int i = 0; i < obj1Triangles.Count; i++) {
                 for (int j = 0; j < obj2Triangles.Count; j++) {
                     // Heat transfer formula is calculated by th
@@ -56,10 +59,10 @@ namespace TempoEngine.Engine.Managers{
             }
         }
         public static void TransferRadiationHeatLooseToAir(EngineObject obj) {
-            List<GrainTriangle> objTriangles = obj.GetTriangles();
+            List<GrainSquare> objTriangles = obj.GetTriangles();
 
             for(int i = 0; i < objTriangles.Count; i++) {
-                GrainTriangle triangle = objTriangles[i];
+                GrainSquare triangle = objTriangles[i];
                 // calculated by Stefan-Boltzmann law of radiation and multiplied by the engine update interval
                 double energyRadiationLoss = StefanBoltzmannConst * triangle.GetNormalizedSideArea() * (Math.Pow(triangle.CurrentTemperature, 4) - Math.Pow(Engine.AirTemperature, 4)) * Engine.EngineIntervalUpdate;
                 triangle.CurrentTemperature -= energyRadiationLoss / triangle.SpecificHeatCapacity / triangle.GetMass();

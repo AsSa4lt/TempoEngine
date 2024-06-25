@@ -13,6 +13,7 @@ using TempoEngine.Engine.Examples;
 namespace TempoEngine.Engine{
     static class Engine{
         private static readonly ILog log = LogManager.GetLogger(typeof(Engine));
+        public static readonly double GridStep = 0.001; // 1mm
 
         private static List<EngineObject>? _objects = [];
         // lock object for _objects
@@ -89,7 +90,7 @@ namespace TempoEngine.Engine{
 
                 // simplify the logic for now
                 for(int i = 0; i < _objects.Count; i++) {
-                    //EngineManager.TransferRadiationHeatLooseToAir(_objects[i]);
+                    EngineManager.TransferRadiationHeatLooseToAir(_objects[i]);
                     for (int j = i + 1; j < _objects.Count; j++) {
                         EngineObject obj1 = _objects[i];
                         EngineObject obj2 = _objects[j];
@@ -99,7 +100,7 @@ namespace TempoEngine.Engine{
 
                 // apply results to the UI
                 for(int i = 0; i < _objects.Count; i++) {
-                    List<GrainTriangle> list = _objects[i].GetTriangles();
+                    List<GrainSquare> list = _objects[i].GetTriangles();
                     for(int j = 0; j < list.Count; j++) {
                         list[j].ApplyEnergyDelta();
                     }

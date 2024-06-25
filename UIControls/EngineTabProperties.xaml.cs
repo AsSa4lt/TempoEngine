@@ -59,15 +59,8 @@ namespace TempoEngine.UIControls {
             tbTemperature.Text = Math.Round(_selectedObject.CurrentTemperature, 2).ToString();
             tbThermalConductivity.Text = _selectedObject.ThermalConductivity.ToString();
             tbMass.Text = _selectedObject.Mass.ToString();
-            if (_isTriangleMode) {
-                GrainTriangle triangle = (GrainTriangle) _selectedObject;
-                pointAX.Text = triangle.PointA.X.ToString();
-                pointAY.Text = triangle.PointA.Y.ToString();
-                pointBX.Text = triangle.PointB.X.ToString();
-                pointBY.Text = triangle.PointB.Y.ToString();
-                pointCX.Text = triangle.PointC.X.ToString();
-                pointCY.Text = triangle.PointC.Y.ToString();
-            }
+            tbXPosition.Text = _selectedObject.Position.X.ToString();
+            tbYPosition.Text = _selectedObject.Position.Y.ToString();
             tbHeatCapacity.Text = _selectedObject.SpecificHeatCapacity.ToString();
         }
 
@@ -75,8 +68,6 @@ namespace TempoEngine.UIControls {
             ClearFields();
             _selectedObject = obj;
             if (obj == null) return;
-            _isTriangleMode = obj.GetObjectType() == ObjectType.GrainTriangle;
-            setTriangleMode(_isTriangleMode);
         }
 
         // function to set are fields enabled or disabled
@@ -90,33 +81,6 @@ namespace TempoEngine.UIControls {
             tbWidth.IsEnabled                = enabled;
             tbMass.IsEnabled                 = enabled;
             tbHeatCapacity.IsEnabled         = enabled;
-            pointAX.IsEnabled                = enabled;
-            pointAY.IsEnabled                = enabled;
-            pointBX.IsEnabled                = enabled;
-            pointBY.IsEnabled                = enabled;
-            pointCX.IsEnabled                = enabled;
-            pointCY.IsEnabled                = enabled;
-        }
-
-        private void setTriangleMode(bool isTriangleMode) {
-            Visibility triangleControlsVisibility = isTriangleMode ? Visibility.Visible : Visibility.Hidden;
-            Visibility otherControlVisibility = isTriangleMode ? Visibility.Hidden : Visibility.Visible;
-            labelPoints.Visibility = triangleControlsVisibility;
-            pointAX.Visibility = triangleControlsVisibility;
-            pointAY.Visibility = triangleControlsVisibility;
-            pointBX.Visibility = triangleControlsVisibility;
-            pointBY.Visibility = triangleControlsVisibility;
-            pointCX.Visibility = triangleControlsVisibility;
-            pointCY.Visibility = triangleControlsVisibility;
-
-            positionLabel.Visibility = otherControlVisibility;
-            xPositionLabel.Visibility = otherControlVisibility;
-            yPositionLabel.Visibility = otherControlVisibility;
-            tbXPosition.Visibility = otherControlVisibility;
-            tbYPosition.Visibility = otherControlVisibility;
-            sizeLabel.Visibility = otherControlVisibility;
-            heightLabel.Visibility = otherControlVisibility;
-            widthLabel.Visibility = otherControlVisibility;
         }
 
         private void tbName_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
@@ -173,12 +137,6 @@ namespace TempoEngine.UIControls {
             tbHeight.Background              = Brushes.White;
             tbWidth.Background               = Brushes.White;
             tbMass.Background                = Brushes.White;
-            pointAX.Background               = Brushes.White;
-            pointAY.Background               = Brushes.White;
-            pointBX.Background               = Brushes.White;
-            pointBY.Background               = Brushes.White;
-            pointCX.Background               = Brushes.White;
-            pointCY.Background               = Brushes.White;
             tbHeatCapacity.Background        = Brushes.White;
         }
 
@@ -189,77 +147,29 @@ namespace TempoEngine.UIControls {
             else tbMass.Background = Brushes.Red;
         }
 
-        private void pointAX_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            //// TODO: Check for available position
-            // Cast to GrainTriangle, set Point
-            GrainTriangle triangle = (GrainTriangle)_selectedObject;
-            try {
-                Point pointA = new Point(double.Parse(pointAX.Text), triangle.PointA.Y);
-                triangle.PointA = pointA;
-            }catch(Exception ex) {
-               
-            }
-        }
-
-        private void pointAY_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            //// TODO: Check for available position
-            GrainTriangle triangle = (GrainTriangle)_selectedObject;
-            try {
-                Point pointA = new Point(triangle.PointA.X, double.Parse(pointAY.Text));
-                triangle.PointA = pointA;
-            }catch(Exception ex) {
-
-            }
-        }
-
-        private void pointBX_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            //// TODO: Check for available position
-            GrainTriangle triangle = (GrainTriangle)_selectedObject;
-            try {
-                Point pointB = new Point(double.Parse(pointBX.Text), triangle.PointB.Y);
-                triangle.PointA = pointB;
-            } catch (Exception ex) {
-
-            }
-        }
-        private void pointBY_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            //// TODO: Check for available position
-            GrainTriangle triangle = (GrainTriangle)_selectedObject;
-            try {
-                Point pointB = new Point(triangle.PointB.X, double.Parse(pointBY.Text));
-                triangle.PointB = pointB;
-            } catch(Exception ex) {
-
-            }
-        }
-
-        private void pointCX_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            //// TODO: Check for available position
-            GrainTriangle triangle = (GrainTriangle)_selectedObject;
-            try {
-                Point pointC = new Point(double.Parse(pointCX.Text), triangle.PointC.Y);
-                triangle.PointC = pointC;
-            }catch(Exception ex) {
-
-            }
-        }
-
-        private void pointCY_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            //// TODO: Check for available position
-            GrainTriangle triangle = (GrainTriangle)_selectedObject;
-            try {
-                Point pointC = new Point(triangle.PointC.X, double.Parse(pointCY.Text));
-                triangle.PointC = pointC;
-            }catch(Exception ex) {
-
-            }
-        }
-
         private void tbHeatCapacity_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
             if(!basicInputCheck(tbHeatCapacity, e))             return;
             tbHeatCapacity.Background = Brushes.White;
             if (double.TryParse(tbHeatCapacity.Text, out double heatCapacity)) _selectedObject.SpecificHeatCapacity = heatCapacity;
             else tbHeatCapacity.Background = Brushes.Red;
+        }
+
+        private void tbXPosition_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+            try {
+                Point pos = new Point(double.Parse(tbXPosition.Text), _selectedObject.Position.Y);
+                _selectedObject.Position = pos;
+            } catch (Exception ex) {
+
+            }
+        }
+
+        private void tbYPosition_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+            try {
+                Point pointA = new Point(_selectedObject.Position.X, double.Parse(tbYPosition.Text));
+                _selectedObject.Position = pointA;
+            } catch (Exception ex) {
+
+            }
         }
     }
 }

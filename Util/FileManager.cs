@@ -47,7 +47,7 @@ namespace TempoEngine.Util {
                     // Assuming you have a type identifier in your JSON
                     string type = jObject["Type"].Value;
                     if (type == "GrainTriangle") {
-                        engineObject = GrainTriangle.FromJson(json);
+                        engineObject = GrainSquare.FromJson(json);
                     }
                     // Add more types as necessary
                     if (engineObject != null) {

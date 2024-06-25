@@ -27,64 +27,14 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="Name"  HorizontalAlignment="Left" FontWeight="Bold" FontSize="14"/>
             <TextBox Grid.Column="1" Height="18" Width="110" Name="tbName" KeyDown="tbName_KeyDown" HorizontalAlignment="Right"></TextBox>
-        
-        </Grid>
-        
-        <!-- Part visible for triangles-->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Points:" Name="labelPoints" HorizontalAlignment="Left" FontWeight="Bold"/>
-        </Grid>
 
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="32"/>
-                <ColumnDefinition Width="65"/>
-                <ColumnDefinition Width="34"/>
-                <ColumnDefinition Width="65"/>
-            </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="AX:" HorizontalAlignment="Left"/>
-            <TextBox Grid.Column="1" Height="18" Name="pointAX" KeyDown="pointAX_KeyDown" ></TextBox>
-            <Label Grid.Column="2" Content="AY:" Margin="5,0,5,0" HorizontalAlignment="Left"/>
-            <TextBox Grid.Column="3" Height="18" Name="pointAY" KeyDown="pointAY_KeyDown"></TextBox>
         </Grid>
-
-        <Grid Grid.Row="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="32"/>
-                <ColumnDefinition Width="65"/>
-                <ColumnDefinition Width="34"/>
-                <ColumnDefinition Width="65"/>
-            </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="BX:" HorizontalAlignment="Left"/>
-            <TextBox Grid.Column="1" Height="18" Name="pointBX" KeyDown="pointBX_KeyDown"></TextBox>
-            <Label Grid.Column="2" Content="BY:" Margin="5,0,5,0" HorizontalAlignment="Left"/>
-            <TextBox Grid.Column="3" Height="18" Name="pointBY" KeyDown="pointBY_KeyDown"></TextBox>
-        </Grid>
-
-        <Grid Grid.Row="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="32"/>
-                <ColumnDefinition Width="65"/>
-                <ColumnDefinition Width="34"/>
-                <ColumnDefinition Width="65"/>
-            </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="CX:" HorizontalAlignment="Left"/>
-            <TextBox Grid.Column="1" Height="18" Name="pointCX" KeyDown="pointCX_KeyDown"></TextBox>
-            <Label Grid.Column="2" Content="CY:" Margin="5,0,5,0" HorizontalAlignment="Left"/>
-            <TextBox Grid.Column="3" Height="18" Name="pointCY" KeyDown="pointCY_KeyDown"></TextBox>
-        </Grid>
-
-
-        <!-- Part visible for other -->
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Name = "positionLabel"  Content="Position:" HorizontalAlignment="Left" FontWeight="Bold" Visibility="Hidden"/>
+            <Label Grid.Column="0" Name = "positionLabel"  Content="Position:" HorizontalAlignment="Left" FontWeight="Bold"/>
         </Grid>
 
 
@@ -96,18 +46,18 @@
                 <ColumnDefinition Width="34"/>
                 <ColumnDefinition Width="65"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="X:" Name = "xPositionLabel"  HorizontalAlignment="Left" Visibility="Hidden"/>
-            <TextBox Grid.Column="1" Height="18" Name="tbXPosition" KeyDown="tbTemperature_KeyDown" Visibility="Hidden"></TextBox>
+            <Label Grid.Column="0" Content="X:" Name = "xPositionLabel"  HorizontalAlignment="Left"/>
+            <TextBox Grid.Column="1" Height="18" Name="tbXPosition" KeyDown="tbXPosition_KeyDown"></TextBox>
 
-            <Label Grid.Column="2" Content="Y:" Name = "yPositionLabel"  Margin="5,0,5,0" HorizontalAlignment="Left" Visibility="Hidden"/>
-            <TextBox Grid.Column="3" Height="18" Name="tbYPosition" KeyDown="tbTemperature_KeyDown" Visibility="Hidden"></TextBox>
+            <Label Grid.Column="2" Content="Y:" Name = "yPositionLabel"  Margin="5,0,5,0" HorizontalAlignment="Left"/>
+            <TextBox Grid.Column="3" Height="18" Name="tbYPosition" KeyDown="tbYPosition_KeyDown"></TextBox>
         </Grid>
 
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Size:" Name = "sizeLabel" HorizontalAlignment="Left" FontWeight="Bold" Visibility="Hidden"/>
+            <Label Grid.Column="0" Content="Size:" Name = "sizeLabel" HorizontalAlignment="Left" FontWeight="Bold"/>
         </Grid>
 
         <Grid Grid.Row="4">
@@ -117,11 +67,11 @@
                 <ColumnDefinition Width="34"/>
                 <ColumnDefinition Width="65"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="W:" Name = "widthLabel" HorizontalAlignment="Left" Visibility="Hidden"/>
-            <TextBox Grid.Column="1" Height="18" Name="tbWidth" KeyDown="tbTemperature_KeyDown" Visibility="Hidden"></TextBox>
+            <Label Grid.Column="0" Content="W:" Name = "widthLabel" HorizontalAlignment="Left"/>
+            <TextBox Grid.Column="1" Height="18" Name="tbWidth" KeyDown="tbTemperature_KeyDown"></TextBox>
 
-            <Label Grid.Column="2" Content="H:" Name = "heightLabel" Margin="5,0,5,0" HorizontalAlignment="Left" Visibility="Hidden"/>
-            <TextBox Grid.Column="3" Height="18" Name="tbHeight" KeyDown="tbTemperature_KeyDown" Visibility="Hidden"></TextBox>
+            <Label Grid.Column="2" Content="H:" Name = "heightLabel" Margin="5,0,5,0" HorizontalAlignment="Left"/>
+            <TextBox Grid.Column="3" Height="18" Name="tbHeight" KeyDown="tbTemperature_KeyDown"></TextBox>
         </Grid>
 
         <Grid Grid.Row="5">

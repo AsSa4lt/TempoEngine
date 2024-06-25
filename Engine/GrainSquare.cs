@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -24,13 +25,12 @@ namespace TempoEngine.Engine{
      * \see EngineObject
      * \see CanvasManager
      */
-    public class GrainTriangle : EngineObject {
-        private Point pointA;
-        private Point pointB;
-        private Point pointC;
+    public class GrainSquare : EngineObject {
         private double _energyDelta = 0;
+        public event PropertyChangedEventHandler? PositionChanged;
+        public List<GrainSquare> AdjacentSquares = new List<GrainSquare>();
 
-        private static readonly ILog log = LogManager.GetLogger(typeof(GrainTriangle));
+        private static readonly ILog log = LogManager.GetLogger(typeof(GrainSquare));
 
         /**
          * Constructs a GrainTriangle with specified vertices and name.
@@ -39,49 +39,16 @@ namespace TempoEngine.Engine{
          * \param p_b Vertex B of the triangle.
          * \param p_c Vertex C of the triangle.
          */
-        public GrainTriangle(string name, Point p_a, Point p_b, Point p_c) : base(name) {
-            pointA = p_a;
-            pointB = p_b;
-            pointC = p_c;
+        public GrainSquare(string name, Point position) : base(name) {
+            _position = position;
+            SetCachedPoints();
         }
 
-        /**
-         * Gets or sets the position of vertex A.
-         * Triggers a property changed event when set.
-         * \see OnPropertyChanged
-         */
-        public Point PointA {
-            get => pointA;
-            set {
-                pointA = value;
-                OnPropertyChanged(nameof(PointA));
-            }
-        }
 
-        /**
-         * Gets or sets the position of vertex B.
-         * Triggers a property changed event when set.
-         */
-        public Point PointB {
-            get => pointB;
-            set {
-                pointB = value;
-                OnPropertyChanged(nameof(PointB));
-            }
-        }
-
-        /**
-         * Gets or sets the position of vertex C.
-         * Triggers a property changed event when set.
-         */
-        public Point PointC {
-            get => pointC;
-            set {
-                pointC = value;
-                OnPropertyChanged(nameof(PointC));
-            }
-        }
-
+        // Cached points of square to not to allocate anything during the runtime
+        Point _cachedPointB = new(0, 0); // right top corner
+        Point _cachedPointC = new(0, 0); // left bottom corner
+        Point _cachedPointD = new(0, 0); // right bottom corner
         /**
          * Generates the polygons that visually represent the triangle.
          * This method overrides the abstract method defined in \ref EngineObject.
@@ -90,9 +57,10 @@ namespace TempoEngine.Engine{
         public override List<Polygon> GetPolygons() {
             List<Polygon> polygons = new List<Polygon>();
             Polygon polygon = new Polygon();
-            polygon.Points.Add(pointA);
-            polygon.Points.Add(pointB);
-            polygon.Points.Add(pointC);
+            polygon.Points.Add(_position);
+            polygon.Points.Add(_cachedPointB);
+            polygon.Points.Add(_cachedPointD);
+            polygon.Points.Add(_cachedPointC);
 
             if (!IsSelected)
                 polygon.Fill = ColorManager.GetColorFromTemperature(_currentTemperature);
@@ -106,6 +74,22 @@ namespace TempoEngine.Engine{
 
             polygons.Add(polygon);
             return polygons;
+        }
+
+        private void SetCachedPoints() {
+            _cachedPointB = new(Position.X + 1, Position.Y);
+            _cachedPointC = new(Position.X, Position.Y - 1);
+            _cachedPointD = new(Position.X + 1, Position.Y - 1);
+        }
+
+        public override Point Position {
+            get => _position;
+            set {
+                _position = value;
+                SetCachedPoints();
+                OnPositionChanged(nameof(Position));
+                OnPropertyChanged(nameof(Position));
+            }
         }
 
         /**
@@ -125,7 +109,7 @@ namespace TempoEngine.Engine{
          * \return True if any vertex is visible, otherwise false.
          */
         public override bool IsVisible(CanvasManager canvasManager) {
-            return isPointVisible(pointA, canvasManager) || isPointVisible(pointB, canvasManager) || isPointVisible(pointC, canvasManager);
+            return isPointVisible(Position, canvasManager);
         }
 
         /**
@@ -134,16 +118,8 @@ namespace TempoEngine.Engine{
          * \param[out] bottomRight The bottom-right corner of the bounding box.
          */
         public override void GetObjectVisibleArea(out Vector2 topLeft, out Vector2 bottomRight) {
-            topLeft = new Vector2((float)Math.Min(pointA.X, Math.Min(pointB.X, pointC.X)), (float)Math.Min(pointA.Y, Math.Min(pointB.Y, pointC.Y)));
-            bottomRight = new Vector2((float)Math.Max(pointA.X, Math.Max(pointB.X, pointC.X)), (float)Math.Max(pointA.Y, Math.Max(pointB.Y, pointC.Y)));
-
-            float xDistance = bottomRight.X - topLeft.X;
-            topLeft.X -= xDistance * 2;
-            bottomRight.X += xDistance * 2;
-
-            float yDistance = bottomRight.Y - topLeft.Y;
-            topLeft.Y -= yDistance * 2;
-            bottomRight.Y += yDistance * 2;
+            topLeft = new Vector2((float)_position.X, (float)_position.Y);
+            bottomRight = new Vector2((float)_cachedPointD.X, (float)_cachedPointD.Y);
         }
 
 
@@ -169,11 +145,11 @@ namespace TempoEngine.Engine{
          * \return A string identifier for the type.
          */
         public override string GetObjectTypeString() {
-            return "GrainTriangle";
+            return "GrainSquare";
         }
 
 
-        public static GrainTriangle FromJson(string json) {
+        public static GrainSquare FromJson(string json) {
             var settings = new JsonSerializerSettings {
                 NullValueHandling = NullValueHandling.Ignore
             };
@@ -183,10 +159,7 @@ namespace TempoEngine.Engine{
             string type = jObject.Type;
             if (type != "GrainTriangle")
                 throw new InvalidOperationException("JSON is not of type GrainTriangle.");
-
-            Point pointA = ParsePoint(jObject.PointA.ToString());
-            Point pointB = ParsePoint(jObject.PointB.ToString());
-            Point pointC = ParsePoint(jObject.PointC.ToString());
+            Point Position = ParsePoint(jObject.Position.ToString());
 
             string name = jObject.Name;
             double mass = (double)jObject.Mass;
@@ -194,7 +167,7 @@ namespace TempoEngine.Engine{
             double currentTemperature = (double)jObject.CurrentTemperature;
             double thermalConductivity = (double)jObject.ThermalConductivity;
 
-            return new GrainTriangle(name, pointA, pointB, pointC) {
+            return new GrainSquare(name, Position) {
                 _simulationTemperature = simulationTemperature,
                 _currentTemperature = currentTemperature,
                 _thermalConductivity = thermalConductivity,
@@ -220,9 +193,7 @@ namespace TempoEngine.Engine{
                 Type = GetObjectTypeString(),
                 Name,
                 Mass = _mass,
-                PointA = pointA,
-                PointB = pointB,
-                PointC = pointC,
+                Position = _position,
                 SimulationTemperature = _simulationTemperature,
                 CurrentTemperature = _currentTemperature,
                 ThermalConductivity = _thermalConductivity
@@ -230,11 +201,7 @@ namespace TempoEngine.Engine{
         }
 
         public double GetPerimeter() {
-            // get the sum of the lengths of the three sides
-            Line line1 = new Line(pointA, pointB);
-            Line line2 = new Line(pointB, pointC);
-            Line line3 = new Line(pointC, pointA);
-            return line1.Length() + line2.Length() + line3.Length();
+            return 0.004;
         }
 
         /// IT'S NOT AN AREA OF A TRIANGLE
@@ -247,15 +214,15 @@ namespace TempoEngine.Engine{
             return _cachedSideArea;
         }
 
-        private double GetNormalizedAre() {
-            return Math.Abs(pointA.X * (pointB.Y - pointC.Y) + pointB.X * (pointC.Y - pointA.Y) + pointC.X * (pointA.Y - pointB.Y)) / 2.0 * Math.Pow(0.001, 2);
+        private double GetNormalizedArea() {
+            return Width * Width ;
         }
 
  
         public double GetNormalizedVolume() {
             if(_cachedVolume != -1)
                 return _cachedVolume;
-            double normalizedArea = GetNormalizedAre() * Width;
+            double normalizedArea = GetNormalizedArea() * Width;
             double normalizedVolume = normalizedArea * Width;
             _cachedVolume = normalizedVolume;
             return _cachedVolume;
@@ -275,48 +242,29 @@ namespace TempoEngine.Engine{
         }
 
         public override ObjectType GetObjectType() {
-            return ObjectType.GrainTriangle;
+            return ObjectType.GrainSquare;
         }
 
-        public override double GetLengthTouch(EngineObject obj) {
-            // we need to assert that the other object is a grain triangle
-            if (obj.GetObjectType() != ObjectType.GrainTriangle) {
-                // log error with logger
-                log.Debug("GetLengthTouch can only be calculated between two GrainTriangles");
-                throw new InvalidOperationException("GetLengthTouch can only be calculated between two GrainTriangles");
+        protected void OnPositionChanged(string propertyName) {
+            if (Engine.Mode != Engine.EngineMode.Running) {
+                SetCachedPoints();
+                PositionChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
-            // downcast the object to a grain triangle
-            GrainTriangle other = (GrainTriangle)obj;
+        }
+
+        public bool AreTouching(GrainSquare other) {
             // check the object is not null and that the two triangles are not the same
             if (other == null || this.Name == other.Name) {
-                return 0;
+                return false;
             }
+            bool xTouch = Math.Abs(this.Position.X - other.Position.X) == 1 && this.Position.Y == other.Position.Y;
+            bool yTouch = Math.Abs(this.Position.Y - other.Position.Y) == 1 && this.Position.X == other.Position.X;
 
-            // Define the edges of each triangle
-            Line[] edgesThis = [
-                new Line(this.pointA, this.pointB),
-                new Line(this.pointB, this.pointC),
-                new Line(this.pointC, this.pointA)
-            ];
-            Line[] edgesOther = [
-                new Line(other.pointA, other.pointB),
-                new Line(other.pointB, other.pointC),
-                new Line(other.pointC, other.pointA)
-            ];
-
-            double totalLength = 0;
-            foreach (Line edgeThis in edgesThis) {
-                foreach (Line edgeOther in edgesOther) {
-                    totalLength += Line.CalculateOverlap(edgeThis, edgeOther);
-                }
-            }
-
-            // we should divide by 2 since we are double counting the overlap
-            return totalLength/2;
+            return xTouch || yTouch;
         }
 
-        public override List<GrainTriangle> GetTriangles() {
-            List<GrainTriangle> grainTriangles = [this];
+        public override List<GrainSquare> GetTriangles() {
+            List<GrainSquare> grainTriangles = [this];
             return grainTriangles;
         }
     }

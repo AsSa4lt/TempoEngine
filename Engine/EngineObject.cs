@@ -7,10 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Shapes;
 using TempoEngine.UIControls;
+using Point = System.Windows.Point;
 
 namespace TempoEngine.Engine {
     public enum ObjectType {
-        GrainTriangle
+        GrainSquare
     }
 
     /**
@@ -28,7 +29,7 @@ namespace TempoEngine.Engine {
         public event PropertyChangedEventHandler? PropertyChanged;
 
         /// Current position of the object in the engine's space.
-        protected Vector2 _position = new(0, 0);
+        protected Point _position = new(0, 0);
 
         /// Current rotation of the object.
         protected Vector2 _rotation = new(0, 0);
@@ -94,7 +95,7 @@ namespace TempoEngine.Engine {
         }
 
         /// Gets or sets the position of the object.
-        public Vector2 Position {
+        public virtual Point Position {
             get => _position;
             set {
                 _position = value;
@@ -203,7 +204,7 @@ namespace TempoEngine.Engine {
         abstract public List<Polygon> GetPolygons();
 
         /// Returns the object's triangles. Must be implemented by subclasses.
-        abstract public List<GrainTriangle> GetTriangles();
+        abstract public List<GrainSquare> GetTriangles();
 
         /// Determines if the object is visible on the given canvas. Must be implemented by subclasses.
         abstract public bool IsVisible(CanvasManager canvasManager);
@@ -224,8 +225,5 @@ namespace TempoEngine.Engine {
 
         /// Determines if the object is intersecting with another object. Must be implemented by subclasses.
         abstract public bool IsIntersecting(EngineObject obj);
-
-        /// Determines the area(length) of the intersection between two objects. Must be implemented by subclasses.
-        abstract public double GetLengthTouch(EngineObject obj);
     }
 }
