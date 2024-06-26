@@ -25,7 +25,7 @@ namespace TempoEngine.Engine{
          static int frames = 0;
 
         // updates per second 
-        private static readonly int _simulationRefreshRate = 100;
+        private static readonly int _simulationRefreshRate = 60;
         
         // time of the simulation in microseconds
         private static long _simulationTime = 0; 
@@ -47,7 +47,7 @@ namespace TempoEngine.Engine{
             _objects = [];
             _engineLock = new object();
             _mainWindow = window;
-            SimpleExamples.RectangleWithTempDifference(20, 20);
+            SimpleExamples.RectangleWithTempDifference(10, 10);
 
             log.Info("Engine initialized");
 
