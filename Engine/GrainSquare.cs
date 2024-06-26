@@ -28,7 +28,7 @@ namespace TempoEngine.Engine{
     public class GrainSquare : EngineObject {
         private double _energyDelta = 0;
         public event PropertyChangedEventHandler? PositionChanged;
-        public List<GrainSquare> AdjacentSquares = new List<GrainSquare>();
+        private List<GrainSquare> _adjacentSquares = [];
 
         private static readonly ILog log = LogManager.GetLogger(typeof(GrainSquare));
 
@@ -263,9 +263,21 @@ namespace TempoEngine.Engine{
             return xTouch || yTouch;
         }
 
-        public override List<GrainSquare> GetTriangles() {
+        public override List<GrainSquare> GetSquares() {
             List<GrainSquare> grainTriangles = [this];
             return grainTriangles;
+        }
+
+        public List<GrainSquare> GetAdjacentSquares() {
+            return _adjacentSquares;
+        }
+
+        public void AddAdjacentSquare(GrainSquare square) {
+            _adjacentSquares.Add(square);
+        }
+
+        public void ClearAdjacentSquares() {
+            _adjacentSquares.Clear();
         }
 
         public override List<GrainSquare> GetExternalSquares() {

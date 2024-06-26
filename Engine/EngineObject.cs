@@ -204,7 +204,7 @@ namespace TempoEngine.Engine {
         abstract public List<Polygon> GetPolygons();
 
         /// Returns the object's triangles. Must be implemented by subclasses.
-        abstract public List<GrainSquare> GetTriangles();
+        abstract public List<GrainSquare> GetSquares();
 
         /// Determines if the object is visible on the given canvas. Must be implemented by subclasses.
         abstract public bool IsVisible(CanvasManager canvasManager);

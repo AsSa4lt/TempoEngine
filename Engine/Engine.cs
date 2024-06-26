@@ -47,7 +47,7 @@ namespace TempoEngine.Engine{
             _objects = [];
             _engineLock = new object();
             _mainWindow = window;
-            SimpleExamples.RectangleWithTempDifference(10, 10);
+            SimpleExamples.RectangleWithTempDifference(20, 20);
 
             log.Info("Engine initialized");
 
@@ -74,13 +74,18 @@ namespace TempoEngine.Engine{
             lock (_engineLock) {
                 for (int i = 0; i < _objects.Count; i++) {
                     List<GrainSquare> firstExternal = _objects[i].GetExternalSquares();
+                    // clear list of adjacent squares
+                    for (int k = 0; k < firstExternal.Count; k++) {
+                        firstExternal[k].ClearAdjacentSquares();
+                    }
+
                     for (int j = i + 1; j < _objects.Count; j++) {
                         List<GrainSquare> secondExternal = _objects[j].GetExternalSquares();
                         for (int k = 0; k < firstExternal.Count; k++) {
                             for (int l = 0; l < secondExternal.Count; l++) {
                                 if (firstExternal[k].AreTouching(secondExternal[l])) {
-                                    //firstExternal[k].SetTouching(true);
-                                    //secondExternal[l].SetTouching(true);
+                                    firstExternal[k].AddAdjacentSquare(secondExternal[l]);
+                                    secondExternal[l].AddAdjacentSquare(firstExternal[k]);
                                 }
                             }
                         }
@@ -119,16 +124,13 @@ namespace TempoEngine.Engine{
                 // simplify the logic for now
                 for(int i = 0; i < _objects.Count; i++) {
                     EngineManager.TransferRadiationHeatLooseToAir(_objects[i]);
-                    for (int j = i + 1; j < _objects.Count; j++) {
-                        EngineObject obj1 = _objects[i];
-                        EngineObject obj2 = _objects[j];
-                        EngineManager.TranferHeatBetweenTwoObjects(obj1, obj2);
-                    }
+                    List<GrainSquare> list = _objects[i].GetSquares();
+                    ConductionTransferManager.TransferHeatForObject(_objects[i]);
                 }
 
                 // apply results to the UI
                 for(int i = 0; i < _objects.Count; i++) {
-                    List<GrainSquare> list = _objects[i].GetTriangles();
+                    List<GrainSquare> list = _objects[i].GetSquares();
                     for(int j = 0; j < list.Count; j++) {
                         list[j].ApplyEnergyDelta();
                     }
@@ -140,16 +142,11 @@ namespace TempoEngine.Engine{
                 // update time of the simulation
                 lock (_engineLock) {
                     _simulationTime += 1000000 / _simulationRefreshRate;
+                    log.Info($"Simulation time: {_simulationTime/1000}");
                     frames++;
                 }
-
-                while(timeToSleep > 0) {
-                    Thread.Sleep((int)(timeToSleep / 1000));
-                    elapsedTime = DateTime.Now.Ticks - startTime;
-                    timeToSleep = 1000000 / _simulationRefreshRate - elapsedTime;
-                }
-
-                //if (timeToSleep > 0) { Thread.Sleep((int)(timeToSleep / 1000)); }
+                // sleep for the remaining time
+                if (timeToSleep > 0) { Thread.Sleep((int)(timeToSleep / 1000)); }
                 if (timeToSleep < 0) { log.Info($"Simulation is too slow, time is {-timeToSleep}"); }
             }
         }
