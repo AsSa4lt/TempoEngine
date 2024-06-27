@@ -94,7 +94,7 @@ namespace TempoEngine.UIControls {
             Children.Clear();
             _canvasManager.AdjustForAspectRatio(ActualWidth, ActualHeight);
 
-            List<EngineObject> objects = Engine.Engine.GetVisibleObjects(_canvasManager);
+            List<EngineObject> objects = Engine.Engine.GetVisibleObjectsUnsafe(_canvasManager);
 
             // draw grid
             if (drawGrid)

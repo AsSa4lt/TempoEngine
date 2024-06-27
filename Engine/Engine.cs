@@ -9,6 +9,7 @@ using TempoEngine.Util;
 using TempoEngine.Engine.Managers;
 using Point = System.Windows.Point;
 using TempoEngine.Engine.Examples;
+using System.Diagnostics;
 
 namespace TempoEngine.Engine{
     static class Engine{
@@ -25,7 +26,7 @@ namespace TempoEngine.Engine{
          static int frames = 0;
 
         // updates per second 
-        private static readonly int _simulationRefreshRate = 60;
+        private static int _simulationRefreshRate = 60;
         
         // time of the simulation in microseconds
         private static long _simulationTime = 0; 
@@ -48,7 +49,7 @@ namespace TempoEngine.Engine{
             _engineLock = new object();
             _mainWindow = window;
             SimpleExamples.RectangleWithTempDifference(10, 10);
-
+            _simulationRefreshRate = Util.SystemInfo.GetRefreshRate();
             log.Info("Engine initialized");
 
 
@@ -60,6 +61,7 @@ namespace TempoEngine.Engine{
                 log.Info("Engine started");
                 prepareObjects();
                 Mode = EngineMode.Running;
+                frames = 0;
                 EngineIntervalUpdate = 1/(double)Util.SystemInfo.GetRefreshRate();
                 _engineThread = new TempoThread("EngineThread", Run);
                 _engineThread.SetPriority(ThreadPriority.Highest);
@@ -110,13 +112,13 @@ namespace TempoEngine.Engine{
 
         public static void Run() {
             if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
+            Stopwatch stopwatch = new Stopwatch();
 
             while (true) {
+                stopwatch.Restart();
+                double msPerFrame = 1000.0 / (double)_simulationRefreshRate;  // milliseconds per frame
 
-                // start timer
-                long startTime = DateTime.Now.Ticks;
-
-                lock(_engineLock) {
+                lock (_engineLock) {
                     if (Mode != EngineMode.Running) break;
                 }
                 // update logic
@@ -136,18 +138,22 @@ namespace TempoEngine.Engine{
                     }
                 }
 
-                // check if elapsed time is less than the time of one update as 1/refresh rate
-                long elapsedTime = DateTime.Now.Ticks - startTime;
-                long timeToSleep = 1000000 / _simulationRefreshRate - elapsedTime;
-                // update time of the simulation
-                lock (_engineLock) {
-                    _simulationTime += 1000000 / _simulationRefreshRate;
-                    log.Info($"Simulation time: {_simulationTime/1000}");
-                    frames++;
+                double elapsedTimeMs = stopwatch.ElapsedTicks/10000;
+                if (msPerFrame - elapsedTimeMs < 0) {
+                    log.Info($"Simulation is too slow, time is {elapsedTimeMs - msPerFrame} ms");
                 }
-                // sleep for the remaining time
-                if (timeToSleep > 0) { Thread.Sleep((int)(timeToSleep / 1000)); }
-                if (timeToSleep < 0) { log.Info($"Simulation is too slow, time is {-timeToSleep}"); }
+
+                while (msPerFrame - elapsedTimeMs > 0) {
+                    elapsedTimeMs = stopwatch.ElapsedTicks/10000;
+                }
+                stopwatch.Stop();
+
+
+                lock (_engineLock) {
+                    log.Info($"Simulation time: {_simulationTime} ms");
+                    frames++;
+                    _simulationTime = (int)(frames * msPerFrame);
+                }
             }
         }
 
@@ -193,20 +199,20 @@ namespace TempoEngine.Engine{
             return true;
         }
 
-        public static List<EngineObject> GetVisibleObjects(CanvasManager manager) {
+        public static List<EngineObject> GetVisibleObjectsUnsafe(CanvasManager manager) {
             List<EngineObject> visibleObjects = new();
             if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
             if(_objects == null)            throw new InvalidOperationException("Engine not initialized");
 
-            lock (_engineLock) {
-                foreach (var obj in _objects) {
-                    if (obj.IsVisible(manager)) {
-                        visibleObjects.Add(obj);
-                    }
+            foreach (var obj in _objects) {
+                if (obj.IsVisible(manager)) {
+                    visibleObjects.Add(obj);
                 }
             }
             return visibleObjects;
         }
+
+
 
         // All objects are named and the name is unique
         public static bool IsNameAvailable(string name) {
@@ -249,7 +255,16 @@ namespace TempoEngine.Engine{
                 return _objects;
             }
         }
-        
+
+        public static List<EngineObject> GetObjectsUnsafe() {
+            if (_engineLock == null) throw new InvalidOperationException("Engine lock is not initialized");
+            if (_objects == null) throw new InvalidOperationException("Engine not initialized");
+
+            lock (_engineLock) {
+                return _objects;
+            }
+        }
+
         public static void ClearObjects() {
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             if (_objects == null)           throw new InvalidOperationException("Engine not initialized");

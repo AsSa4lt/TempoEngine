@@ -56,7 +56,7 @@ namespace TempoEngine.UIControls
         }
 
         public void Update() {
-            long currentTime = Engine.Engine.GetSimulationTimeUnsafe() / 1000;
+            long currentTime = Engine.Engine.GetSimulationTimeUnsafe();
             TimeSpan time = TimeSpan.FromMilliseconds(currentTime);
             timeLabel.Content = time.ToString(@"mm\:ss\:ff");
         }

@@ -12,7 +12,7 @@ namespace TempoEngine.Util {
     internal partial class SystemInfo {
         private static readonly ILog log = LogManager.GetLogger(typeof(FileManager));
         public static int GetRefreshRate() {
-            /* // Get the handle to the device context (DC) for the primary screen
+             // Get the handle to the device context (DC) for the primary screen
              IntPtr hdc = GetDC(IntPtr.Zero); // Passing IntPtr.Zero gets the DC for the entire screen
              if (hdc == IntPtr.Zero) {
                  return 0; // Return 0 if we fail to get the DC
@@ -26,8 +26,7 @@ namespace TempoEngine.Util {
 
              log.Info("Current refresh rate: " + refreshRate + " Hz");
 
-             return refreshRate;*/
-             return 60;
+             return refreshRate;
         }
 
 
