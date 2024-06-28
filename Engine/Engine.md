@@ -10,22 +10,10 @@ This project involves detailed calculations of heat transfer through radiation. 
 ## Radiation Heat Transfer
 
 ### Emission Calculation
-The rate of heat transfer by radiation emitted from an object is governed by the Stefan-Boltzmann law of radiation:
+Fourier's Law of Heat Conduction is used to calculate the heat emitted by an object:
+P = -x * S * dT /l
+S = l for this 2D simulation, because it's a problem of an method of end bodies
 
-\[ Q/t = \sigma \cdot e \cdot A \cdot T^4 \]
-
-Where:
-- \( \sigma = 5.67 \times 10^{-8} \) J/s · m² · K⁴ (Stefan-Boltzmann constant),
-- \( A \) is the surface area of the object,
-- \( T \) is the absolute temperature of the object in kelvin,
-- \( e \) is the emissivity of the material.
-
-### Absorption Calculation
-The net rate of heat transfer by radiation (considering both absorption and emission) for an object at temperature \( T_1 \) surrounded by an environment at temperature \( T_2 \) is given by:
-
-\[ Q_{\text{net}}/t = \sigma \cdot e \cdot (T_2^4 - T_1^4) \]
-
-This calculation assumes that the surroundings have a uniform temperature and that the object's emissivity is the only factor affecting its radiation interaction.
 
 ### Radiative Heat Exchange Between Two Objects
 For two objects exchanging heat through radiation, assuming no intervening medium absorbs the radiation, the heat transfer can be modeled using the following equation for gray bodies:
