@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace TempoEngine.Util {
     internal partial class SystemInfo {
-        private static readonly ILog log = LogManager.GetLogger(typeof(FileManager));
+        private static readonly ILog log = LogManager.GetLogger(typeof(SystemInfo));
         public static int GetRefreshRate() {
              // Get the handle to the device context (DC) for the primary screen
              IntPtr hdc = GetDC(IntPtr.Zero); // Passing IntPtr.Zero gets the DC for the entire screen

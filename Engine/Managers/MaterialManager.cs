@@ -9,7 +9,7 @@ namespace TempoEngine.Engine.Managers {
 
         // now we assume that material is constant and it's aluminum
         public static double GetCoeficientFromMaterial(GrainSquare obj1, GrainSquare obj2) {
-            return 0.205;
+            return 2.05;
         }
 
         public static double GetSpecificHeatCapacity(GrainSquare obj) {

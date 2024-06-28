@@ -48,7 +48,7 @@ namespace TempoEngine.Engine{
             _objects = [];
             _engineLock = new object();
             _mainWindow = window;
-            SimpleExamples.RectangleWithTempDifference(10, 10);
+            SimpleExamples.RectangleWithTempDifference(100, 100);
             _simulationRefreshRate = Util.SystemInfo.GetRefreshRate();
             log.Info("Engine initialized");
 
@@ -75,6 +75,7 @@ namespace TempoEngine.Engine{
 
             lock (_engineLock) {
                 for (int i = 0; i < _objects.Count; i++) {
+                    _objects[i].CacheProperties();
                     List<GrainSquare> firstExternal = _objects[i].GetExternalSquares();
                     // clear list of adjacent squares
                     for (int k = 0; k < firstExternal.Count; k++) {
@@ -150,7 +151,6 @@ namespace TempoEngine.Engine{
 
 
                 lock (_engineLock) {
-                    log.Info($"Simulation time: {_simulationTime} ms");
                     frames++;
                     _simulationTime = (int)(frames * msPerFrame);
                 }

@@ -128,7 +128,7 @@ namespace TempoEngine.Engine{
         }
 
         public void ApplyEnergyDelta() {
-            CurrentTemperature = _currentTemperature + _energyDelta / MaterialManager.GetSpecificHeatCapacity(this) / GetMass();
+            CurrentTemperature = _currentTemperature + _energyDelta / SpecificHeatCapacity / _cachedMass;
             CurrentTemperature = Math.Max(0, CurrentTemperature);
             _energyDelta = 0;
         }
@@ -282,6 +282,13 @@ namespace TempoEngine.Engine{
 
         public List<GrainSquare> GetAdjacentSquares() {
             return AdjacentSquares;
+        }
+
+        public override void CacheProperties() {
+            GetNormalizedArea();
+            GetNormalizedVolume();
+            GetMass();
+            GetNormalizedSideArea();
         }
     }
 }

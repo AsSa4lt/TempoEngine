@@ -47,7 +47,7 @@ namespace TempoEngine.Engine {
         protected double _mass = 1;
 
         /// Specificc hear capacity of the object. J/(K*kg)
-        protected double _specificHeatCapacity = 4200;
+        protected double _specificHeatCapacity = 900;
 
         /// Name of the object.
         private string _name;
@@ -225,6 +225,9 @@ namespace TempoEngine.Engine {
 
         /// Determines if the object is intersecting with another object. Must be implemented by subclasses.
         abstract public bool IsIntersecting(EngineObject obj);
+
+        /// Cache all the object's properties. Must be implemented by subclasses.
+        abstract public void CacheProperties();
 
         abstract public List<GrainSquare> GetExternalSquares();
     }

@@ -1,8 +1,11 @@
-﻿using System.Numerics;
+﻿using log4net;
+using System.Diagnostics;
+using System.Numerics;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using TempoEngine.Engine;
+using Brushes = System.Windows.Media.Brushes;
 using Point = System.Windows.Point;
 
 
@@ -11,6 +14,7 @@ namespace TempoEngine.UIControls {
 
         private readonly CanvasManager _canvasManager;
         private readonly GridDrawer _gridDrawer;
+        private static readonly ILog log = LogManager.GetLogger(typeof(EngineCanvas));
 
         private readonly bool drawGrid = true;
 
@@ -18,6 +22,7 @@ namespace TempoEngine.UIControls {
             _canvasManager = new CanvasManager();
             _gridDrawer = new GridDrawer(this);
             Focusable = true;
+            Background = Brushes.Transparent;
 
             Loaded += (sender, args) => {
                 _canvasManager.AdjustForAspectRatio(ActualWidth, ActualHeight);
@@ -91,15 +96,30 @@ namespace TempoEngine.UIControls {
 
         public void Update() {
             // clear canvas
+            /*Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             Children.Clear();
+            Background = Brushes.Transparent;
+
             _canvasManager.AdjustForAspectRatio(ActualWidth, ActualHeight);
 
-            List<EngineObject> objects = Engine.Engine.GetVisibleObjectsUnsafe(_canvasManager);
+            // log time
+            stopwatch.Stop();
+            log.Info("Time to clear canvas: " + stopwatch.ElapsedMilliseconds + " ms");
+            stopwatch.Restart();
 
+            List<EngineObject> objects = Engine.Engine.GetVisibleObjectsUnsafe(_canvasManager);
+            stopwatch.Stop();
+            log.Info("Time to get visible objects: " + stopwatch.ElapsedMilliseconds + " ms");
+            stopwatch.Restart();
+
+            
             // draw grid
             if (drawGrid)
                 _gridDrawer.DrawGrid(_canvasManager);
-
+            stopwatch.Stop();
+            log.Info("Time to draw grid: " + stopwatch.ElapsedMilliseconds + " ms");
+            stopwatch.Restart();
 
             // get polygons
             foreach (var obj in objects) {
@@ -113,8 +133,12 @@ namespace TempoEngine.UIControls {
                     Children.Add(polygon);
                 }
             }
+            stopwatch.Stop();
+            log.Info("Time to draw polygons: " + stopwatch.ElapsedMilliseconds + " ms");
+            stopwatch.Restart();
                 
             SetClipGeometry();
+            log.Info("Time to set clip geometry: " + stopwatch.ElapsedMilliseconds + " ms");*/
         }
 
     }
