@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 
 namespace TempoEngine.Engine.Managers {
     internal class ConductionTransferManager {
+
+        // fourier's law of heat conduction, take a look at the documentation
         public static void TranferHeatBetweenTwoSquares(GrainSquare sq1, GrainSquare sq2) {
-            // Heat transfer formula is calculated by the formula Q = k * A * deltaT * t / d
-            double area = Engine.GridStep;
             if (!(sq1.AreTouching(sq2)))
                 return;
             double temperatureDifference = sq1.CurrentTemperature - sq2.CurrentTemperature;
 
             double coeficient = MaterialManager.GetCoeficientFromMaterial(sq1, sq2);
             double timeTransfer = Engine.EngineIntervalUpdate;
-            double heatTransfer = coeficient * area * temperatureDifference * timeTransfer * EngineObject.Width * EngineObject.Width;
-            // FIXME: I need to calculate thickness of the object??????????????
+            double heatTransfer = coeficient  * temperatureDifference * timeTransfer;
             sq1.AddEnergyDelta(-heatTransfer);
             sq2.AddEnergyDelta(heatTransfer);
         }

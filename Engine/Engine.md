@@ -9,11 +9,17 @@ This project involves detailed calculations of heat transfer through radiation. 
 
 ## Radiation Heat Transfer
 
-### Emission Calculation
+### Conduction Calculation
 Fourier's Law of Heat Conduction is used to calculate the heat emitted by an object:
 P = -x * S * dT /l
 S = l for this 2D simulation, because it's a problem of an method of end bodies
 
+So the heat emitted by an object can be calculated as:
+P = -x * dT
+So dQ = -x * dT * dt
+
+So dT = -x * dT * dt / (c * m)
+https://ru.wikipedia.org/wiki/%D0%A2%D0%B5%D0%BF%D0%BB%D0%BE%D0%BF%D1%80%D0%BE%D0%B2%D0%BE%D0%B4%D0%BD%D0%BE%D1%81%D1%82%D1%8C#%D0%9A%D0%BE%D1%8D%D1%84%D1%84%D0%B8%D1%86%D0%B8%D0%B5%D0%BD%D1%82_%D1%82%D0%B5%D0%BF%D0%BB%D0%BE%D0%BF%D1%80%D0%BE%D0%B2%D0%BE%D0%B4%D0%BD%D0%BE%D1%81%D1%82%D0%B8
 
 ### Radiative Heat Exchange Between Two Objects
 For two objects exchanging heat through radiation, assuming no intervening medium absorbs the radiation, the heat transfer can be modeled using the following equation for gray bodies:

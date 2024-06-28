@@ -125,7 +125,7 @@ namespace TempoEngine.Engine{
 
                 // simplify the logic for now
                 for(int i = 0; i < _objects.Count; i++) {
-                    EngineManager.TransferRadiationHeatLooseToAir(_objects[i]);
+                    //EngineManager.TransferRadiationHeatLooseToAir(_objects[i]);
                     List<GrainSquare> list = _objects[i].GetSquares();
                     ConductionTransferManager.TransferHeatForObject(_objects[i]);
                 }

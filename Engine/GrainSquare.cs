@@ -28,7 +28,7 @@ namespace TempoEngine.Engine{
     public class GrainSquare : EngineObject {
         private double _energyDelta = 0;
         public event PropertyChangedEventHandler? PositionChanged;
-        private List<GrainSquare> _adjacentSquares = [];
+        public List<GrainSquare> AdjacentSquares = [];
 
         private static readonly ILog log = LogManager.GetLogger(typeof(GrainSquare));
 
@@ -231,7 +231,7 @@ namespace TempoEngine.Engine{
         public double GetMass() {
             if(_cachedMass != -1)
                 return _cachedMass;
-            double mass = GetNormalizedVolume() * MaterialManager.GetDensity(this);
+            double mass = GetNormalizedArea() * MaterialManager.GetDensity(this);
             _cachedMass = mass;
             return _cachedMass;
         }
@@ -268,20 +268,20 @@ namespace TempoEngine.Engine{
             return grainTriangles;
         }
 
-        public List<GrainSquare> GetAdjacentSquares() {
-            return _adjacentSquares;
-        }
-
         public void AddAdjacentSquare(GrainSquare square) {
-            _adjacentSquares.Add(square);
+            AdjacentSquares.Add(square);
         }
 
         public void ClearAdjacentSquares() {
-            _adjacentSquares.Clear();
+            AdjacentSquares.Clear();
         }
 
         public override List<GrainSquare> GetExternalSquares() {
             return new List<GrainSquare> {this};
+        }
+
+        public List<GrainSquare> GetAdjacentSquares() {
+            return AdjacentSquares;
         }
     }
 }
