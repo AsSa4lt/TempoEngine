@@ -43,7 +43,7 @@ namespace TempoEngine.Engine.Managers {
                     double coeficient = MaterialManager.GetCoeficientFromMaterial(obj1Triangles[i], obj2Triangles[j]);
                     double timeTransfer = Engine.EngineIntervalUpdate;
                     // FIXME: I need to calculate thickness of the object??????????????
-                    double heatTransfer = coeficient * area * temperatureDifference * timeTransfer * EngineObject.Width * EngineObject.Width;
+                    double heatTransfer = coeficient * area * temperatureDifference * timeTransfer * Engine.GridStep * Engine.GridStep;
                     obj1Triangles[i].AddEnergyDelta(-heatTransfer);
                     obj2Triangles[j].AddEnergyDelta(heatTransfer);
                 }

@@ -19,20 +19,15 @@ namespace TempoEngine.Engine {
      * \brief Abstract base class for all engine objects in the TempoEngine.
      *
      * EngineObject serves as the foundational class for objects in the simulation engine, providing
-     * common properties like position, rotation, and temperature, and abstract methods that must be
+     * common properties like position, and temperature, and abstract methods that must be
      * implemented by derived classes to fit specific needs of the engine.
      */
     public abstract class EngineObject : INotifyPropertyChanged {
-        public static readonly double Width = 0.001;
-
         /// Event triggered when a property changes.
         public event PropertyChangedEventHandler? PropertyChanged;
 
         /// Current position of the object in the engine's space.
         protected Point _position = new(0, 0);
-
-        /// Current rotation of the object.
-        protected Vector2 _rotation = new(0, 0);
 
         /// Simulation temperature intended for thermodynamic calculations.
         protected double _simulationTemperature = 200;
@@ -100,15 +95,6 @@ namespace TempoEngine.Engine {
             set {
                 _position = value;
                 OnPropertyChanged(nameof(Position));
-            }
-        }
-
-        /// Gets or sets the rotation of the object.
-        public Vector2 Rotation {
-            get => _rotation;
-            set {
-                _rotation = value;
-                OnPropertyChanged(nameof(Rotation));
             }
         }
 
@@ -203,7 +189,7 @@ namespace TempoEngine.Engine {
         /// Returns polygons representing the object's shape. Must be implemented by subclasses.
         abstract public List<Polygon> GetPolygons();
 
-        /// Returns the object's triangles. Must be implemented by subclasses.
+        /// Returns the object's squares. Must be implemented by subclasses.
         abstract public List<GrainSquare> GetSquares();
 
         /// Determines if the object is visible on the given canvas. Must be implemented by subclasses.
@@ -229,6 +215,7 @@ namespace TempoEngine.Engine {
         /// Cache all the object's properties. Must be implemented by subclasses.
         abstract public void CacheProperties();
 
+        /// Gets all external GrainSquare’s of an object, that can tranfer heat with other external GrainSquare’s of other objects
         abstract public List<GrainSquare> GetExternalSquares();
     }
 }

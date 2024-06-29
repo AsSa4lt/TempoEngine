@@ -15,10 +15,10 @@ using Point = System.Windows.Point;
 
 namespace TempoEngine.Engine{
     /**
-     * \class GrainTriangle
-     * \brief Represents a triangular grain object within the simulation engine.
+     * \class GrainSquare
+     * \brief Represents a square grain object within the simulation engine.
      *
-     * The GrainTriangle class extends \ref EngineObject and encapsulates the properties
+     * The GrainSquare class extends \ref EngineObject and encapsulates the properties
      * and behavior of a triangle-shaped grain in the simulation, including thermal properties,
      * position, and selection state. It includes methods for rendering, visibility checks, and serialization.
      * 
@@ -209,21 +209,21 @@ namespace TempoEngine.Engine{
             if(_cachedSideArea != -1)
                 return _cachedSideArea;
             double normalizedPerimeter = GetPerimeter() / Math.Pow(1000, 2);
-            double normalizedSideArea = normalizedPerimeter * Width;
+            double normalizedSideArea = normalizedPerimeter * Engine.GridStep;
             _cachedSideArea = normalizedSideArea;
             return _cachedSideArea;
         }
 
         private double GetNormalizedArea() {
-            return Width * Width ;
+            return Engine.GridStep * Engine.GridStep;
         }
 
  
         public double GetNormalizedVolume() {
             if(_cachedVolume != -1)
                 return _cachedVolume;
-            double normalizedArea = GetNormalizedArea() * Width;
-            double normalizedVolume = normalizedArea * Width;
+            double normalizedArea = GetNormalizedArea() * Engine.GridStep;
+            double normalizedVolume = normalizedArea * Engine.GridStep;
             _cachedVolume = normalizedVolume;
             return _cachedVolume;
         }

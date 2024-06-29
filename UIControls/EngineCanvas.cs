@@ -96,7 +96,7 @@ namespace TempoEngine.UIControls {
 
         public void Update() {
             // clear canvas
-            /*Stopwatch stopwatch = new Stopwatch();
+            Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             Children.Clear();
             Background = Brushes.Transparent;
@@ -138,7 +138,7 @@ namespace TempoEngine.UIControls {
             stopwatch.Restart();
                 
             SetClipGeometry();
-            log.Info("Time to set clip geometry: " + stopwatch.ElapsedMilliseconds + " ms");*/
+            log.Info("Time to set clip geometry: " + stopwatch.ElapsedMilliseconds + " ms");
         }
 
     }
