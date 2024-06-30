@@ -42,6 +42,7 @@ namespace TempoEngine.Engine{
         public GrainSquare(string name, Point position) : base(name) {
             _position = position;
             SetCachedPoints();
+            Material = MaterialManager.GetBaseMaterial();
         }
 
 

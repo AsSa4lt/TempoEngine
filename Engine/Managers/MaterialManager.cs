@@ -10,7 +10,7 @@ namespace TempoEngine.Engine.Managers {
         public static List<Material> Materials = [];
 
         public static void Init() {
-
+            populateWithBaseMaterials();
         }
 
         private static void populateWithBaseMaterials() {
@@ -20,6 +20,11 @@ namespace TempoEngine.Engine.Managers {
             m1.SpecificHeatCapacity = 900;
             m1.Density = 2700;
             Materials.Add(m1);
+        }
+
+        public static Material GetBaseMaterial() {
+            if(Materials.Count == 0) throw new Exception("Materials are not initialized");
+            return Materials[0];
         }
 
         // now we assume that material is constant and it's aluminum

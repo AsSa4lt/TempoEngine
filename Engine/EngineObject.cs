@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
+using TempoEngine.Engine.Managers;
 using TempoEngine.UIControls;
 using Point = System.Windows.Point;
 
@@ -63,6 +64,7 @@ namespace TempoEngine.Engine {
          */
         public EngineObject(string name) {
             Name = name;
+            Material = MaterialManager.GetBaseMaterial();
         }
 
         /**

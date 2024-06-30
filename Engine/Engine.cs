@@ -48,12 +48,10 @@ namespace TempoEngine.Engine{
             _objects = [];
             _engineLock = new object();
             _mainWindow = window;
+            MaterialManager.Init();
             SimpleExamples.RectangleWithTempDifference(100, 100);
             _simulationRefreshRate = Util.SystemInfo.GetRefreshRate();
             log.Info("Engine initialized");
-
-
-
         }
         public static void Start() {
             if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
