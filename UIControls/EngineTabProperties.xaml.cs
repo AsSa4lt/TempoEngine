@@ -57,11 +57,9 @@ namespace TempoEngine.UIControls {
             tbName.Text = _selectedObject.Name;
             // show only two decimal places for temperature
             tbTemperature.Text = Math.Round(_selectedObject.CurrentTemperature, 2).ToString();
-            tbThermalConductivity.Text = _selectedObject.ThermalConductivity.ToString();
-            tbMass.Text = _selectedObject.Mass.ToString();
             tbXPosition.Text = _selectedObject.Position.X.ToString();
             tbYPosition.Text = _selectedObject.Position.Y.ToString();
-            tbHeatCapacity.Text = _selectedObject.SpecificHeatCapacity.ToString();
+            // TODO: material
         }
 
         public void SetObject(EngineObject obj) {
@@ -74,13 +72,11 @@ namespace TempoEngine.UIControls {
         private void SetFieldsEnabled(bool enabled) {
             tbName.IsEnabled                 = enabled;
             tbTemperature.IsEnabled          = enabled;
-            tbThermalConductivity.IsEnabled  = enabled;
             tbXPosition.IsEnabled            = enabled;
             tbYPosition.IsEnabled            = enabled;
             tbHeight.IsEnabled               = enabled;
             tbWidth.IsEnabled                = enabled;
-            tbMass.IsEnabled                 = enabled;
-            tbHeatCapacity.IsEnabled         = enabled;
+            cbMaterial.IsEnabled             = enabled;
         }
 
         private void tbName_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
@@ -105,13 +101,6 @@ namespace TempoEngine.UIControls {
             else tbTemperature.Background = Brushes.Red;
         }
 
-        private void tbThermalConductivity_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            if(!basicInputCheck(tbThermalConductivity, e))      return;
-            tbThermalConductivity.Background = Brushes.White;
-            if(double.TryParse(tbThermalConductivity.Text, out double thermCond)) _selectedObject.ThermalConductivity = thermCond;
-            else tbThermalConductivity.Background = Brushes.Red;
-        }
-
         private bool basicInputCheck(TextBox tb, System.Windows.Input.KeyEventArgs e) {
             if(_selectedObject == null)      return false;
             if (e.Key != Key.Enter)          return false;
@@ -121,37 +110,17 @@ namespace TempoEngine.UIControls {
         private void ClearFields() {
             tbName.Text                      = "";
             tbTemperature.Text               = "";
-            tbThermalConductivity.Text       = "";
             tbXPosition.Text                 = "";
             tbYPosition.Text                 = "";
             tbHeight.Text                    = "";
             tbWidth.Text                     = "";
-            tbMass.Text                      = "";
-            tbHeatCapacity.Text              = "";
 
             tbName.Background                = Brushes.White;
             tbTemperature.Background         = Brushes.White;
-            tbThermalConductivity.Background = Brushes.White;
             tbXPosition.Background           = Brushes.White;
             tbYPosition.Background           = Brushes.White;
             tbHeight.Background              = Brushes.White;
             tbWidth.Background               = Brushes.White;
-            tbMass.Background                = Brushes.White;
-            tbHeatCapacity.Background        = Brushes.White;
-        }
-
-        private void tbMass_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            if(!basicInputCheck(tbMass, e))                     return;
-            tbMass.Background = Brushes.White;
-            if (double.TryParse(tbMass.Text, out double mass)) _selectedObject.Mass = mass;
-            else tbMass.Background = Brushes.Red;
-        }
-
-        private void tbHeatCapacity_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            if(!basicInputCheck(tbHeatCapacity, e))             return;
-            tbHeatCapacity.Background = Brushes.White;
-            if (double.TryParse(tbHeatCapacity.Text, out double heatCapacity)) _selectedObject.SpecificHeatCapacity = heatCapacity;
-            else tbHeatCapacity.Background = Brushes.Red;
         }
 
         private void tbXPosition_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {

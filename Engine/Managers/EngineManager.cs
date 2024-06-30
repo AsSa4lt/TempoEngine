@@ -42,11 +42,11 @@ namespace TempoEngine.Engine.Managers{
             List<GrainSquare> objTriangles = obj.GetSquares();
 
             for(int i = 0; i < objTriangles.Count; i++) {
-                GrainSquare triangle = objTriangles[i];
+                GrainSquare square = objTriangles[i];
                 // calculated by Stefan-Boltzmann law of radiation and multiplied by the engine update interval
-                double energyRadiationLoss = StefanBoltzmannConst * triangle.GetNormalizedSideArea() * (Math.Pow(triangle.CurrentTemperature, 4) - Math.Pow(Engine.AirTemperature, 4)) * Engine.EngineIntervalUpdate;
-                triangle.CurrentTemperature -= energyRadiationLoss / triangle.SpecificHeatCapacity / triangle.GetMass();
-                triangle.CurrentTemperature = Math.Max(0, triangle.CurrentTemperature);
+                double energyRadiationLoss = StefanBoltzmannConst * square.GetNormalizedSideArea() * (Math.Pow(square.CurrentTemperature, 4) - Math.Pow(Engine.AirTemperature, 4)) * Engine.EngineIntervalUpdate;
+                square.CurrentTemperature -= energyRadiationLoss / square.Material.SpecificHeatCapacity / square.GetMass();
+                square.CurrentTemperature = Math.Max(0, square.CurrentTemperature);
             }
         }
 

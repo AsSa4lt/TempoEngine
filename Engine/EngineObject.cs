@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 using TempoEngine.UIControls;
 using Point = System.Windows.Point;
@@ -35,14 +36,8 @@ namespace TempoEngine.Engine {
         /// Current temperature of the object.
         protected double _currentTemperature = 200;
 
-        /// Thermal conductivity of the object.
-        protected double _thermalConductivity = 0.2;
-
         /// Mass of the object.
         protected double _mass = 1;
-
-        /// Specificc hear capacity of the object. J/(K*kg)
-        protected double _specificHeatCapacity = 900;
 
         /// Name of the object.
         private string _name;
@@ -58,6 +53,9 @@ namespace TempoEngine.Engine {
 
         /// Selection state of the object.
         private bool _isSelected = false;
+
+        /// Material of the object.
+        protected Material _material;
 
         /**
          * Constructor for creating a new EngineObject.
@@ -98,6 +96,15 @@ namespace TempoEngine.Engine {
             }
         }
 
+        /// Gets or sets the material of the object.
+        public Material Material {
+            get => _material;
+            set {
+                _material = value;
+                OnPropertyChanged(nameof(Material));
+            }
+        }
+
         /// Gets or sets the current temperature.
         public double CurrentTemperature {
             get => _currentTemperature;
@@ -128,28 +135,6 @@ namespace TempoEngine.Engine {
                 if (_mass != value) {
                     _mass = value;
                     OnPropertyChanged(nameof(Mass)); // Possibly should be OnPropertyChanged(nameof(Mass));
-                }
-            }
-        }
-
-        /// Gets or sets the specific heat capacity of the object.
-        public double SpecificHeatCapacity {
-            get => _specificHeatCapacity;
-            set {
-                if (_specificHeatCapacity != value) {
-                    _specificHeatCapacity = value;
-                    OnPropertyChanged(nameof(SpecificHeatCapacity));
-                }
-            }
-        }
-
-        /// Gets or sets the thermal conductivity.
-        public double ThermalConductivity {
-            get => _thermalConductivity;
-            set {
-                if (_thermalConductivity != value) {
-                    _thermalConductivity = value;
-                    OnPropertyChanged(nameof(ThermalConductivity));
                 }
             }
         }

@@ -128,7 +128,7 @@ namespace TempoEngine.Engine{
         }
 
         public void ApplyEnergyDelta() {
-            CurrentTemperature = _currentTemperature + _energyDelta / SpecificHeatCapacity / _cachedMass;
+            CurrentTemperature = _currentTemperature + _energyDelta / _material.SpecificHeatCapacity / _cachedMass;
             CurrentTemperature = Math.Max(0, CurrentTemperature);
             _energyDelta = 0;
         }
@@ -170,7 +170,6 @@ namespace TempoEngine.Engine{
             return new GrainSquare(name, Position) {
                 _simulationTemperature = simulationTemperature,
                 _currentTemperature = currentTemperature,
-                _thermalConductivity = thermalConductivity,
                 _mass = mass
             };
         }
@@ -196,7 +195,6 @@ namespace TempoEngine.Engine{
                 Position = _position,
                 SimulationTemperature = _simulationTemperature,
                 CurrentTemperature = _currentTemperature,
-                ThermalConductivity = _thermalConductivity
             }, settings);
         }
 

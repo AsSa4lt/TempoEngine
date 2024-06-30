@@ -7,6 +7,21 @@ using System.Threading.Tasks;
 namespace TempoEngine.Engine.Managers {
     internal class MaterialManager {
 
+        public static List<Material> Materials = [];
+
+        public static void Init() {
+
+        }
+
+        private static void populateWithBaseMaterials() {
+            Material m1 = new Material();
+            m1.Name = "Aluminium";
+            m1.isBaseMaterial = true;
+            m1.SpecificHeatCapacity = 900;
+            m1.Density = 2700;
+            Materials.Add(m1);
+        }
+
         // now we assume that material is constant and it's aluminum
         public static double GetCoeficientFromMaterial(GrainSquare obj1, GrainSquare obj2) {
             return 2.05;

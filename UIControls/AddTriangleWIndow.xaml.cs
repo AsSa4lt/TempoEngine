@@ -20,10 +20,10 @@ namespace TempoEngine.UIControls {
     /// <summary>
     /// Interaction logic for AddTriangleWIndow.xaml
     /// </summary>
-    public partial class AddTriangleWIndow : Window {
+    public partial class AddSquareWindow : Window {
         GrainSquare _newSquare;
         public Action OnObjectAdded;
-        public AddTriangleWIndow() {
+        public AddSquareWindow() {
             InitializeComponent();
             _newSquare = new GrainSquare("New square", new Point(0, 0));
             int i = 0;
@@ -39,8 +39,6 @@ namespace TempoEngine.UIControls {
             tbYPosition.Text = _newSquare.Position.Y.ToString();
             tbMass.Text = _newSquare.Mass.ToString();
             tbTemperature.Text = _newSquare.SimulationTemperature.ToString();
-            tbThermalConductivity.Text = _newSquare.ThermalConductivity.ToString();
-            tbHeatCapacity.Text = _newSquare.SpecificHeatCapacity.ToString();
         }
 
         private void ClearColors() {
@@ -81,16 +79,6 @@ namespace TempoEngine.UIControls {
                 tbTemperature.Background = Brushes.Red;
             }
 
-            if(_newSquare.ThermalConductivity < 0) {
-                errorMessage = "Thermal conductivity must be greater than or equal to 0";
-                tbThermalConductivity.Background = Brushes.Red;
-            }
-
-            if(_newSquare.SpecificHeatCapacity <= 0) {
-                errorMessage = "Specific heat capacity must be greater than 0";
-                tbHeatCapacity.Background = Brushes.Red;
-            }
-
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e) {
@@ -100,8 +88,6 @@ namespace TempoEngine.UIControls {
             _newSquare.Position               = new Point(double.Parse(tbXPosition.Text), double.Parse(tbYPosition.Text));
             _newSquare.Mass                   = double.Parse(tbMass.Text);
             _newSquare.SimulationTemperature  = double.Parse(tbTemperature.Text);
-            _newSquare.ThermalConductivity    = double.Parse(tbThermalConductivity.Text);
-            _newSquare.SpecificHeatCapacity   = double.Parse(tbHeatCapacity.Text);
 
             CheckObject(out string errorMessage);
 
