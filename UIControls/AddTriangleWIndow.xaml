@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TempoEngine.UIControls"
         mc:Ignorable="d"
-        Title="AddTriangleWIndow" Height="260" Width="300" ResizeMode="NoResize">
+        Title="AddsquareWIndow" Height="260" Width="300" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>

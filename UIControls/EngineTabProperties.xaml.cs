@@ -24,7 +24,7 @@ namespace TempoEngine.UIControls {
     /// </summary>
     public partial class EngineTabProperties : UserControl {
         private EngineObject? _selectedObject;
-        private bool _isTriangleMode = false;
+        private bool _issquareMode = false;
         private bool isEnabled = true;
         public EngineTabProperties() : base() {
             InitializeComponent();

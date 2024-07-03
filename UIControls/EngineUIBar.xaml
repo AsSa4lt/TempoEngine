@@ -41,7 +41,7 @@
             </Button.Style>
             <Button.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="GrainTriangle" Click="addTriangleClicked"/>
+                    <MenuItem Header="Grainsquare" Click="addsquareClicked"/>
                     <MenuItem Header="Rectangle" IsEnabled="False"/>
                     <MenuItem Header="Circle" IsEnabled="False"/>
                 </ContextMenu>

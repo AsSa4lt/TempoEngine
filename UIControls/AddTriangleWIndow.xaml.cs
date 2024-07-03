@@ -18,7 +18,7 @@ using Point = System.Windows.Point;
 
 namespace TempoEngine.UIControls {
     /// <summary>
-    /// Interaction logic for AddTriangleWIndow.xaml
+    /// Interaction logic for AddsquareWIndow.xaml
     /// </summary>
     public partial class AddSquareWindow : Window {
         GrainSquare _newSquare;

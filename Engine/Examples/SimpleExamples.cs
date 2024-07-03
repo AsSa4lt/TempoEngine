@@ -7,15 +7,15 @@ using Point = System.Windows.Point;
 
 namespace TempoEngine.Engine.Examples {
     public static class SimpleExamples {
-        public static void SetThreeTriangles() {
+        public static void SetThreesquares() {
             // add 3 objects to the engine
             GrainSquare obj1 = new GrainSquare("Square", new Point(0, 0));
             obj1.SimulationTemperature = 200;
             Engine.AddObject(obj1);
-            GrainSquare obj2 = new GrainSquare("Triangle2", new Point(1, 0));
+            GrainSquare obj2 = new GrainSquare("square2", new Point(1, 0));
             obj2.SimulationTemperature = 50;
             Engine.AddObject(obj2);
-            GrainSquare obj3 = new GrainSquare("Triangle3", new Point(2, 2));
+            GrainSquare obj3 = new GrainSquare("square3", new Point(2, 2));
             obj1.SimulationTemperature = 0;
             Engine.AddObject(obj3);
         }
@@ -27,10 +27,10 @@ namespace TempoEngine.Engine.Examples {
             double centerX = width / 2.0;
             double centerY = height / 2.0;
 
-            // Create each triangle in the grid
+            // Create each square in the grid
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
-                    // Calculate the centroid of the triangle
+                    // Calculate the centroid of the square
                     Point centroid = new Point(x + 0.5, y + 0.5);
 
                     // Calculate distance from the center
@@ -40,10 +40,10 @@ namespace TempoEngine.Engine.Examples {
                     // Assign temperature inversely proportional to the distance
                     double temperature = maxTemperature * (1 - (distance / maxDistance));
 
-                    // Define points for the triangle (assuming each cell is a right triangle)
+                    // Define points for the square (assuming each cell is a right square)
                     Point p1 = new Point(x, y);
 
-                    // Create triangle
+                    // Create square
                     GrainSquare square = new GrainSquare($"Square_{x}_{y}", p1);
                     square.SimulationTemperature = temperature;
 

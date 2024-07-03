@@ -20,32 +20,32 @@ namespace TempoEngine.Engine.Managers {
 
 
         public static void TransferHeatForObject(EngineObject obj) {
-            List<GrainSquare> objTriangles = obj.GetSquares();
-            for (int i = 0; i < objTriangles.Count; i++) {
-                List<GrainSquare> adjSquares = objTriangles[i].GetAdjacentSquares();
+            List<GrainSquare> objsquares = obj.GetSquares();
+            for (int i = 0; i < objsquares.Count; i++) {
+                List<GrainSquare> adjSquares = objsquares[i].GetAdjacentSquares();
                 for (int j = 0; j < adjSquares.Count; j++) {
-                    TranferHeatBetweenTwoSquares(objTriangles[i], adjSquares[j]);
+                    TranferHeatBetweenTwoSquares(objsquares[i], adjSquares[j]);
                 }
             }
         }
 
         public static void TranferHeatBetweenTwoObjects(EngineObject obj1, EngineObject obj2) {
-            List<GrainSquare> obj1Triangles = obj1.GetSquares();
-            List<GrainSquare> obj2Triangles = obj2.GetSquares();
-            for (int i = 0; i < obj1Triangles.Count; i++) {
-                for (int j = 0; j < obj2Triangles.Count; j++) {
+            List<GrainSquare> obj1squares = obj1.GetSquares();
+            List<GrainSquare> obj2squares = obj2.GetSquares();
+            for (int i = 0; i < obj1squares.Count; i++) {
+                for (int j = 0; j < obj2squares.Count; j++) {
                     // Heat transfer formula is calculated by the formula Q = k * A * deltaT * t / d
                     double area = Engine.GridStep;
-                    if (!(obj1Triangles[i].AreTouching(obj2Triangles[j])))
+                    if (!(obj1squares[i].AreTouching(obj2squares[j])))
                         continue;
-                    double temperatureDifference = obj1Triangles[i].CurrentTemperature - obj2Triangles[j].CurrentTemperature;
+                    double temperatureDifference = obj1squares[i].CurrentTemperature - obj2squares[j].CurrentTemperature;
 
-                    double coeficient = MaterialManager.GetCoeficientFromMaterial(obj1Triangles[i], obj2Triangles[j]);
+                    double coeficient = MaterialManager.GetCoeficientFromMaterial(obj1squares[i], obj2squares[j]);
                     double timeTransfer = Engine.EngineIntervalUpdate;
                     // FIXME: I need to calculate thickness of the object??????????????
                     double heatTransfer = coeficient * area * temperatureDifference * timeTransfer * Engine.GridStep * Engine.GridStep;
-                    obj1Triangles[i].AddEnergyDelta(-heatTransfer);
-                    obj2Triangles[j].AddEnergyDelta(heatTransfer);
+                    obj1squares[i].AddEnergyDelta(-heatTransfer);
+                    obj2squares[j].AddEnergyDelta(heatTransfer);
                 }
             }
         }

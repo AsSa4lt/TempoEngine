@@ -19,7 +19,7 @@ namespace TempoEngine.Engine{
      * \brief Represents a square grain object within the simulation engine.
      *
      * The GrainSquare class extends \ref EngineObject and encapsulates the properties
-     * and behavior of a triangle-shaped grain in the simulation, including thermal properties,
+     * and behavior of a square-shaped grain in the simulation, including thermal properties,
      * position, and selection state. It includes methods for rendering, visibility checks, and serialization.
      * 
      * \see EngineObject
@@ -33,11 +33,11 @@ namespace TempoEngine.Engine{
         private static readonly ILog log = LogManager.GetLogger(typeof(GrainSquare));
 
         /**
-         * Constructs a GrainTriangle with specified vertices and name.
-         * \param name The name of the grain triangle.
-         * \param p_a Vertex A of the triangle.
-         * \param p_b Vertex B of the triangle.
-         * \param p_c Vertex C of the triangle.
+         * Constructs a Grainsquare with specified vertices and name.
+         * \param name The name of the grain square.
+         * \param p_a Vertex A of the square.
+         * \param p_b Vertex B of the square.
+         * \param p_c Vertex C of the square.
          */
         public GrainSquare(string name, Point position) : base(name) {
             _position = position;
@@ -51,9 +51,9 @@ namespace TempoEngine.Engine{
         Point _cachedPointC = new(0, 0); // left bottom corner
         Point _cachedPointD = new(0, 0); // right bottom corner
         /**
-         * Generates the polygons that visually represent the triangle.
+         * Generates the polygons that visually represent the square.
          * This method overrides the abstract method defined in \ref EngineObject.
-         * \return List of polygons constituting the triangle's visual representation.
+         * \return List of polygons constituting the square's visual representation.
          */
         public override List<Polygon> GetPolygons() {
             List<Polygon> polygons = new List<Polygon>();
@@ -93,28 +93,19 @@ namespace TempoEngine.Engine{
             }
         }
 
-        /**
-         * Checks if a given point is visible within the current canvas manager's view.
-         * \param point The point to check for visibility.
-         * \param canvasManager The canvas manager providing the current view context.
-         * \return True if the point is visible, otherwise false.
-         */
-        private bool isPointVisible(Point point, CanvasManager canvasManager) {
-            return point.X >= canvasManager.CurrentLeftXIndex && point.X <= canvasManager.CurrentRightXIndex &&
-                   point.Y >= canvasManager.CurrentBottomYIndex && point.Y <= canvasManager.CurrentTopYIndex;
-        }
+
 
         /**
-         * Determines whether any of the triangle's vertices are visible in the current view.
+         * Determines whether any of the square's vertices are visible in the current view.
          * \param canvasManager The canvas manager providing the current view context.
          * \return True if any vertex is visible, otherwise false.
          */
         public override bool IsVisible(CanvasManager canvasManager) {
-            return isPointVisible(Position, canvasManager);
+            return CanvasManager.isPointVisible(Position, canvasManager);
         }
 
         /**
-         * Calculates the bounding box that encompasses the triangle.
+         * Calculates the bounding box that encompasses the square.
          * \param[out] topLeft The top-left corner of the bounding box.
          * \param[out] bottomRight The bottom-right corner of the bounding box.
          */
@@ -123,11 +114,17 @@ namespace TempoEngine.Engine{
             bottomRight = new Vector2((float)_cachedPointD.X, (float)_cachedPointD.Y);
         }
 
-
+        /**
+         * Add energy to the grain square that was calculated in one simulation step
+         * \param energyDelta The energy to add to the grain square.
+         */
         public void AddEnergyDelta(double energyDelta) {
             _energyDelta += energyDelta;
         }
 
+        /**
+         * Applies the energy delta to the grain square, updating the temperature.
+         */
         public void ApplyEnergyDelta() {
             CurrentTemperature = _currentTemperature + _energyDelta / _material.SpecificHeatCapacity / _cachedMass;
             CurrentTemperature = Math.Max(0, CurrentTemperature);
@@ -142,7 +139,7 @@ namespace TempoEngine.Engine{
         }
 
         /**
-         * Provides the type identifier for GrainTriangle objects.
+         * Provides the type identifier for Grainsquare objects.
          * \return A string identifier for the type.
          */
         public override string GetObjectTypeString() {
@@ -158,8 +155,8 @@ namespace TempoEngine.Engine{
             var jObject = JsonConvert.DeserializeObject<dynamic>(json, settings);
 
             string type = jObject.Type;
-            if (type != "GrainTriangle")
-                throw new InvalidOperationException("JSON is not of type GrainTriangle.");
+            if (type != "Grainsquare")
+                throw new InvalidOperationException("JSON is not of type Grainsquare.");
             Point Position = ParsePoint(jObject.Position.ToString());
 
             string name = jObject.Name;
@@ -180,8 +177,8 @@ namespace TempoEngine.Engine{
             return new Point(double.Parse(parts[0]), double.Parse(parts[1]));
         }
         /**
-         * Serializes the grain triangle to a JSON representation.
-         * \return A JSON string representing the grain triangle.
+         * Serializes the grain square to a JSON representation.
+         * \return A JSON string representing the grain square.
          */
         public override string GetJsonRepresentation() {
             var settings = new JsonSerializerSettings {
@@ -203,7 +200,7 @@ namespace TempoEngine.Engine{
             return 0.004;
         }
 
-        /// IT'S NOT AN AREA OF A TRIANGLE
+        /// IT'S NOT AN AREA OF A square
         public double GetNormalizedSideArea() {
             if(_cachedSideArea != -1)
                 return _cachedSideArea;
@@ -252,7 +249,7 @@ namespace TempoEngine.Engine{
         }
 
         public bool AreTouching(GrainSquare other) {
-            // check the object is not null and that the two triangles are not the same
+            // check the object is not null and that the two squares are not the same
             if (other == null || this.Name == other.Name) {
                 return false;
             }
@@ -263,8 +260,8 @@ namespace TempoEngine.Engine{
         }
 
         public override List<GrainSquare> GetSquares() {
-            List<GrainSquare> grainTriangles = [this];
-            return grainTriangles;
+            List<GrainSquare> grainsquares = [this];
+            return grainsquares;
         }
 
         public void AddAdjacentSquare(GrainSquare square) {

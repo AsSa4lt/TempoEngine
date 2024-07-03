@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using TempoEngine.Util;
+using Point = System.Windows.Point;
 
 namespace TempoEngine.UIControls{
     public class CanvasManager{
@@ -163,6 +164,19 @@ namespace TempoEngine.UIControls{
             int yDelta = (yDistance - currentYDistance) / 2;
             CurrentTopYIndex += yDelta;
             CurrentBottomYIndex -= yDelta;
+        }
+
+
+        /**
+         * Checks if a given point is visible within the current canvas manager's view.
+         * \param point The point to check for visibility.
+         * \param canvasManager The canvas manager providing the current view context.
+         * \return True if the point is visible, otherwise false.
+         */
+
+        public static bool isPointVisible(Point point, CanvasManager canvasManager){
+            return point.X >= canvasManager.CurrentLeftXIndex && point.X <= canvasManager.CurrentRightXIndex &&
+                   point.Y >= canvasManager.CurrentBottomYIndex && point.Y <= canvasManager.CurrentTopYIndex;
         }
     }
 }
