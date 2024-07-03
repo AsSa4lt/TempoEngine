@@ -32,7 +32,7 @@ namespace TempoEngine.Engine{
         private static long _simulationTime = 0; 
 
         // should we optimize the engine by setting adjacent squares to be touching
-        public static bool OptimizeTouching = true;
+        public static bool Optimize = true;
 
         public enum EngineMode {
             Stopped,
@@ -75,7 +75,6 @@ namespace TempoEngine.Engine{
                 for (int i = 0; i < _objects.Count; i++) {
                     _objects[i].CacheProperties();
                     List<GrainSquare> firstExternal = _objects[i].GetExternalSquares();
-                    // clear list of adjacent squares
                     for (int k = 0; k < firstExternal.Count; k++) {
                         firstExternal[k].ClearAdjacentSquares();
                     }
@@ -103,7 +102,8 @@ namespace TempoEngine.Engine{
                 foreach (var obj in _objects) {
                     obj.SetStartTemperature();
                 }
-                if (OptimizeTouching) {
+                if (Optimize) {
+                    OptimizationManager.Optimize(_objects);
                     OptimiseAdjacentSquares();
                 }
             }
