@@ -49,7 +49,7 @@ namespace TempoEngine.Engine{
             _engineLock = new object();
             _mainWindow = window;
             MaterialManager.Init();
-            SimpleExamples.RectangleWithTempDifference(100, 100);
+            SimpleExamples.RectangleWithTempDifference(20, 20);
             _simulationRefreshRate = Util.SystemInfo.GetRefreshRate();
             log.Info("Engine initialized");
         }
@@ -111,6 +111,8 @@ namespace TempoEngine.Engine{
 
         public static void Run() {
             if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
+            if(_objects == null)            throw new InvalidOperationException("Engine not initialized");
+
             Stopwatch stopwatch = new Stopwatch();
 
             while (true) {
@@ -124,7 +126,7 @@ namespace TempoEngine.Engine{
 
                 // simplify the logic for now
                 for(int i = 0; i < _objects.Count; i++) {
-                    //EngineManager.TransferRadiationHeatLooseToAir(_objects[i]);
+                    RadiationTransferManager.TransferRadiationHeatForObjects(_objects);
                     List<GrainSquare> list = _objects[i].GetSquares();
                     ConductionTransferManager.TransferHeatForObject(_objects[i]);
                 }

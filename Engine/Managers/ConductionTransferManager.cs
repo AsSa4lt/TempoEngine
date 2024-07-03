@@ -28,26 +28,5 @@ namespace TempoEngine.Engine.Managers {
                 }
             }
         }
-
-        public static void TranferHeatBetweenTwoObjects(EngineObject obj1, EngineObject obj2) {
-            List<GrainSquare> obj1squares = obj1.GetSquares();
-            List<GrainSquare> obj2squares = obj2.GetSquares();
-            for (int i = 0; i < obj1squares.Count; i++) {
-                for (int j = 0; j < obj2squares.Count; j++) {
-                    // Heat transfer formula is calculated by the formula Q = k * A * deltaT * t / d
-                    double area = Engine.GridStep;
-                    if (!(obj1squares[i].AreTouching(obj2squares[j])))
-                        continue;
-                    double temperatureDifference = obj1squares[i].CurrentTemperature - obj2squares[j].CurrentTemperature;
-
-                    double coeficient = MaterialManager.GetCoeficientFromMaterial(obj1squares[i], obj2squares[j]);
-                    double timeTransfer = Engine.EngineIntervalUpdate;
-                    // FIXME: I need to calculate thickness of the object??????????????
-                    double heatTransfer = coeficient * area * temperatureDifference * timeTransfer * Engine.GridStep * Engine.GridStep;
-                    obj1squares[i].AddEnergyDelta(-heatTransfer);
-                    obj2squares[j].AddEnergyDelta(heatTransfer);
-                }
-            }
-        }
     }
 }
