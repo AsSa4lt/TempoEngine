@@ -97,11 +97,8 @@ namespace TempoEngine.Engine{
                 // update logic
 
                 // simplify the logic for now
-                for(int i = 0; i < _objects.Count; i++) {
-                    RadiationTransferManager.TransferRadiationHeatForObjects(_objects);
-                    List<GrainSquare> list = _objects[i].GetSquares();
-                    ConductionTransferManager.TransferHeatForObject(_objects[i]);
-                }
+                RadiationTransferManager.TransferRadiationHeat(_objects);
+                ConductionTransferManager.TransferConductionHeat(_objects);
 
                 // apply results to the UI
                 for(int i = 0; i < _objects.Count; i++) {
