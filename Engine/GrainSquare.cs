@@ -126,7 +126,7 @@ namespace TempoEngine.Engine{
          * Applies the energy delta to the grain square, updating the temperature.
          */
         public void ApplyEnergyDelta() {
-            CurrentTemperature = _currentTemperature + _energyDelta / _material.SpecificHeatCapacity / _cachedMass;
+            CurrentTemperature = _currentTemperature + _energyDelta / Engine.GridStep / Engine.GridStep / _material.SpecificHeatCapacity / _material.Density;
             CurrentTemperature = Math.Max(0, CurrentTemperature);
             _energyDelta = 0;
         }

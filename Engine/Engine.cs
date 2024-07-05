@@ -49,7 +49,7 @@ namespace TempoEngine.Engine{
             _engineLock = new object();
             _mainWindow = window;
             MaterialManager.Init();
-            SimpleExamples.RectangleWithTempDifference(20, 20);
+            SimpleExamples.RectangleWithTempDifference(30, 30);
             _simulationRefreshRate = Util.SystemInfo.GetRefreshRate();
             log.Info("Engine initialized");
         }
@@ -98,7 +98,7 @@ namespace TempoEngine.Engine{
 
                 // simplify the logic for now
                 RadiationTransferManager.TransferRadiationHeat(_objects);
-                ConductionTransferManager.TransferConductionHeat(_objects);
+                //ConductionTransferManager.TransferConductionHeat(_objects);
 
                 // apply results to the UI
                 for(int i = 0; i < _objects.Count; i++) {
