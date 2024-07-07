@@ -39,7 +39,9 @@ namespace TempoEngine.Engine.Managers{
             List<GrainSquare> objsquares = obj.GetSquares();
             foreach(var square in objsquares) {
                 // calculated by Stefan-Boltzmann law of radiation and multiplied by the engine update interval
-                double energyRadiationLoss = StefanBoltzmannConst * square.GetPerimeter() * (Math.Pow(square.CurrentTemperature, 4) - Math.Pow(Engine.AirTemperature, 4)) * Engine.EngineIntervalUpdate;
+                // we need to find the area of the square that is not touching other squares to calculate the radiation loss to air
+                double areaRadiationLoss = 4 - square.GetAdjacentSquares().Count * Engine.GridStep;
+                double energyRadiationLoss = StefanBoltzmannConst * areaRadiationLoss * (Math.Pow(square.CurrentTemperature, 4) - Math.Pow(Engine.AirTemperature, 4)) * Engine.EngineIntervalUpdate;
                 square.AddEnergyDelta(-energyRadiationLoss);
             }
         }
