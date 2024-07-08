@@ -13,7 +13,6 @@ namespace TempoEngine.Engine.Managers {
          */
         public static void Optimize(List<EngineObject> objects) {
             ClearOptimization(objects);
-            OptimizeCaching(objects);
             OptimizeTouching(objects);
         }
 
@@ -45,16 +44,6 @@ namespace TempoEngine.Engine.Managers {
                     List<GrainSquare> secondExternal = objects[j].GetExternalSquares();
                     FillExternalSquares(firstExternal, secondExternal);
                 }
-            }
-        }
-
-        /*
-         * Optimize caching
-         * \param objects list of objects
-         */
-        private static void OptimizeCaching(List<EngineObject> objects) {
-            foreach(var obj in objects) {
-                obj.CacheProperties();
             }
         }
 

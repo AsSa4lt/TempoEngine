@@ -168,7 +168,6 @@ namespace TempoEngine.Engine{
             return new GrainSquare(name, Position) {
                 _simulationTemperature = simulationTemperature,
                 _currentTemperature = currentTemperature,
-                _mass = mass
             };
         }
 
@@ -189,7 +188,6 @@ namespace TempoEngine.Engine{
             return JsonConvert.SerializeObject(new {
                 Type = GetObjectTypeString(),
                 Name,
-                Mass = _mass,
                 Position = _position,
                 SimulationTemperature = _simulationTemperature,
                 CurrentTemperature = _currentTemperature,
@@ -198,38 +196,6 @@ namespace TempoEngine.Engine{
 
         public double GetPerimeter() {
             return 0.004;
-        }
-
-        /// IT'S NOT AN AREA OF A square
-        public double GetNormalizedSideArea() {
-            if(_cachedSideArea != -1)
-                return _cachedSideArea;
-            double normalizedPerimeter = GetPerimeter() / Math.Pow(1000, 2);
-            double normalizedSideArea = normalizedPerimeter * Engine.GridStep;
-            _cachedSideArea = normalizedSideArea;
-            return _cachedSideArea;
-        }
-
-        private double GetNormalizedArea() {
-            return Engine.GridStep * Engine.GridStep;
-        }
-
- 
-        public double GetNormalizedVolume() {
-            if(_cachedVolume != -1)
-                return _cachedVolume;
-            double normalizedArea = GetNormalizedArea() * Engine.GridStep;
-            double normalizedVolume = normalizedArea * Engine.GridStep;
-            _cachedVolume = normalizedVolume;
-            return _cachedVolume;
-        }
-
-        public double GetMass() {
-            if(_cachedMass != -1)
-                return _cachedMass;
-            double mass = GetNormalizedArea() * MaterialManager.GetDensity(this);
-            _cachedMass = mass;
-            return _cachedMass;
         }
 
 
@@ -278,13 +244,6 @@ namespace TempoEngine.Engine{
 
         public List<GrainSquare> GetAdjacentSquares() {
             return AdjacentSquares;
-        }
-
-        public override void CacheProperties() {
-            GetNormalizedArea();
-            GetNormalizedVolume();
-            GetMass();
-            GetNormalizedSideArea();
         }
     }
 }

@@ -37,20 +37,9 @@ namespace TempoEngine.Engine {
         /// Current temperature of the object.
         protected double _currentTemperature = 200;
 
-        /// Mass of the object.
-        protected double _mass = 1;
-
         /// Name of the object.
         private string _name;
 
-        /// It's time consuming to calculate the area of an object, so we cache it.
-        protected double _cachedSideArea = -1; // -1 means not yet calculated
-
-        /// Cached volume of the object.
-        protected double _cachedVolume = -1; // -1 means not yet calculated
-
-        // Cached mass of the object.
-        protected double _cachedMass = -1; // -1 means not yet calculated
 
         /// Selection state of the object.
         private bool _isSelected = false;
@@ -132,16 +121,6 @@ namespace TempoEngine.Engine {
             }
         }
 
-        /// Gets or sets the mass of the object.
-        public double Mass {
-            get => _mass;
-            set {
-                if (_mass != value) {
-                    _mass = value;
-                    OnPropertyChanged(nameof(Mass)); // Possibly should be OnPropertyChanged(nameof(Mass));
-                }
-            }
-        }
 
         /// Gets or sets the name of the object.
         public string Name {
@@ -168,9 +147,6 @@ namespace TempoEngine.Engine {
         /// Called to notify observers of property changes.
         protected void OnPropertyChanged(string propertyName) {
             if (Engine.Mode != Engine.EngineMode.Running) {
-                _cachedSideArea = -1;
-                _cachedVolume = -1;
-                _cachedMass = -1;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }
@@ -200,9 +176,6 @@ namespace TempoEngine.Engine {
 
         /// Determines if the object is intersecting with another object. Must be implemented by subclasses.
         abstract public bool IsIntersecting(EngineObject obj);
-
-        /// Cache all the object's properties. Must be implemented by subclasses.
-        abstract public void CacheProperties();
 
         /// Gets all external GrainSquare’s of an object, that can tranfer heat with other external GrainSquare’s of other objects
         abstract public List<GrainSquare> GetExternalSquares();

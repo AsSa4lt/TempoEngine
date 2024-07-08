@@ -37,7 +37,6 @@ namespace TempoEngine.UIControls {
             tbName.Text = _newSquare.Name;
             tbXPosition.Text = _newSquare.Position.X.ToString();
             tbYPosition.Text = _newSquare.Position.Y.ToString();
-            tbMass.Text = _newSquare.Mass.ToString();
             tbTemperature.Text = _newSquare.SimulationTemperature.ToString();
         }
 
@@ -69,10 +68,6 @@ namespace TempoEngine.UIControls {
                 tbYPosition.Background = Brushes.Red;
             }
 
-            if(_newSquare.Mass <= 0) {
-                errorMessage = "Mass must be greater than 0";
-                tbMass.Background = Brushes.Red;
-            }
 
             if(_newSquare.SimulationTemperature < 0) {
                 errorMessage = "Temperature must be greater than or equal to 0";
@@ -86,7 +81,6 @@ namespace TempoEngine.UIControls {
             
             _newSquare.Name                   = tbName.Text;
             _newSquare.Position               = new Point(double.Parse(tbXPosition.Text), double.Parse(tbYPosition.Text));
-            _newSquare.Mass                   = double.Parse(tbMass.Text);
             _newSquare.SimulationTemperature  = double.Parse(tbTemperature.Text);
 
             CheckObject(out string errorMessage);
