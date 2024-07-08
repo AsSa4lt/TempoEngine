@@ -28,6 +28,14 @@ namespace TempoEngine.Engine.Managers {
             return Materials[0];
         }
 
+        public static Material GetMaterialByName(string name) {
+            return Materials.Find(x => x.Name == name);
+        }
+
+        public static List<Material> GetMaterials() {
+           return Materials;
+        }
+
         // now we assume that material is constant and it's aluminum
         public static double GetCoeficientFromMaterial(GrainSquare obj1, GrainSquare obj2) {
             return 2.05;

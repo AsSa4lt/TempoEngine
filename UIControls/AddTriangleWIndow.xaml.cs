@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TempoEngine.Engine;
+using TempoEngine.Engine.Managers;
 using Brushes = System.Windows.Media.Brushes;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
@@ -38,16 +39,16 @@ namespace TempoEngine.UIControls {
             tbXPosition.Text = _newSquare.Position.X.ToString();
             tbYPosition.Text = _newSquare.Position.Y.ToString();
             tbTemperature.Text = _newSquare.SimulationTemperature.ToString();
+            MaterialManager.GetMaterials().ForEach(x => cbMaterial.Items.Add(x.Name));
+            cbMaterial.SelectedIndex = 0;
         }
 
         private void ClearColors() {
             tbName.Background                = Brushes.White;
-            tbXPosition.Background     = Brushes.White;
-            tbYPosition.Background     = Brushes.White;
-            tbMass.Background                = Brushes.White;
+            tbXPosition.Background           = Brushes.White;
+            tbYPosition.Background           = Brushes.White;
             tbTemperature.Background         = Brushes.White;
-            tbThermalConductivity.Background = Brushes.White;
-            tbHeatCapacity.Background        = Brushes.White;
+            cbMaterial.Background            = Brushes.White;
         }
 
         private void CheckObject(out string errorMessage) {
@@ -68,6 +69,11 @@ namespace TempoEngine.UIControls {
                 tbYPosition.Background = Brushes.Red;
             }
 
+            if(cbMaterial.SelectedItem == null) {
+                errorMessage = "Material must be selected";
+                cbMaterial.Background = Brushes.Red;
+            }
+
 
             if(_newSquare.SimulationTemperature < 0) {
                 errorMessage = "Temperature must be greater than or equal to 0";
@@ -82,6 +88,7 @@ namespace TempoEngine.UIControls {
             _newSquare.Name                   = tbName.Text;
             _newSquare.Position               = new Point(double.Parse(tbXPosition.Text), double.Parse(tbYPosition.Text));
             _newSquare.SimulationTemperature  = double.Parse(tbTemperature.Text);
+            _newSquare.Material                = MaterialManager.GetMaterialByName(cbMaterial.SelectedItem.ToString());
 
             CheckObject(out string errorMessage);
 
