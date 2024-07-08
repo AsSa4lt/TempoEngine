@@ -16,5 +16,7 @@ namespace TempoEngine.Engine {
         public double SpecificHeatCapacity { get; set; }
 
         public double Density { get; set; }
+
+        public double Emmisivity { get; set; }
     }
 }

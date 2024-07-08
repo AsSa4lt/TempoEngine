@@ -98,7 +98,7 @@ namespace TempoEngine.Engine{
 
                 // simplify the logic for now
                 RadiationTransferManager.TransferRadiationHeat(_objects);
-                ConductionTransferManager.TransferConductionHeat(_objects);
+                //ConductionTransferManager.TransferConductionHeat(_objects);
 
                 // apply results to the UI
                 for(int i = 0; i < _objects.Count; i++) {
@@ -126,6 +126,12 @@ namespace TempoEngine.Engine{
             }
         }
 
+        public static EngineMode GetMode() {
+            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
+            lock (_engineLock) {
+                return Mode;
+            }
+        }
 
         public static long GetSimulationTime() {
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");

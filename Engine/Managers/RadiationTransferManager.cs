@@ -11,7 +11,7 @@ namespace TempoEngine.Engine.Managers{
     public static class RadiationTransferManager {
 
         /// Stefan-Boltzmann constant
-        public static readonly double StefanBoltzmannConst = 5.67 * Math.Pow(10, -8) * Math.Pow(10, -2);
+        public static readonly double StefanBoltzmannConst = 5.67 * Math.Pow(10, -8);
         /**
          * Transfer radiation heat between two objects
          * Q = σ*A*e`*(T1^4 - T2^4)*t. 
@@ -23,7 +23,9 @@ namespace TempoEngine.Engine.Managers{
             List<GrainSquare> obj2squares = obj2.GetSquares();
             foreach (var square1 in obj1squares) {
                 foreach (var square2 in obj2squares) {
-                    double energyRadiationLoss = StefanBoltzmannConst * Engine.GridStep * (Math.Pow(square1.CurrentTemperature, 4) - Math.Pow(square2.CurrentTemperature, 4)) * Engine.EngineIntervalUpdate;
+                    double emmisivityBetweenTwoObjects = (square1.Material.Emmisivity * square2.Material.Emmisivity) / (1/square1.Material.Emmisivity + 1/square2.Material.Emmisivity - 1);
+                    double viewFactor = 1;
+                    double energyRadiationLoss = emmisivityBetweenTwoObjects * StefanBoltzmannConst * Engine.GridStep * viewFactor * (Math.Pow(square1.CurrentTemperature, 4) - Math.Pow(square2.CurrentTemperature, 4)) * Engine.EngineIntervalUpdate;
                     square1.AddEnergyDelta(-energyRadiationLoss);
                     square2.AddEnergyDelta(energyRadiationLoss);
                 }
@@ -41,7 +43,7 @@ namespace TempoEngine.Engine.Managers{
                 // calculated by Stefan-Boltzmann law of radiation and multiplied by the engine update interval
                 // we need to find the area of the square that is not touching other squares to calculate the radiation loss to air
                 double areaRadiationLoss = 4 - square.GetAdjacentSquares().Count * Engine.GridStep;
-                double energyRadiationLoss = StefanBoltzmannConst * areaRadiationLoss * (Math.Pow(square.CurrentTemperature, 4) - Math.Pow(Engine.AirTemperature, 4)) * Engine.EngineIntervalUpdate;
+                double energyRadiationLoss = square.Material.Emmisivity * StefanBoltzmannConst * areaRadiationLoss * (Math.Pow(square.CurrentTemperature, 4) - Math.Pow(Engine.AirTemperature, 4)) * Engine.EngineIntervalUpdate;
                 square.AddEnergyDelta(-energyRadiationLoss);
             }
         }
@@ -56,7 +58,7 @@ namespace TempoEngine.Engine.Managers{
          */
         public static void TransferRadiationHeat(List<EngineObject> objects){
             foreach(var obj in objects){
-                TransferRadiationHeatLooseToAir(obj);
+                //TransferRadiationHeatLooseToAir(obj);
             }
 
             for (int i = 0; i < objects.Count; i++) {

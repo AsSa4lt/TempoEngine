@@ -19,6 +19,7 @@ namespace TempoEngine.Engine.Managers {
             m1.isBaseMaterial = true;
             m1.SpecificHeatCapacity = 900;
             m1.Density = 2700;
+            m1.Emmisivity = 0.03;
             Materials.Add(m1);
         }
 
