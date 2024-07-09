@@ -98,7 +98,7 @@ namespace TempoEngine.Engine{
 
                 // simplify the logic for now
                 RadiationTransferManager.TransferRadiationHeat(_objects);
-                //ConductionTransferManager.TransferConductionHeat(_objects);
+                ConductionTransferManager.TransferConductionHeat(_objects);
 
                 // apply results to the UI
                 for(int i = 0; i < _objects.Count; i++) {

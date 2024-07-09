@@ -5,6 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TempoEngine.Engine.Managers {
+
+    /**
+     * \class ConductionTransferManager
+     * \brief Manages the transfer of conduction heat between objects in the simulation.
+     *
+     * The ConductionTransferManager class provides methods for calculating and transferring
+     * conduction heat between objects in the simulation. 
+     */
     public class ConductionTransferManager {
 
         /**
@@ -15,6 +23,20 @@ namespace TempoEngine.Engine.Managers {
         public static void TransferConductionHeat(List<EngineObject> objects) {
             foreach (var obj in objects) {
                 TransferHeatForObject(obj);
+            }
+        }
+
+        /**
+        * Transfer heat for every GrainSquare with its adjacent squares
+        * \param obj object
+        */
+        private static void TransferHeatForObject(EngineObject obj) {
+            List<GrainSquare> objsquares = obj.GetSquares();
+            for (int i = 0; i < objsquares.Count; i++) {
+                List<GrainSquare> adjSquares = objsquares[i].GetAdjacentSquares();
+                for (int j = 0; j < adjSquares.Count; j++) {
+                    TranferHeatBetweenTwoSquares(objsquares[i], adjSquares[j]);
+                }
             }
         }
 
@@ -32,18 +54,6 @@ namespace TempoEngine.Engine.Managers {
             sq2.AddEnergyDelta(heatTransfer);
         }
 
-        /**
-         * Transfer heat between all squares of an object
-         * \param obj object
-         */
-        private static void TransferHeatForObject(EngineObject obj) {
-            List<GrainSquare> objsquares = obj.GetSquares();
-            for (int i = 0; i < objsquares.Count; i++) {
-                List<GrainSquare> adjSquares = objsquares[i].GetAdjacentSquares();
-                for (int j = 0; j < adjSquares.Count; j++) {
-                    TranferHeatBetweenTwoSquares(objsquares[i], adjSquares[j]);
-                }
-            }
-        }
+
     }
 }

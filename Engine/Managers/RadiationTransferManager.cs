@@ -7,7 +7,14 @@ using System.Windows.Media;
 
 
 namespace TempoEngine.Engine.Managers{
-
+    /**
+     * \class RadiationTransferManager
+     * \brief Manages the transfer of radiation heat between objects in the simulation.
+     *
+     * The RadiationTransferManager class provides methods for calculating and transferring
+     * radiation heat between objects in the simulation. It includes methods for transferring
+     * radiation heat between two objects and radiation heat loss to air.
+     */
     public static class RadiationTransferManager {
 
         /// Stefan-Boltzmann constant
