@@ -5,6 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TempoEngine.Engine.Managers {
+    /**
+     * \class OptimizationManager
+     * \brief Manages the optimization of the engine
+     *
+     * The OptimizationManager class provides methods for optimizing the engine by setting adjacent squares to be touching
+     */
     public static class OptimizationManager {
 
         /**
@@ -51,7 +57,7 @@ namespace TempoEngine.Engine.Managers {
          * Clear optimization
          * \param objects list of objects
          */
-        private static void ClearOptimization(List<EngineObject> objects) {
+        public static void ClearOptimization(List<EngineObject> objects) {
             foreach(var obj in objects) {
                 List<GrainSquare> squares = obj.GetSquares();
                 // clear adjuscent squares
