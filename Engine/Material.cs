@@ -18,5 +18,9 @@ namespace TempoEngine.Engine {
         public double Density { get; set; }
 
         public double Emmisivity { get; set; }
+
+        public override string ToString() {
+            return Name;
+        }
     }
 }

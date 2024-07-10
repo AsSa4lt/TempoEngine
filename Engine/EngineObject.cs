@@ -40,6 +40,8 @@ namespace TempoEngine.Engine {
         /// Name of the object.
         private string _name;
 
+        /// Size of the object.
+        protected Point _size = new(1, 1);
 
         /// Selection state of the object.
         private bool _isSelected = false;
@@ -92,7 +94,6 @@ namespace TempoEngine.Engine {
             get => _material;
             set {
                 _material = value;
-                OnPropertyChanged(nameof(Material));
             }
         }
 
@@ -130,6 +131,15 @@ namespace TempoEngine.Engine {
                     _name = value;
                     OnPropertyChanged(nameof(Name));
                 }
+            }
+        }
+
+        /// Gets or sets the size of the object.
+        public Point Size {
+            get => _size;
+            set {
+                _size = value;
+                OnPropertyChanged(nameof(Size));
             }
         }
 

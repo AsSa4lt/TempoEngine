@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TempoEngine.Engine;
+using TempoEngine.Engine.Managers;
 using Brushes = System.Windows.Media.Brushes;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
@@ -59,7 +60,16 @@ namespace TempoEngine.UIControls {
             tbTemperature.Text = Math.Round(_selectedObject.CurrentTemperature, 2).ToString();
             tbXPosition.Text = _selectedObject.Position.X.ToString();
             tbYPosition.Text = _selectedObject.Position.Y.ToString();
-            // TODO: material
+            tbHeight.Text = _selectedObject.Size.Y.ToString();
+            tbWidth.Text = _selectedObject.Size.X.ToString();
+
+            List<Material> materials = MaterialManager.GetMaterials();
+            for (int i = 0; i < materials.Count; i++) {
+                cbMaterial.Items.Add(materials[i]);
+                if (_selectedObject.Material == materials[i]) {
+                    cbMaterial.SelectedIndex = i;
+                }
+            }
         }
 
         public void SetObject(EngineObject obj) {
@@ -115,12 +125,15 @@ namespace TempoEngine.UIControls {
             tbHeight.Text                    = "";
             tbWidth.Text                     = "";
 
+            cbMaterial.Items.Clear();
+
             tbName.Background                = Brushes.White;
             tbTemperature.Background         = Brushes.White;
             tbXPosition.Background           = Brushes.White;
             tbYPosition.Background           = Brushes.White;
             tbHeight.Background              = Brushes.White;
             tbWidth.Background               = Brushes.White;
+            cbMaterial.Background            = Brushes.White;
         }
 
         private void tbXPosition_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
@@ -136,6 +149,46 @@ namespace TempoEngine.UIControls {
             try {
                 Point pointA = new Point(_selectedObject.Position.X, double.Parse(tbYPosition.Text));
                 _selectedObject.Position = pointA;
+            } catch (Exception ex) {
+
+            }
+        }
+
+        private void cbMaterial_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if(_selectedObject == null) return;
+            if(cbMaterial.Items.Count == 0) return;
+            if(cbMaterial.SelectedItem == null) cbMaterial.SelectedIndex = 0;
+            _selectedObject.Material = (Material)cbMaterial.SelectedItem;
+        }
+
+
+        private void tbHeight_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+            // check if it's a grain square
+            // if grain square, then set to 1
+            if(_selectedObject == null) return;
+            if(_selectedObject.GetObjectType() == ObjectType.GrainSquare) {
+                tbHeight.Text = "1";
+            }
+
+            try {
+                Point size = new Point(_selectedObject.Size.X, double.Parse(tbHeight.Text));
+                _selectedObject.Size = size;
+            } catch (Exception ex) {
+
+            }
+        }
+
+        private void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+            // check if it's a grain square
+            // if grain square, then set to 1
+            if (_selectedObject == null) return;
+            if (_selectedObject.GetObjectType() == ObjectType.GrainSquare) {
+                tbHeight.Text = "1";
+            }
+
+            try {
+                Point size = new Point(_selectedObject.Size.X, double.Parse(tbHeight.Text));
+                _selectedObject.Size = size;
             } catch (Exception ex) {
 
             }
