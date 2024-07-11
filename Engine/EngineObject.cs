@@ -103,7 +103,7 @@ namespace TempoEngine.Engine {
             set {
                 if (_currentTemperature != value) {
                     _currentTemperature = value;
-                    if (Engine.GetMode() != Engine.EngineMode.Running) {
+                    if (Engine.GetMode() == Engine.EngineMode.Running) {
                         OnPropertyChanged(nameof(CurrentTemperature));
                     }
                 }

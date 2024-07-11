@@ -53,6 +53,7 @@ namespace TempoEngine.UIControls
             saveButton.IsEnabled = true;
             openButton.IsEnabled = true;
             clearButton.IsEnabled = true;
+            resetButton.IsEnabled = true;
         }
 
         public void Update() {
@@ -72,6 +73,7 @@ namespace TempoEngine.UIControls
             saveButton.IsEnabled = false;
             openButton.IsEnabled = false;
             clearButton.IsEnabled = false;
+            resetButton.IsEnabled = false;
         }
 
         private void SetPausedMode() {
@@ -85,6 +87,7 @@ namespace TempoEngine.UIControls
             saveButton.IsEnabled = false;
             openButton.IsEnabled = false;
             clearButton.IsEnabled = false;
+            resetButton.IsEnabled = true;
         }
 
         private void saveButtonClick(object sender, RoutedEventArgs e) {
@@ -161,6 +164,15 @@ namespace TempoEngine.UIControls
             Engine.Engine.Pause();
             EngineModeChanged?.Invoke();
             SetPausedMode();
+        }
+
+        private void resetButton_Click(object sender, RoutedEventArgs e) {
+            string message = "Are you sure you want to reset simulation dats";
+            string caption = "Confirm Reset";
+            MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes) {
+                Engine.Engine.ResetSimulation();
+            }
         }
     }
 }

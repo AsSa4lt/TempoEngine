@@ -136,6 +136,7 @@ namespace TempoEngine.Engine{
          */
         public override void SetStartTemperature() {
             _currentTemperature = _simulationTemperature;
+            OnPropertyChanged(nameof(CurrentTemperature));
         }
 
         /**

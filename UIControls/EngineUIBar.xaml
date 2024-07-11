@@ -17,6 +17,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
 
@@ -175,6 +176,27 @@
             </Button.Style>
         </Button>
 
-        <Label Grid.Column = "8" Margin="-3" Name = "timeLabel"  Width = "100" Content="00:00:00" FontWeight="Bold" FontSize="18"> </Label>
+        <Button Grid.Column="8" Margin="0" Name = "resetButton"  Background="Transparent" BorderThickness="0" Click="resetButton_Click">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Image Source="../src/ResetButton.png" Opacity="{TemplateBinding Opacity}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <Label Grid.Column = "9" Margin="-3" Name = "timeLabel"  Width = "100" Content="00:00:00" FontWeight="Bold" FontSize="18"> </Label>
     </Grid>
 </UserControl>

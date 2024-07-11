@@ -65,7 +65,7 @@ namespace TempoEngine.Engine.Managers{
          */
         public static void TransferRadiationHeat(List<EngineObject> objects){
             foreach(var obj in objects){
-                //TransferRadiationHeatLooseToAir(obj);
+                TransferRadiationHeatLooseToAir(obj);
             }
 
             for (int i = 0; i < objects.Count; i++) {

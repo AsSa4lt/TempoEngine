@@ -49,7 +49,7 @@ namespace TempoEngine.Engine{
             _engineLock = new object();
             _mainWindow = window;
             MaterialManager.Init();
-            SimpleExamples.RectangleWithTempDifference(30, 30);
+            SimpleExamples.RectangleWithTempDifference(15, 15);
             _simulationRefreshRate = Util.SystemInfo.GetRefreshRate();
             log.Info("Engine initialized");
         }
@@ -232,12 +232,23 @@ namespace TempoEngine.Engine{
         }
 
         public static List<EngineObject> GetObjectsUnsafe() {
-            if (_engineLock == null) throw new InvalidOperationException("Engine lock is not initialized");
-            if (_objects == null) throw new InvalidOperationException("Engine not initialized");
+            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
+            if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
 
             lock (_engineLock) {
                 return _objects;
             }
+        }
+
+        public static void ResetSimulation() {
+            if (Mode == EngineMode.Running) throw new InvalidOperationException("Cannot reset simulation while running");
+            if(_objects == null)            throw new InvalidOperationException("Engine not initialized");
+
+            foreach(var obj in _objects) {
+                obj.SetStartTemperature();
+            }
+            log.Info("Simulation reset");
+            _mainWindow.UpdateAll();
         }
 
         public static void ClearObjects() {
@@ -248,6 +259,7 @@ namespace TempoEngine.Engine{
                 _objects.Clear();
             }
             log.Info("All objects cleared");
+            _mainWindow.UpdateAll();
         }
 
     }

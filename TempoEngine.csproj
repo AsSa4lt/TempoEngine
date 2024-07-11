@@ -16,6 +16,7 @@
     <None Remove="src\ClearButton.png" />
     <None Remove="src\OpenButton.png" />
     <None Remove="src\PauseButton.png" />
+    <None Remove="src\ResetButton.png" />
     <None Remove="src\SaveButton.png" />
     <None Remove="src\StartButton.png" />
     <None Remove="src\StopButton.png" />
@@ -50,6 +51,7 @@
     <Resource Include="src\ClearButton.png" />
     <Resource Include="src\OpenButton.png" />
     <Resource Include="src\PauseButton.png" />
+    <Resource Include="src\ResetButton.png" />
     <Resource Include="src\SaveButton.png" />
     <Resource Include="src\StartButton.png" />
     <Resource Include="src\StopButton.png" />

@@ -68,7 +68,7 @@ namespace TempoEngine {
             UpdateAll();
         }
 
-        private void UpdateAll() {
+        public void UpdateAll() {
             _engineObjectsList.Update(Engine.Engine.GetObjects());
             _engineTabProperties.Update();
             _engineCanva.Update();
