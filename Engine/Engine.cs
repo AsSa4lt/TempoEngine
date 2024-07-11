@@ -231,6 +231,16 @@ namespace TempoEngine.Engine{
             }
         }
 
+        public static EngineObject GetObjectByIndex(int index) {
+            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
+            if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
+            if (index < 0 || index >= _objects.Count) throw new InvalidOperationException("Index out of bounds");
+
+            lock (_engineLock) {
+                return _objects[index];
+            }
+        }
+
         public static List<EngineObject> GetObjectsUnsafe() {
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             if (_objects == null)           throw new InvalidOperationException("Engine not initialized");

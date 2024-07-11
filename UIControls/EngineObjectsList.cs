@@ -50,6 +50,18 @@ namespace TempoEngine.UIControls {
                     Engine.Engine.RemoveObject(item);
                     OnDeleteObject?.Invoke();
                 }
+            } else if (e.Key == Key.Down) {
+                // set as selected the next object if exists
+                if (SelectedIndex < Items.Count - 1) {
+                    SelectedIndex++;
+                }
+                _currentSelectedEngineObject = Engine.Engine.GetObjectByIndex(SelectedIndex);
+            }else if (e.Key == Key.Up) {
+                // set as selected the previous object if exists
+                if (SelectedIndex > 0) {
+                    SelectedIndex--;
+                }
+                _currentSelectedEngineObject = Engine.Engine.GetObjectByIndex(SelectedIndex);
             }
         }
 
@@ -61,6 +73,7 @@ namespace TempoEngine.UIControls {
                 _currentSelectedEngineObject = selectedObject;
                 _currentSelectedEngineObject.Select();
                 OnSelectedObjectChanged?.Invoke(_currentSelectedEngineObject);
+                SelectedIndex = Items.IndexOf(_currentSelectedEngineObject);
             }
         }
 
