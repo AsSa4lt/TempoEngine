@@ -15,6 +15,7 @@ namespace TempoEngine.Engine{
     static class Engine{
         private static readonly ILog log = LogManager.GetLogger(typeof(Engine));
         public static readonly double GridStep = 0.001; // 1mm
+        public static ObjectsManager EngineObjectsManager = new();
 
         private static List<EngineObject>? _objects = [];
         // lock object for _objects
@@ -23,7 +24,7 @@ namespace TempoEngine.Engine{
         private static TempoThread?     _engineThread;
         private static long             _lastUpdateTime = 0;
         public static double            EngineIntervalUpdate = 0;
-         static int frames = 0;
+        static int frames = 0;
 
         // updates per second 
         private static int _simulationRefreshRate = 60;
@@ -76,7 +77,7 @@ namespace TempoEngine.Engine{
                     obj.SetStartTemperature();
                 }
                 if (Optimize) {
-                    OptimizationManager.Optimize(_objects);
+                    ObjectsOptimizationManager.Optimize(_objects);
                 }
             }
         }

@@ -11,7 +11,7 @@ namespace TempoEngine.Engine.Managers {
      *
      * The OptimizationManager class provides methods for optimizing the engine by setting adjacent squares to be touching
      */
-    public static class OptimizationManager {
+    public static class ObjectsOptimizationManager {
 
         /**
          * Optimize objects
