@@ -13,37 +13,34 @@ using System.Diagnostics;
 
 namespace TempoEngine.Engine{
     static class Engine{
-        private static readonly ILog log = LogManager.GetLogger(typeof(Engine));
-        public static readonly double GridStep = 0.001; // 1mm
-        public static ObjectsManager EngineObjectsManager = new(_engineLock);
-
-        // lock object for _objects
-        private static object?          _engineLock;
-        private static MainWindow?      _mainWindow;
-        private static TempoThread?     _engineThread;
-        private static long             _lastUpdateTime = 0;
-        public static double            EngineIntervalUpdate = 0;
-        static int frames = 0;
-
-        // updates per second 
-        private static int _simulationRefreshRate = 60;
-        
-        // time of the simulation in microseconds
-        private static long _simulationTime = 0; 
-
-        // should we optimize the engine by setting adjacent squares to be touching
-        public static bool Optimize = true;
-
+        /**
+        * \enum EngineMode
+        * \brief Engine mode
+        */  
         public enum EngineMode {
             Stopped,
             Running,
             Paused
         }
 
-        public static EngineMode Mode { get; private set; } = EngineMode.Stopped;
+        private static readonly ILog log = LogManager.GetLogger(typeof(Engine)); // log4net logger
+        public static readonly double GridStep = 0.001; // grid step in meters 
+        private static object?          _engineLock; // lock for the engine
+        public static ObjectsManager EngineObjectsManager = new(_engineLock); // manager for the engine objects
+        private static MainWindow?      _mainWindow; // main window
+        private static TempoThread?     _engineThread; // engine thread
+        private static long             _lastUpdateTime = 0; // last update time
+        public static double            EngineIntervalUpdate = 0; // Interval between engine updates
+        static int frames = 0;     // frames counter
+        private static int _simulationRefreshRate = 60; // updates per second 
+        private static long _simulationTime = 0; // time of the simulation in microseconds
+        public static bool Optimize = true; // // should we optimize the engine by setting adjacent squares to be touching
+        public static EngineMode Mode { get; private set; } = EngineMode.Stopped; // engine mode
+        public static readonly double AirTemperature = 293; // air temperature in Kelvin
 
-        public static readonly double AirTemperature = 293;
-
+        /**
+         * \brief Initialize the engine
+         */
         public static void Init(MainWindow window){
             _engineLock = new object();
             _mainWindow = window;
@@ -53,6 +50,11 @@ namespace TempoEngine.Engine{
             _simulationRefreshRate = Util.SystemInfo.GetRefreshRate();
             log.Info("Engine initialized");
         }
+
+        /*
+         * *
+         * \brief Start the engine
+         */
         public static void Start() {
             if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
@@ -67,6 +69,10 @@ namespace TempoEngine.Engine{
             }
         }
 
+
+        /**
+         * \brief Prepare objects for the simulation before starting it
+         */
         private static void prepareObjects() {
             if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
 
@@ -78,6 +84,10 @@ namespace TempoEngine.Engine{
             }
         }
 
+        /**
+         * 
+         * \brief Run the engine
+         */
         public static void Run() {
             if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
 
@@ -116,6 +126,10 @@ namespace TempoEngine.Engine{
             }
         }
 
+        /**
+         * \brief Get the engine mode
+         * \return EngineMode Current state of the engine
+         */
         public static EngineMode GetMode() {
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
@@ -123,17 +137,18 @@ namespace TempoEngine.Engine{
             }
         }
 
+        /**
+         * \brief Get the simulation time
+         * \return long Time in milliseconds
+         */
         public static long GetSimulationTime() {
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
-            lock (_engineLock) {
-                return _simulationTime;
-            }
-        }
-
-        public static long GetSimulationTimeUnsafe() {
             return _simulationTime;
         }
 
+        /**
+         * \brief Stop the engine
+         */
         public static void Stop() {
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
@@ -143,6 +158,9 @@ namespace TempoEngine.Engine{
             }
         }
 
+        /** 
+         * \brief Pause the engine
+         */
         public static void Pause() {
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
@@ -151,6 +169,10 @@ namespace TempoEngine.Engine{
             }
         }
 
+        /**
+         * \brief Check if engine is running
+         * \return bool True if engine is running
+         */
         public static bool IsRunning() {
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
             lock (_engineLock) {
@@ -158,13 +180,10 @@ namespace TempoEngine.Engine{
             }
         }
 
-        /// TODO: Implement the logic for this function
-        /// Check if the position is available for the object, if not return false
-        public static bool IsPositionAvailable(EngineObject obj) {
-            return true;
-        }
 
-
+        /**
+         * \brief Reset the simulation
+         */
         public static void ResetSimulation() {
             if (Mode == EngineMode.Running) throw new InvalidOperationException("Cannot reset simulation while running");
 
@@ -173,6 +192,9 @@ namespace TempoEngine.Engine{
             _mainWindow.UpdateAll();
         }
 
+        /**
+         * \brief Clear the simulation
+         */
         public static void ClearSimulation() {
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
 

@@ -15,15 +15,15 @@ namespace TempoEngine.Engine.Managers{
     public class ObjectsManager{
         private List<EngineObject> _objects = [];
         private object _engineLock;
-
+        
+        /**
+         * Constructor
+         * \param engineLock Lock object
+         */
         public ObjectsManager(object engineLock) {
             _engineLock = engineLock;
         }
 
-
-        public static void PrepareObjects() {
-
-        }
 
         /** 
          * Get all visible objects on the current Canvas
@@ -52,6 +52,12 @@ namespace TempoEngine.Engine.Managers{
                 if (!IsNameAvailable(obj.Name)) throw new InvalidOperationException("Object name is not available");
                 _objects.Add(obj);
             }
+        }
+
+        /// TODO: Implement the logic for this function
+        /// Check if the position is available for the object, if not return false
+        public  bool IsPositionAvailable(EngineObject obj) {
+            return true;
         }
 
         /** 

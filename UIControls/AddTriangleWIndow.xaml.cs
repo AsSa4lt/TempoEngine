@@ -63,7 +63,7 @@ namespace TempoEngine.UIControls {
                 tbName.Background = Brushes.Red;
             }
 
-            if (!Engine.Engine.IsPositionAvailable(_newSquare)) {
+            if (!Engine.Engine.EngineObjectsManager.IsPositionAvailable(_newSquare)) {
                 errorMessage = "Position is not available";
                 tbXPosition.Background = Brushes.Red;
                 tbYPosition.Background = Brushes.Red;
