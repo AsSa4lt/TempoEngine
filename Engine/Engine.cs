@@ -15,9 +15,8 @@ namespace TempoEngine.Engine{
     static class Engine{
         private static readonly ILog log = LogManager.GetLogger(typeof(Engine));
         public static readonly double GridStep = 0.001; // 1mm
-        public static ObjectsManager EngineObjectsManager = new();
+        public static ObjectsManager EngineObjectsManager = new(_engineLock);
 
-        private static List<EngineObject>? _objects = [];
         // lock object for _objects
         private static object?          _engineLock;
         private static MainWindow?      _mainWindow;
@@ -46,9 +45,9 @@ namespace TempoEngine.Engine{
         public static readonly double AirTemperature = 293;
 
         public static void Init(MainWindow window){
-            _objects = [];
             _engineLock = new object();
             _mainWindow = window;
+            EngineObjectsManager = new ObjectsManager(_engineLock);
             MaterialManager.Init();
             SimpleExamples.RectangleWithTempDifference(15, 15);
             _simulationRefreshRate = Util.SystemInfo.GetRefreshRate();
@@ -70,21 +69,17 @@ namespace TempoEngine.Engine{
 
         private static void prepareObjects() {
             if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
-            if(_objects == null)            throw new InvalidOperationException("Engine not initialized");
 
             lock (_engineLock) {
-                foreach (var obj in _objects) {
-                    obj.SetStartTemperature();
-                }
+                EngineObjectsManager.ResetObjectsTemperature();
                 if (Optimize) {
-                    ObjectsOptimizationManager.Optimize(_objects);
+                    ObjectsOptimizationManager.Optimize(EngineObjectsManager.GetObjects());
                 }
             }
         }
 
         public static void Run() {
             if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
-            if(_objects == null)            throw new InvalidOperationException("Engine not initialized");
 
             Stopwatch stopwatch = new Stopwatch();
 
@@ -98,16 +93,10 @@ namespace TempoEngine.Engine{
                 // update logic
 
                 // simplify the logic for now
-                RadiationTransferManager.TransferRadiationHeat(_objects);
-                ConductionTransferManager.TransferConductionHeat(_objects);
-
-                // apply results to the UI
-                for(int i = 0; i < _objects.Count; i++) {
-                    List<GrainSquare> list = _objects[i].GetSquares();
-                    for(int j = 0; j < list.Count; j++) {
-                        list[j].ApplyEnergyDelta();
-                    }
-                }
+                RadiationTransferManager.TransferRadiationHeat(EngineObjectsManager.GetObjects());
+                ConductionTransferManager.TransferConductionHeat(EngineObjectsManager.GetObjects());
+                EngineObjectsManager.AppplyEnergyDeltaObjects();
+                
 
                 double elapsedTimeMs = stopwatch.ElapsedTicks/10000;
                 if (msPerFrame - elapsedTimeMs < 0) {
@@ -175,99 +164,20 @@ namespace TempoEngine.Engine{
             return true;
         }
 
-        public static List<EngineObject> GetVisibleObjectsUnsafe(CanvasManager manager) {
-            List<EngineObject> visibleObjects = new();
-            if(_engineLock == null)         throw new InvalidOperationException("Engine lock is not initialized");
-            if(_objects == null)            throw new InvalidOperationException("Engine not initialized");
-
-            foreach (var obj in _objects) {
-                if (obj.IsVisible(manager)) {
-                    visibleObjects.Add(obj);
-                }
-            }
-            return visibleObjects;
-        }
-
-
-
-        // All objects are named and the name is unique
-        public static bool IsNameAvailable(string name) {
-            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
-            if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
-
-            lock (_engineLock) {
-                foreach (var obj in _objects) {
-                    if (obj.Name == name) {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
-        public static void AddObject(EngineObject obj) {
-            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
-            if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
-            if (!IsNameAvailable(obj.Name)) throw new InvalidOperationException("Object name is not available");
-            lock (_engineLock) {
-                _objects.Add(obj);
-            }
-        }
-
-        public static void RemoveObject(EngineObject obj) {
-            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
-            if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
-
-            lock (_engineLock) {
-                _objects.Remove(obj);
-            }
-        }
-
-        public static List<EngineObject> GetObjects() {
-            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
-            if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
-
-            lock (_engineLock) {
-                return _objects;
-            }
-        }
-
-        public static EngineObject GetObjectByIndex(int index) {
-            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
-            if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
-            if (index < 0 || index >= _objects.Count) throw new InvalidOperationException("Index out of bounds");
-
-            lock (_engineLock) {
-                return _objects[index];
-            }
-        }
-
-        public static List<EngineObject> GetObjectsUnsafe() {
-            if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
-            if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
-
-            lock (_engineLock) {
-                return _objects;
-            }
-        }
 
         public static void ResetSimulation() {
             if (Mode == EngineMode.Running) throw new InvalidOperationException("Cannot reset simulation while running");
-            if(_objects == null)            throw new InvalidOperationException("Engine not initialized");
 
-            foreach(var obj in _objects) {
-                obj.SetStartTemperature();
-            }
+            EngineObjectsManager.ResetObjectsTemperature();
             log.Info("Simulation reset");
             _mainWindow.UpdateAll();
         }
 
-        public static void ClearObjects() {
+        public static void ClearSimulation() {
             if (_engineLock == null)        throw new InvalidOperationException("Engine lock is not initialized");
-            if (_objects == null)           throw new InvalidOperationException("Engine not initialized");
 
             lock (_engineLock) {
-                _objects.Clear();
+                EngineObjectsManager.ClearObjects();
             }
             log.Info("All objects cleared");
             _mainWindow.UpdateAll();

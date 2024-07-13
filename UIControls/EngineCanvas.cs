@@ -108,7 +108,7 @@ namespace TempoEngine.UIControls {
             log.Info("Time to clear canvas: " + stopwatch.ElapsedMilliseconds + " ms");
             stopwatch.Restart();
 
-            List<EngineObject> objects = Engine.Engine.GetVisibleObjectsUnsafe(_canvasManager);
+            List<EngineObject> objects = Engine.Engine.EngineObjectsManager.GetVisibleObjects(_canvasManager);
             stopwatch.Stop();
             log.Info("Time to get visible objects: " + stopwatch.ElapsedMilliseconds + " ms");
             stopwatch.Restart();

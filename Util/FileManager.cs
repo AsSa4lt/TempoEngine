@@ -13,7 +13,7 @@ namespace TempoEngine.Util {
         private static readonly ILog log = LogManager.GetLogger(typeof(FileManager));
 
         public static void SaveToFile(string path) {
-            List<EngineObject> engineObjects = Engine.Engine.GetObjects();
+            List<EngineObject> engineObjects = Engine.Engine.EngineObjectsManager.GetObjects();
             List<string> jsonObjects = new List<string>();
 
             log.Info("Info: Starting saving.");
@@ -32,7 +32,7 @@ namespace TempoEngine.Util {
         }
 
         public static void LoadFromFile(string path) {
-            Engine.Engine.ClearObjects();
+            Engine.Engine.ClearSimulation();
             log.Info("Info: Starting reading.");
 
             string jsonInput = File.ReadAllText(path);
@@ -52,7 +52,7 @@ namespace TempoEngine.Util {
                     // Add more types as necessary
                     if (engineObject != null) {
                         engineObjects.Add(engineObject);
-                        Engine.Engine.AddObject(engineObject);
+                        Engine.Engine.EngineObjectsManager.AddObject(engineObject);
                     }
                 }
             }catch(Exception e) {

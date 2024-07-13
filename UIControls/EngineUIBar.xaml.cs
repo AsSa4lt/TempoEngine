@@ -128,7 +128,7 @@ namespace TempoEngine.UIControls
             string caption = "Confirm Clear";
             MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes) {
-                Engine.Engine.ClearObjects();
+                Engine.Engine.ClearSimulation();
                 DeleteSelected?.Invoke(null);
             }
         }

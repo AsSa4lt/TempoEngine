@@ -11,13 +11,13 @@ namespace TempoEngine.Engine.Examples {
             // add 3 objects to the engine
             GrainSquare obj1 = new GrainSquare("Square", new Point(0, 0));
             obj1.SimulationTemperature = 200;
-            Engine.AddObject(obj1);
+            Engine.EngineObjectsManager.AddObject(obj1);
             GrainSquare obj2 = new GrainSquare("square2", new Point(1, 0));
             obj2.SimulationTemperature = 50;
-            Engine.AddObject(obj2);
+            Engine.EngineObjectsManager.AddObject(obj2);
             GrainSquare obj3 = new GrainSquare("square3", new Point(2, 2));
             obj1.SimulationTemperature = 0;
-            Engine.AddObject(obj3);
+            Engine.EngineObjectsManager.AddObject(obj3);
         }
 
         public static void RectangleWithTempDifference(int width, int height) {
@@ -49,7 +49,7 @@ namespace TempoEngine.Engine.Examples {
 
 
                     // Add to the engine
-                    Engine.AddObject(square);
+                    Engine.EngineObjectsManager.AddObject(square);
                 }
             }
         }

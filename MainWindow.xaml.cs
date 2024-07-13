@@ -54,10 +54,10 @@ namespace TempoEngine {
             _engineTabProperties.SetObject(obj);
             _engineTabProperties.Update();
 
-            if(obj == null) {  _engineObjectsList.Update(Engine.Engine.GetObjects()); return; }
+            if(obj == null) {  _engineObjectsList.Update(Engine.Engine.EngineObjectsManager.GetObjects()); return; }
 
             obj.PropertyChanged += (sender, args) => {
-                _engineObjectsList.Update(Engine.Engine.GetObjects());
+                _engineObjectsList.Update(Engine.Engine.EngineObjectsManager.GetObjects());
                 _engineTabProperties.Update();
                 _engineCanva.Update();
             };
@@ -69,7 +69,7 @@ namespace TempoEngine {
         }
 
         public void UpdateAll() {
-            _engineObjectsList.Update(Engine.Engine.GetObjects());
+            _engineObjectsList.Update(Engine.Engine.EngineObjectsManager.GetObjects());
             _engineTabProperties.Update();
             _engineCanva.Update();
         }
@@ -87,7 +87,7 @@ namespace TempoEngine {
             if(_objectsChanged) _objectsChanged = false;
 
             if(Engine.Engine.Mode != Engine.Engine.EngineMode.Running)
-                _engineObjectsList.Update(Engine.Engine.GetObjects());
+                _engineObjectsList.Update(Engine.Engine.EngineObjectsManager.GetObjects());
             _controlPanel.Update();
             _engineCanva.Update();
             _engineTabProperties.Update();

@@ -28,7 +28,7 @@ namespace TempoEngine.UIControls {
             InitializeComponent();
             _newSquare = new GrainSquare("New square", new Point(0, 0));
             int i = 0;
-            while (!Engine.Engine.IsNameAvailable($"New square {i}")) i++;
+            while (!Engine.Engine.EngineObjectsManager.IsNameAvailable($"New square {i}")) i++;
             _newSquare.Name = $"New square {i}";
             Loaded += OnLoaded;
         }
@@ -58,7 +58,7 @@ namespace TempoEngine.UIControls {
                 tbName.Background = Brushes.Red;
             }
 
-            if(!Engine.Engine.IsNameAvailable(_newSquare.Name)) {
+            if(!Engine.Engine.EngineObjectsManager.IsNameAvailable(_newSquare.Name)) {
                 errorMessage = "Name already exists";
                 tbName.Background = Brushes.Red;
             }
@@ -97,7 +97,7 @@ namespace TempoEngine.UIControls {
                 return;
             }
 
-            Engine.Engine.AddObject(_newSquare);
+            Engine.Engine.EngineObjectsManager.AddObject(_newSquare);
             OnObjectAdded?.Invoke();
             Close();
         }
