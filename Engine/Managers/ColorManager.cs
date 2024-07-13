@@ -15,19 +15,18 @@ namespace TempoEngine.Engine.Managers {
     public static class ColorManager {
         /**
          * Returns color based on the objects temperature
+         * 0 - 100 K is violet
+         * 100 - 200 K is blue
+         * 200 - 250 K is light blue
+         * 250 - 320 K is green
+         * 320 - 400 K is yellow
+         * 400 - 800 K is orange
+         * 800+ K is red
          * \param temperature Temperature of the object
          * \return Brush with the color
          */
         public static Brush GetColorFromTemperature(double temperature) {
             if (temperature < 0) throw new ArgumentException("Temperature cannot be less than 0");
-            // 0 - 100 K is violet
-            // 100-200 K is blue
-            // 200-250 K is light blue
-            // 250-320 K is green
-            // 320-400 K is yellow
-            // 400-800 K is orange
-            // 800+ K is red
-
             // Define colors for each temperature range
             var colors = new[] {
                 Color.FromRgb(143, 0, 255), // Violet, 0 K
