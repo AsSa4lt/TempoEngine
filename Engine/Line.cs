@@ -6,28 +6,47 @@ using System.Threading.Tasks;
 using Point = System.Windows.Point;
 
 namespace TempoEngine.Engine {
-
+    /**
+     * \brief Represents a line segment in 2D space.
+     * Used for calculating the overlap between two line segments.
+     */
     public struct Line {
-        public Point Start, End;
+        public Point Start, End;  ///< Start and end points of the line segment
 
+        /**
+         * \brief Constructor for the Line class.
+         * \param start The start point of the line segment.
+         * \param end The end point of the line segment.
+         */
         public Line(Point start, Point end) {
             Start = start;
             End = end;
         }
 
-        // Calculate the length of the line segment
+        /**
+         * \brief Calculate the length of the line segment.
+         * \return The length of the line segment.
+         */
         public double Length() {
             return Math.Sqrt((End.X - Start.X) * (End.X - Start.X) + (End.Y - Start.Y) * (End.Y - Start.Y));
         }
 
-        // Determine if two line segments are collinear
+        /**
+         * \brief Determine if two line segments are collinear.
+         * \param l1 The first line segment.
+         * \param l2 The second line segment.
+         * \return True if the two line segments are collinear, false otherwise.
+         */
         public static bool AreCollinear(Line l1, Line l2) {
             // Check if the two lines are collinear by cross product being zero
             return (l1.End.X - l1.Start.X) * (l2.End.Y - l2.Start.Y) ==
                    (l2.End.X - l2.Start.X) * (l1.End.Y - l1.Start.Y);
         }
 
-        // Calculate the overlap length between two collinear line segments
+        /**
+         * \brief Calculate the overlap length between two collinear line segments.
+         * \return The overlap length between the two line segments.
+         */
         public static double CalculateOverlap(Line l1, Line l2) {
             if (!AreCollinear(l1, l2))
                 return 0;

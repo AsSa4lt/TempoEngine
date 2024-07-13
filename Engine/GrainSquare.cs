@@ -26,9 +26,9 @@ namespace TempoEngine.Engine{
      * \see CanvasManager
      */
     public class GrainSquare : EngineObject {
-        private double _energyDelta = 0;
-        public event PropertyChangedEventHandler? PositionChanged;
-        public List<GrainSquare> AdjacentSquares = [];
+        private double _energyDelta = 0;    // current energy delta
+        public event PropertyChangedEventHandler? PositionChanged; // event triggered when position changes
+        public List<GrainSquare> AdjacentSquares = []; // list of adjacent squares
 
         private static readonly ILog log = LogManager.GetLogger(typeof(GrainSquare));
 
@@ -77,12 +77,18 @@ namespace TempoEngine.Engine{
             return polygons;
         }
 
+        /**
+         * \brief Sets caeched point of the GrainSquare
+         */
         private void SetCachedPoints() {
             _cachedPointB = new(Position.X + 1, Position.Y);
             _cachedPointC = new(Position.X, Position.Y - 1);
             _cachedPointD = new(Position.X + 1, Position.Y - 1);
         }
 
+        /**
+         * Gets or sets the position of the grain square.
+         */
         public override Point Position {
             get => _position;
             set {
@@ -148,6 +154,11 @@ namespace TempoEngine.Engine{
         }
 
 
+        /** 
+         * Deserializes a JSON string to a GrainSquare object.
+         * \param json The JSON string to deserialize.
+         * \return A new GrainSquare object deserialized from the JSON string.
+         */
         public static GrainSquare FromJson(string json) {
             var settings = new JsonSerializerSettings {
                 NullValueHandling = NullValueHandling.Ignore
@@ -172,6 +183,12 @@ namespace TempoEngine.Engine{
             };
         }
 
+
+        /** 
+         * Parses a string representation of a point to a Point object.
+         * \param point The string representation of the point.
+         * \return A Point object parsed from the string.
+         */
         private static Point ParsePoint(string point) {
             var parts = point.Split(',');
             return new Point(double.Parse(parts[0]), double.Parse(parts[1]));
@@ -195,15 +212,27 @@ namespace TempoEngine.Engine{
             }, settings);
         }
 
-
+        /**
+         * \brief Determines whether the grain square is intersecting with another object.
+         * \returns true if the grain square is intersecting with the object, otherwise false.
+         */
         public override bool IsIntersecting(EngineObject obj) {
             throw new NotImplementedException();
         }
 
+        /**
+         * \brief Gets the type of the object.
+         * \returns The type of the object.
+         */
         public override ObjectType GetObjectType() {
             return ObjectType.GrainSquare;
         }
 
+        /**
+         * 
+         * \brief Event handler for when the position of the grain square changes.
+         * \param propertyName The name of the property that changed.
+         */
         protected void OnPositionChanged(string propertyName) {
             if (Engine.Mode != Engine.EngineMode.Running) {
                 SetCachedPoints();
@@ -211,6 +240,11 @@ namespace TempoEngine.Engine{
             }
         }
 
+        /**
+         * \brief Determines whether the grain square is touching another grain square.
+         * \param other The other grain square to check for touching.
+         * \returns true if the grain square is touching the other grain square, otherwise false.
+         */
         public bool AreTouching(GrainSquare other) {
             // check the object is not null and that the two squares are not the same
             if (other == null || this.Name == other.Name) {
@@ -222,23 +256,42 @@ namespace TempoEngine.Engine{
             return xTouch || yTouch;
         }
 
+        /*
+         * \brief Gets the squares that are adjacent to the grain square.
+         * \returns A list of adjacent squares.
+         */
         public override List<GrainSquare> GetSquares() {
             List<GrainSquare> grainsquares = [this];
             return grainsquares;
         }
 
+        /**
+         * \brief Adds an adjacent square to the grain square.
+         * \param square The adjacent square to add.
+         */
         public void AddAdjacentSquare(GrainSquare square) {
             AdjacentSquares.Add(square);
         }
 
+        /**
+         * \brief Clears the list of adjacent squares.
+         */
         public void ClearAdjacentSquares() {
             AdjacentSquares.Clear();
         }
 
+        /**
+         * \brief Gets the external squares of the grain square.
+         * \returns A list of external squares.
+         */
         public override List<GrainSquare> GetExternalSquares() {
             return new List<GrainSquare> {this};
         }
 
+        /**
+         * \brief Gets the adjacent squares of the grain square.
+         * \returns A list of adjacent squares.
+         */
         public List<GrainSquare> GetAdjacentSquares() {
             return AdjacentSquares;
         }
