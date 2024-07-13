@@ -14,7 +14,7 @@ namespace TempoEngine.Engine.Managers {
     */
     public static class ColorManager {
         /**
-         * Returns color based on the objects temperature
+         * \brief Returns color based on the objects temperature
          * 0 - 100 K is violet
          * 100 - 200 K is blue
          * 200 - 250 K is light blue

@@ -195,10 +195,6 @@ namespace TempoEngine.Engine{
             }, settings);
         }
 
-        public double GetPerimeter() {
-            return 0.004;
-        }
-
 
         public override bool IsIntersecting(EngineObject obj) {
             throw new NotImplementedException();
