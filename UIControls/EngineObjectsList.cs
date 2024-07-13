@@ -50,13 +50,13 @@ namespace TempoEngine.UIControls {
                     Engine.Engine.RemoveObject(item);
                     OnDeleteObject?.Invoke();
                 }
-            } else if (e.Key == Key.Down) {
+            } else if (e.Key == Key.Down || e.Key == Key.W) {
                 // set as selected the next object if exists
                 if (SelectedIndex < Items.Count - 1) {
                     SelectedIndex++;
                 }
                 _currentSelectedEngineObject = Engine.Engine.GetObjectByIndex(SelectedIndex);
-            }else if (e.Key == Key.Up) {
+            }else if (e.Key == Key.Up || e.Key == Key.S) {
                 // set as selected the previous object if exists
                 if (SelectedIndex > 0) {
                     SelectedIndex--;
