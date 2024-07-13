@@ -8,7 +8,16 @@ using Brush = System.Windows.Media.Brush;
 using Color = System.Windows.Media.Color;
 
 namespace TempoEngine.Engine.Managers {
-    internal class ColorManager {
+    /**
+    * \class ColorManager
+    * \brief Manager used to work with color
+    */
+    public static class ColorManager {
+        /**
+         * Returns color based on the objects temperature
+         * \param temperature Temperature of the object
+         * \return Brush with the color
+         */
         public static Brush GetColorFromTemperature(double temperature) {
             if (temperature < 0) throw new ArgumentException("Temperature cannot be less than 0");
             // 0 - 100 K is violet
