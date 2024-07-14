@@ -18,12 +18,17 @@ using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
 
 namespace TempoEngine.UIControls {
-    /// <summary>
-    /// Interaction logic for AddsquareWIndow.xaml
-    /// </summary>
+    /**
+     * \class AddSquareWindow
+     * \brief Represents the window for adding a square.
+     * 
+     * The AddSquareWindow class provides methods for managing the window for adding a square.
+     */
     public partial class AddSquareWindow : Window {
-        GrainSquare _newSquare;
-        public Action OnObjectAdded;
+        GrainSquare _newSquare;         // New square that will be created
+        public Action OnObjectAdded;    // Action to update the main windows after adding the object
+        
+        
         public AddSquareWindow() {
             InitializeComponent();
             _newSquare = new GrainSquare("New square", new Point(0, 0));

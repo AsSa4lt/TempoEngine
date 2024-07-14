@@ -9,15 +9,23 @@ using Point = System.Windows.Point;
 
 namespace TempoEngine.UIControls{
     public class CanvasManager{
-        public int CurrentLeftXIndex { get; private set; }
-        public int CurrentRightXIndex { get; private set; }
-        public int CurrentTopYIndex { get; private set; }
-        public int CurrentBottomYIndex { get; private set; }
+        public int CurrentLeftXIndex { get; private set; }  /// Gets the current left X index.
+        public int CurrentRightXIndex { get; private set; } /// Gets the current right X index.
+        public int CurrentTopYIndex { get; private set; }   /// Gets the current top Y index.
+        public int CurrentBottomYIndex { get; private set; }/// Gets the current bottom Y index.
 
+        /**
+         * \brief Initializes a new instance of the CanvasManager class.
+         * Always resets the zoom to the default values.
+         */
         public CanvasManager() {
             ResetZoom();
         }
 
+        /**
+         * \brief Resets the zoom to the default values.
+         * Always a square 200 x 200.
+         */
         public void ResetZoom() {
             CurrentLeftXIndex = -100;
             CurrentRightXIndex = 100;
@@ -25,6 +33,10 @@ namespace TempoEngine.UIControls{
             CurrentBottomYIndex = -100;
         }
 
+        /**
+         * \brief Gets the step for moving the view.
+         * \return The step for moving the view.
+         */
         private int getStep() {
             int deltaX = CurrentRightXIndex - CurrentLeftXIndex;
             int step = 1;
@@ -38,6 +50,10 @@ namespace TempoEngine.UIControls{
             return step;
         }
 
+        /**
+         * \brief Moves the view.
+         * \param key The key pressed.
+         */
         public void Move(System.Windows.Input.Key key) {
             int width = CurrentRightXIndex - CurrentLeftXIndex;
             int height = CurrentTopYIndex - CurrentBottomYIndex;
@@ -81,6 +97,11 @@ namespace TempoEngine.UIControls{
             }
         }
 
+        /**
+         * \brief Zooms to a given area.
+         * \param topLeft The top left corner of the area.
+         * \param bottomRight The bottom right corner of the area.
+         */
         public void ZoomToArea(Vector2 topLeft, Vector2 bottomRight) {
             CurrentLeftXIndex = (int)topLeft.X;
             CurrentRightXIndex = (int)bottomRight.X;
@@ -112,6 +133,10 @@ namespace TempoEngine.UIControls{
             }
         }
 
+        /**
+         * \brief Zooms in.
+         * \param delta The delta.
+         */
         public void ZoomIn(int delta) {
             int xSize = CurrentRightXIndex - CurrentLeftXIndex;
             int ySize = CurrentTopYIndex - CurrentBottomYIndex;
@@ -128,6 +153,10 @@ namespace TempoEngine.UIControls{
             CurrentBottomYIndex = Math.Min(CurrentBottomYIndex - yZoomDelta, CanvasData.MaxYBottomIndex);
         }
 
+        /**
+         * \brief Zooms out.
+         * \param delta The delta.
+         */
         public void ZoomOut(int delta) {
             // calculate new indexes depending on delta, but not more than max indexes
             int xSize = CurrentRightXIndex - CurrentLeftXIndex;
@@ -151,6 +180,11 @@ namespace TempoEngine.UIControls{
             CurrentBottomYIndex = Math.Max(CurrentBottomYIndex - yZoomDelta, CanvasData.MinYBottomIndex);
         }
 
+        /**
+         * \brief Adjusts the indexes for the aspect ratio.
+         * \param width The width.
+         * \param height The height.
+         */
         public void AdjustForAspectRatio(double width, double height) {
             // Adjust indexes based on aspect ratio
             // if canvas is not square, e need to adjust indexes for Y axis

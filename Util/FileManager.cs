@@ -9,9 +9,19 @@ using System.Threading.Tasks;
 using TempoEngine.Engine;
 
 namespace TempoEngine.Util {
+    /** 
+     * \class FileManager
+     * \brief Manages the file operations.
+     * 
+     * The FileManager class provides methods for managing the file operations.
+     */
     public static class FileManager {
-        private static readonly ILog log = LogManager.GetLogger(typeof(FileManager));
+        private static readonly ILog log = LogManager.GetLogger(typeof(FileManager));   // Logger
 
+        /**
+         * Save to file
+         * \param path Path to save the file
+         */
         public static void SaveToFile(string path) {
             List<EngineObject> engineObjects = Engine.Engine.EngineObjectsManager.GetObjects();
             List<string> jsonObjects = new List<string>();
@@ -31,6 +41,10 @@ namespace TempoEngine.Util {
             File.WriteAllText(path, jsonOutput);
         }
 
+        /**
+         * Load from file
+         * \param path Path to load the file
+         */
         public static void LoadFromFile(string path) {
             Engine.Engine.ClearSimulation();
             log.Info("Info: Starting reading.");
