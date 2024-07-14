@@ -28,7 +28,10 @@ namespace TempoEngine.UIControls {
         GrainSquare _newSquare;         // New square that will be created
         public Action OnObjectAdded;    // Action to update the main windows after adding the object
         
-        
+        /**
+         * \brief Initializes a new instance of the AddSquareWindow class.
+         * Sets the default values for the new square.
+         */
         public AddSquareWindow() {
             InitializeComponent();
             _newSquare = new GrainSquare("New square", new Point(0, 0));
@@ -38,6 +41,10 @@ namespace TempoEngine.UIControls {
             Loaded += OnLoaded;
         }
 
+        /**
+         * \brief OnLoaded action
+         * Set base data for the square
+         */
         private void OnLoaded(object sender, RoutedEventArgs e) {
             // Set the default values for the textboxes
             tbName.Text = _newSquare.Name;
@@ -48,6 +55,9 @@ namespace TempoEngine.UIControls {
             cbMaterial.SelectedIndex = 0;
         }
 
+        /**
+         *  Color the colors on state without error
+         */
         private void ClearColors() {
             tbName.Background                = Brushes.White;
             tbXPosition.Background           = Brushes.White;
@@ -56,6 +66,10 @@ namespace TempoEngine.UIControls {
             cbMaterial.Background            = Brushes.White;
         }
 
+        /**
+         * \brief Check the object for errors
+         * \param errorMessage The error message
+         */
         private void CheckObject(out string errorMessage) {
             errorMessage = "";
             if(_newSquare.Name == "") {
@@ -87,6 +101,11 @@ namespace TempoEngine.UIControls {
 
         }
 
+        /**
+         * \brief Add button click event
+         * \param sender The sender
+         * \param e The event arguments
+         */
         private void AddButton_Click(object sender, RoutedEventArgs e) {
             ClearColors();
             
@@ -107,10 +126,21 @@ namespace TempoEngine.UIControls {
             Close();
         }
 
+
+        /**
+         * \brief Cancel button click event
+         * \param sender The sender
+         * \param e The event arguments
+         */
         private void CancelButton_Click(object sender, RoutedEventArgs e) {
             Close();
         }
 
+        /**
+         * \brief Textbox key down event
+         * \param sender The sender
+         * \param e The event arguments
+         */
         private void Button_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
             if(e.Key != Key.Enter) return;
         }

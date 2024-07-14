@@ -9,8 +9,18 @@ using System.Windows.Forms;
 
 
 namespace TempoEngine.Util {
+    /**
+     * \class SystemInfo
+     * \brief Provides methods for getting system information.
+     * 
+     * The SystemInfo class provides methods for getting system information.
+     */
     internal partial class SystemInfo {
-        private static readonly ILog log = LogManager.GetLogger(typeof(SystemInfo));
+        private static readonly ILog log = LogManager.GetLogger(typeof(SystemInfo)); /// Logger
+        /**
+         * \brief Gets the refresh rate of the primary screen.
+         * \return The refresh rate of the primary screen.
+         */
         public static int GetRefreshRate() {
              // Get the handle to the device context (DC) for the primary screen
              IntPtr hdc = GetDC(IntPtr.Zero); // Passing IntPtr.Zero gets the DC for the entire screen
@@ -32,16 +42,16 @@ namespace TempoEngine.Util {
 
 
 
-        const int VERTREFRESH = 116;
+        const int VERTREFRESH = 116;        /// Vertical refresh rate
 
         [LibraryImport("user32.dll")]
-        private static partial IntPtr GetDC(IntPtr hWnd);
+        private static partial IntPtr GetDC(IntPtr hWnd);   /// Gets the device context (DC) for the entire screen.
 
         [LibraryImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static partial bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
+        private static partial bool ReleaseDC(IntPtr hWnd, IntPtr hDC); /// Releases the device context (DC) for the entire screen.
 
         [LibraryImport("gdi32.dll")]
-        private static partial int GetDeviceCaps(IntPtr hdc, int nIndex);
+        private static partial int GetDeviceCaps(IntPtr hdc, int nIndex); /// Retrieves device-specific information for the specified device context (DC).
     }
 }
