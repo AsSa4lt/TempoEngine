@@ -44,12 +44,11 @@ namespace TempoEngine.Util {
                     var jObject = JsonConvert.DeserializeObject<dynamic>(json);
                     EngineObject engineObject = null;
 
-                    // Assuming you have a type identifier in your JSON
                     string type = jObject["Type"].Value;
-                    if (type == "Grainsquare") {
+                    if (type == "GrainSquare") {
                         engineObject = GrainSquare.FromJson(json);
                     }
-                    // Add more types as necessary
+
                     if (engineObject != null) {
                         engineObjects.Add(engineObject);
                         Engine.Engine.EngineObjectsManager.AddObject(engineObject);

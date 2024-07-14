@@ -167,19 +167,17 @@ namespace TempoEngine.Engine{
             var jObject = JsonConvert.DeserializeObject<dynamic>(json, settings);
 
             string type = jObject.Type;
-            if (type != "Grainsquare")
+            if (type != "GrainSquare")
                 throw new InvalidOperationException("JSON is not of type Grainsquare.");
             Point Position = ParsePoint(jObject.Position.ToString());
 
             string name = jObject.Name;
-            double mass = (double)jObject.Mass;
             double simulationTemperature = (double)jObject.SimulationTemperature;
-            double currentTemperature = (double)jObject.CurrentTemperature;
-            double thermalConductivity = (double)jObject.ThermalConductivity;
-
+            Material Material = MaterialManager.GetMaterialByName((string)jObject.MaterialName);
             return new GrainSquare(name, Position) {
                 _simulationTemperature = simulationTemperature,
-                _currentTemperature = currentTemperature,
+                _currentTemperature = simulationTemperature,
+                _material = Material
             };
         }
 
@@ -208,7 +206,7 @@ namespace TempoEngine.Engine{
                 Name,
                 Position = _position,
                 SimulationTemperature = _simulationTemperature,
-                CurrentTemperature = _currentTemperature,
+                MaterialName = _material.Name
             }, settings);
         }
 

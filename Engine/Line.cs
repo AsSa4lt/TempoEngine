@@ -61,7 +61,7 @@ namespace TempoEngine.Engine {
             if (l1p2.X < l2p1.X || l2p2.X < l1p1.X)
                 return 0;  // No overlap
 
-            // Calculate overlap
+            // Calculate overlapxxscd   4           QWERTYU'H
             double start = Math.Max(l1p1.X, l2p1.X);
             double end = Math.Min(l1p2.X, l2p2.X);
             return end - start;
