@@ -10,16 +10,30 @@ using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 
 namespace TempoEngine.UIControls {
+    /**
+     * \class EngineObjects
+     * \brief EngineObjectsList class
+     * List of all objects of the simulation
+     */
     public class EngineObjectsList : System.Windows.Controls.ListView {
-        private EngineObject? _currentSelectedEngineObject;
-        public Action<EngineObject>? OnSelectedObjectChanged;
-        public Action<EngineObject>? OnZoomToObject;
-        public Action? OnDeleteObject;
-        private bool isEnabled = true;
+        private EngineObject? _currentSelectedEngineObject;  // Current selected object
+        public Action<EngineObject>? OnSelectedObjectChanged;// Event for selected object changed
+        public Action<EngineObject>? OnZoomToObject;         // Event for zoom to object
+        public Action? OnDeleteObject;                       // Event for delete object
+        private bool isEnabled = true;                       // Is enabled
+
+        /**
+         * Constructor
+         */
         public EngineObjectsList() : base() {
             MouseDoubleClick += ZoomToObject;
             SelectionChanged += OnSelectionChanged;
         }
+
+        /**
+         * Update the list of objects
+         * \param objects List of objects
+         */
         public void Update(List<EngineObject> objects) {
             Clear();
             foreach (var obj in objects) {
@@ -31,6 +45,11 @@ namespace TempoEngine.UIControls {
            isEnabled = IsEnabled;
         }
 
+        /**
+         * Zoom to object
+         * \param sender Sender
+         * \param e Mouse button event
+         */
         private void ZoomToObject(object sender, MouseButtonEventArgs e) {
             var item = SelectedItem as EngineObject;
             if (item != null) {
@@ -42,7 +61,11 @@ namespace TempoEngine.UIControls {
             }
         }
 
-        // On delete key press, delete the selected object
+       
+        /**
+         * \brief OnKeyDown method for Delete key
+         * On delete key press, delete the selected object
+         */
         protected override void OnKeyDown(KeyEventArgs e) {
             if (e.Key == Key.Delete && isEnabled) {
                 var item = SelectedItem as EngineObject;
@@ -66,6 +89,11 @@ namespace TempoEngine.UIControls {
         }
 
 
+        /**
+         * OnSelectionChanged method
+         * \param sender Sender
+         * \param e Selection changed event
+         */
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
             var selectedObject = SelectedItem as EngineObject;
             if (selectedObject != null && (_currentSelectedEngineObject == null || selectedObject.Name != _currentSelectedEngineObject.Name)) { 
@@ -77,7 +105,9 @@ namespace TempoEngine.UIControls {
             }
         }
 
-        
+        /**
+         * Clear the list
+         */
         public void Clear() {
             Items.Clear();
         }

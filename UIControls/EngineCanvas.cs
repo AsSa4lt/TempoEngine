@@ -10,14 +10,24 @@ using Point = System.Windows.Point;
 
 
 namespace TempoEngine.UIControls {
+
+    /**
+     * \class EngineCanvas
+     * \brief EngineCanvas class
+     * Canvas for drawing the simulation
+     */
     public class EngineCanvas : Canvas {
 
-        private readonly CanvasManager _canvasManager;
-        private readonly GridDrawer _gridDrawer;
-        private static readonly ILog log = LogManager.GetLogger(typeof(EngineCanvas));
+        private readonly CanvasManager _canvasManager;   // Canvas manager
+        private readonly GridDrawer _gridDrawer;         // Grid drawer
+        private static readonly ILog log = LogManager.GetLogger(typeof(EngineCanvas)); // Logger
+        private readonly bool drawGrid = true;           // Draw grid
 
-        private readonly bool drawGrid = true;
-
+        /**
+         * 
+         * Constructor
+         * On load event, adjust the canvas for aspect ratio and update
+         */
         public EngineCanvas() : base() {
             _canvasManager = new CanvasManager();
             _gridDrawer = new GridDrawer(this);
@@ -30,13 +40,23 @@ namespace TempoEngine.UIControls {
             };
         }
 
-        // on resize event, we need to recalculate indexes
+
+        /**
+         * OnRenderSizeChanged method
+         * on resize event, we need to recalculate indexes
+         * \param sizeInfo Size changed info
+         */
         protected override void OnRenderSizeChanged(System.Windows.SizeChangedInfo sizeInfo) {
             base.OnRenderSizeChanged(sizeInfo);
             Update();
         }
 
-        // handle mouse scroll event
+
+        /**
+         * OnMouseWheel method
+         * on event, zoom in or out and update objects on canvas
+         * \param e Mouse wheel event
+         */
         protected override void OnMouseWheel(System.Windows.Input.MouseWheelEventArgs e) {
             base.OnMouseWheel(e);
             if (e.Delta > 0)
@@ -47,25 +67,31 @@ namespace TempoEngine.UIControls {
             Update();
         }
 
-        // handle mouse click event
+        /**
+         * OnMouseDown method
+         * on mouse down event, focus the canvas and check for left or right click
+         * \param e Mouse button event
+         */
         protected override void OnMouseDown(System.Windows.Input.MouseButtonEventArgs e) {
             base.OnMouseDown(e);
             Focus();
-
-            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed) {
-                //LeftClick();
-            } else if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed) {
-                //RightClick();
-            }
         }
 
-
+        /**
+         * OnKeyDown method
+         * on key down event, move the canvas and update
+         * \param e Key event
+         */
         protected override void OnKeyDown(System.Windows.Input.KeyEventArgs e) {
             base.OnKeyDown(e);
             _canvasManager.Move(e.Key);
             Update();
         }
 
+        /**
+         * SetClipGeometry method
+         * Set the clip geometry
+         */
         private void SetClipGeometry() {
             this.Clip = new RectangleGeometry(new System.Windows.Rect(0, 0, this.ActualWidth, this.ActualHeight));
         }

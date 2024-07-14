@@ -8,6 +8,11 @@ using TempoEngine.Util;
 using Point = System.Windows.Point;
 
 namespace TempoEngine.UIControls{
+    /**
+     * \class CanvasManager
+     * \brief CanvasManager class
+     * Manages the canvas
+     */
     public class CanvasManager{
         public int CurrentLeftXIndex { get; private set; }  /// Gets the current left X index.
         public int CurrentRightXIndex { get; private set; } /// Gets the current right X index.

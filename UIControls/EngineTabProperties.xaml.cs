@@ -20,13 +20,19 @@ using Point = System.Windows.Point;
 using TextBox = System.Windows.Controls.TextBox;
 using UserControl = System.Windows.Controls.UserControl;
 namespace TempoEngine.UIControls {
-    /// <summary>
-    /// Interaction logic for EngineTabProperties.xaml
-    /// </summary>
+    /**
+     * \class EngineTabProperties
+     * \brief Represents the properties tab for the engine object.
+     * 
+     * The EngineTabProperties class provides methods for managing the properties tab for the engine object.
+     */
     public partial class EngineTabProperties : UserControl {
-        private EngineObject? _selectedObject;
-        private bool _issquareMode = false;
-        private bool isEnabled = true;
+        private EngineObject? _selectedObject;  // Selected object from object list
+        private bool isEnabled = true;          // Is enabled, defined by selected mode and if we have any object selected
+
+        /**
+         * Constructor
+         */
         public EngineTabProperties() : base() {
             InitializeComponent();
             // On Loaded event, we need to update the properties tab
@@ -35,6 +41,9 @@ namespace TempoEngine.UIControls {
             };
         }
 
+        /**
+         * \brief Update fields based on selected objects
+         */
         public void Update() {
             if (_selectedObject == null) {
                 SetFieldsEnabled(false);
@@ -46,6 +55,10 @@ namespace TempoEngine.UIControls {
             SetObjectParameters();
         }
 
+        /**
+         * \brief Enable or disable the properties tab
+         * \param IsEnabled Is enabled
+         */
         public void Enable(bool IsEnabled) {
             isEnabled = IsEnabled;
             if(!isEnabled) {
@@ -53,6 +66,9 @@ namespace TempoEngine.UIControls {
             }
         }
 
+        /**
+         * \brief Set object parameters
+         */
         private void SetObjectParameters() {
             if (_selectedObject == null) return;
             tbName.Text = _selectedObject.Name;
@@ -72,13 +88,21 @@ namespace TempoEngine.UIControls {
             }
         }
 
+        /**
+         * \brief Set object
+         * \param obj Engine object
+         */
         public void SetObject(EngineObject obj) {
             ClearFields();
             _selectedObject = obj;
             if (obj == null) return;
         }
 
-        // function to set are fields enabled or disabled
+        /**
+         * \brief Set fields enabled
+         * Based on engine mode and if do we have any object selected enable or disable fields
+         * \param enabled Enabled
+         */
         private void SetFieldsEnabled(bool enabled) {
             tbName.IsEnabled                 = enabled;
             tbTemperature.IsEnabled          = enabled;
@@ -89,6 +113,12 @@ namespace TempoEngine.UIControls {
             cbMaterial.IsEnabled             = enabled;
         }
 
+        /**
+         * \brief Name key down
+         * Set Name to an object and check it
+         * \param sender Sender
+         * \param e Key event arguments
+         */
         private void tbName_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
             if(!basicInputCheck(tbName, e))                     return;
             if (_selectedObject.Name != tbName.Text && !Engine.Engine.EngineObjectsManager.IsNameAvailable(tbName.Text)) {
@@ -100,10 +130,20 @@ namespace TempoEngine.UIControls {
             tbName.Background = Brushes.White;
         }
 
+        /**
+         * \brief Show error message box
+         * \param text Text
+         */
         private void ShowErrorMessageBox(string text) {
             MessageBox.Show(text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
+        /**
+         * \brief Temperature key down
+         * Set temperature to an object and check it
+         * \param sender Sender
+         * \param e Key event arguments
+         */
         private void tbTemperature_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
             if(!basicInputCheck(tbTemperature, e))              return;
             tbTemperature.Background = Brushes.White;
@@ -111,12 +151,24 @@ namespace TempoEngine.UIControls {
             else tbTemperature.Background = Brushes.Red;
         }
 
+        /**
+         * \brief X position key down
+         * Set X position to an object and check it
+         * \param sender Sender
+         * \param e Key event arguments
+         */
         private bool basicInputCheck(TextBox tb, System.Windows.Input.KeyEventArgs e) {
             if(_selectedObject == null)      return false;
             if (e.Key != Key.Enter)          return false;
             else                             return true;
         }
 
+        /**
+         * \brief X position key down
+         * Set X position to an object and check it
+         * \param sender Sender
+         * \param e Key event arguments
+         */
         private void ClearFields() {
             tbName.Text                      = "";
             tbTemperature.Text               = "";
@@ -136,6 +188,12 @@ namespace TempoEngine.UIControls {
             cbMaterial.Background            = Brushes.White;
         }
 
+        /**
+         * \brief X position key down
+         * Set X position to an object and check it
+         * \param sender Sender
+         * \param e Key event arguments
+         */
         private void tbXPosition_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
             try {
                 Point pos = new Point(double.Parse(tbXPosition.Text), _selectedObject.Position.Y);
@@ -145,6 +203,12 @@ namespace TempoEngine.UIControls {
             }
         }
 
+        /**
+         * \brief Y position key down
+         * Set Y position to an object and check it
+         * \param sender Sender
+         * \param e Key event arguments
+         */
         private void tbYPosition_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
             try {
                 Point pointA = new Point(_selectedObject.Position.X, double.Parse(tbYPosition.Text));
@@ -154,6 +218,12 @@ namespace TempoEngine.UIControls {
             }
         }
 
+        /**
+         * \brief Width key down
+         * Set width to an object and check it
+         * \param sender Sender
+         * \param e Key event arguments
+         */
         private void cbMaterial_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if(_selectedObject == null) return;
             if(cbMaterial.Items.Count == 0) return;
@@ -161,7 +231,12 @@ namespace TempoEngine.UIControls {
             _selectedObject.Material = (Material)cbMaterial.SelectedItem;
         }
 
-
+        /**
+         * \brief Width key down
+         * Set width to an object and check it
+         * \param sender Sender
+         * \param e Key event arguments
+         */
         private void tbHeight_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
             // check if it's a grain square
             // if grain square, then set to 1
@@ -178,6 +253,12 @@ namespace TempoEngine.UIControls {
             }
         }
 
+        /**
+         * \brief Width key down
+         * Set width to an object and check it
+         * \param sender Sender
+         * \param e Key event arguments
+         */
         private void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
             // check if it's a grain square
             // if grain square, then set to 1

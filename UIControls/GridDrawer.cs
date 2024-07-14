@@ -6,16 +6,31 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
-namespace TempoEngine.UIControls
-{
+namespace TempoEngine.UIControls{
+    /**
+     * \class GridDrawer
+     * \brief Represents the grid drawer.
+     * 
+     * The GridDrawer class provides methods for drawing the grid.
+     */
     public class GridDrawer {
 
-        private readonly Canvas _canvas;
+        private readonly Canvas _canvas;  /// Canvas
 
+        /**
+         * \brief Initializes a new instance of the GridDrawer class.
+         * \param canvas Canvas.
+         */
         public GridDrawer(Canvas canvas) {
             _canvas = canvas;
         }
 
+        /**
+         * \brief Draws the grid.
+         * Draw vertical and horizontal grid lines
+         * Draw labels
+         * \param manager Canvas manager.
+         */
         public void DrawGrid(CanvasManager manager) {
             int step = 1;
 
