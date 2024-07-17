@@ -17,7 +17,8 @@ namespace TempoEngine.Engine {
      * \see EngineObject
      * \see CanvasManager
      */
-    internal class EngineRectangle : EngineObject {
+    public class EngineRectangle : EngineObject {
+        private List<GrainSquare> _grainSquares;
         public EngineRectangle(string name, int width, int height) : base(name) {
             _size = new(width, height);
         }
@@ -30,12 +31,17 @@ namespace TempoEngine.Engine {
             throw new NotImplementedException();
         }
 
+
+        /**
+         * \brief Gets the type of the object.
+         * \returns The type of the object.
+         */ 
         public override ObjectType GetObjectType() {
-            throw new NotImplementedException();
+            return ObjectType.Rectangle;
         }
 
         public override string GetObjectTypeString() {
-            throw new NotImplementedException();
+            return "Rectangle";
         }
 
         public override void GetObjectVisibleArea(out Vector2 topLeft, out Vector2 bottomRight) {

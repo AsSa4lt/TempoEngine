@@ -13,7 +13,8 @@ using Point = System.Windows.Point;
 
 namespace TempoEngine.Engine {
     public enum ObjectType {
-        GrainSquare
+        GrainSquare,
+        Rectangle
     }
 
     /**
