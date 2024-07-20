@@ -156,7 +156,7 @@ namespace TempoEngine.Engine {
         }
 
         /// Called to notify observers of property changes.
-        protected void OnPropertyChanged(string propertyName) {
+        protected virtual void OnPropertyChanged(string propertyName) {
             if (Engine.Mode != Engine.EngineMode.Running) {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
