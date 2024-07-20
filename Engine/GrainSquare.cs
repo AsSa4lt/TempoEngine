@@ -56,8 +56,8 @@ namespace TempoEngine.Engine{
          * \return List of polygons constituting the square's visual representation.
          */
         public override List<Polygon> GetPolygons() {
-            List<Polygon> polygons = new List<Polygon>();
-            Polygon polygon = new Polygon();
+            List<Polygon> polygons = [];
+            Polygon polygon = new();
             polygon.Points.Add(_position);
             polygon.Points.Add(_cachedPointB);
             polygon.Points.Add(_cachedPointD);
