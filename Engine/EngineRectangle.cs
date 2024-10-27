@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,7 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using TempoEngine.Engine.Managers;
 using TempoEngine.UIControls;
+using Point = System.Windows.Point;
 
 namespace TempoEngine.Engine {
     /**
@@ -62,8 +65,56 @@ namespace TempoEngine.Engine {
           return _externalSquares;
         }
 
+
+        /**
+         * \brief Creates and object from JSON representation.
+         * \param json The JSON representation of the object.
+         * \returns The object created from JSON representation.
+         */
+        public static EngineRectangle FromJson(string json) {
+            var settings = new JsonSerializerSettings {
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            var jObject = JsonConvert.DeserializeObject<dynamic>(json, settings);
+
+            string type = jObject.Type;
+
+            if(type != "Rectangle") {
+                throw new ArgumentException("JSON is not of type Rectangle");
+            }
+            string name = jObject.Name;
+            double simulationTemperature = (double)jObject.SimulationTemperature;
+            Point position = Util.Parsers.ParsePoint(jObject.Position.ToString());
+            Point Position = Util.Parsers.ParsePoint(jObject.Position.ToString());
+            Point Size = Util.Parsers.ParsePoint(jObject.Size.ToString());
+            Material Material = MaterialManager.GetMaterialByName((string)jObject.MaterialName);
+
+            return new EngineRectangle(name, (int)(Position.X + Size.X), (int)(Position.Y + Size.Y)) {
+                _simulationTemperature = simulationTemperature,
+                _position = Position,
+                _size = Size,
+            };
+        }
+
+        /**
+         * \brief Gets the JSON representation of the object.
+         * \returns The JSON representation of the object.
+         */
         public override string GetJsonRepresentation() {
-            throw new NotImplementedException();
+            var settings = new JsonSerializerSettings {
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            return JsonConvert.SerializeObject(new {
+                Type = GetObjectTypeString(),
+                Name,
+                Position = _position,
+                Size = _size,
+                SimulationTemperature = _simulationTemperature,
+                Material = _material.Name
+            }, settings);
         }
 
 
@@ -125,7 +176,7 @@ namespace TempoEngine.Engine {
         }
 
         public override List<GrainSquare> GetSquares() {
-            throw new NotImplementedException();
+            return _grainSquares;
         }
 
         public override bool IsIntersecting(EngineObject obj) {

@@ -169,7 +169,7 @@ namespace TempoEngine.Engine{
             string type = jObject.Type;
             if (type != "GrainSquare")
                 throw new InvalidOperationException("JSON is not of type Grainsquare.");
-            Point Position = ParsePoint(jObject.Position.ToString());
+            Point Position = Util.Parsers.ParsePoint(jObject.Position.ToString());
 
             string name = jObject.Name;
             double simulationTemperature = (double)jObject.SimulationTemperature;
@@ -182,15 +182,7 @@ namespace TempoEngine.Engine{
         }
 
 
-        /** 
-         * Parses a string representation of a point to a Point object.
-         * \param point The string representation of the point.
-         * \return A Point object parsed from the string.
-         */
-        private static Point ParsePoint(string point) {
-            var parts = point.Split(',');
-            return new Point(double.Parse(parts[0]), double.Parse(parts[1]));
-        }
+
         /**
          * Serializes the grain square to a JSON representation.
          * \return A JSON string representing the grain square.
