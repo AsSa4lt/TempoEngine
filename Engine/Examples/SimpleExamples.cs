@@ -20,6 +20,16 @@ namespace TempoEngine.Engine.Examples {
             Engine.EngineObjectsManager.AddObject(obj3);
         }
 
+        public static void TwoEngineRectangles() {
+            EngineRectangle e1 = new EngineRectangle("Rectangle1", 20, 20);
+            e1.Position = new Point(0, 0);
+            Engine.EngineObjectsManager.AddObject(e1);
+            EngineRectangle e2 = new EngineRectangle("Rectangle2", 11, 11);
+            e2.SimulationTemperature = 1000;
+            e2.Position = new Point(20, 0);
+            Engine.EngineObjectsManager.AddObject(e2);
+        }
+
         public static void RectangleWithTempDifference(int width, int height) {
             double maxTemperature = 1000.0;
 

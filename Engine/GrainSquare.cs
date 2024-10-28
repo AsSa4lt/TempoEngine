@@ -55,7 +55,7 @@ namespace TempoEngine.Engine{
          * This method overrides the abstract method defined in \ref EngineObject.
          * \return List of polygons constituting the square's visual representation.
          */
-        public override List<Polygon> GetPolygons() {
+        public override List<Polygon> GetPolygons(CanvasManager canvasManager) {
             List<Polygon> polygons = [];
             Polygon polygon = new();
             polygon.Points.Add(_position);

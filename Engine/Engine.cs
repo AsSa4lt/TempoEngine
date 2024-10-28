@@ -46,7 +46,8 @@ namespace TempoEngine.Engine{
             _mainWindow = window;
             EngineObjectsManager = new ObjectsManager(_engineLock);
             MaterialManager.Init();
-            SimpleExamples.RectangleWithTempDifference(15, 15);
+            //SimpleExamples.RectangleWithTempDifference(15, 15);
+            SimpleExamples.TwoEngineRectangles();
             _simulationRefreshRate = Util.SystemInfo.GetRefreshRate();
             log.Info("Engine initialized");
         }

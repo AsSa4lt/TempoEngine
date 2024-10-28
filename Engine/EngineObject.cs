@@ -163,7 +163,7 @@ namespace TempoEngine.Engine {
         }
 
         /// Returns polygons representing the object's shape. Must be implemented by subclasses.
-        abstract public List<Polygon> GetPolygons();
+        abstract public List<Polygon> GetPolygons(CanvasManager canvasManager);
 
         /// Returns the object's squares. Must be implemented by subclasses.
         abstract public List<GrainSquare> GetSquares();

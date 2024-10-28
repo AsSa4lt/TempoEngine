@@ -149,7 +149,7 @@ namespace TempoEngine.UIControls {
 
             // get polygons
             foreach (var obj in objects) {
-                List<Polygon> polygons = obj.GetPolygons();
+                List<Polygon> polygons = obj.GetPolygons(_canvasManager);
                 // convert polygon points to screen coordinates
                 foreach (Polygon polygon in polygons) {
                     for (int i = 0; i < polygon.Points.Count; i++) {

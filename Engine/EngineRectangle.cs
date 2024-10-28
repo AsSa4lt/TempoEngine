@@ -49,6 +49,9 @@ namespace TempoEngine.Engine {
             for (int i = 0; i < Size.X; i++) {
                 for (int j = 0; j < Size.Y; j++) {
                     GrainSquare square = new($"{Name} square {i} {j}", new System.Windows.Point(i, j));
+                    square.Position = new Point(_position.X + i, _position.Y + j);
+                    square.CurrentTemperature = _simulationTemperature;
+                    square.SimulationTemperature = _simulationTemperature;
                     _grainSquares.Add(square);
                     if (i == 0 || j == 0 || i == Size.X - 1 || j == Size.Y - 1) {
                         _externalSquares.Add(square);
@@ -131,10 +134,6 @@ namespace TempoEngine.Engine {
          * Based on which property has been changed, set the parameters for the squares
          */
         protected override void OnPropertyChanged(string propertyName) {
-            // set the same temperature for all squares
-            foreach (var square in _grainSquares) {
-                square.SimulationTemperature = _simulationTemperature;
-            }
 
             if (propertyName == "Material") {
                 foreach (var square in _grainSquares) {
@@ -142,9 +141,11 @@ namespace TempoEngine.Engine {
                 }
             }
 
-            if(propertyName == "Size") {
-                SetSquaresForShape();
-            }
+            if(propertyName == "Size")      SetSquaresForShape();
+
+            if(propertyName == "SimulationTemperature")   SetTemperatureForAllSquares();
+
+            if (propertyName == "Position") SetSquaresForShape();
 
             // call base method
             base.OnPropertyChanged(propertyName);
@@ -156,7 +157,10 @@ namespace TempoEngine.Engine {
         private void SetTemperatureForAllSquares() {
             foreach (var square in _grainSquares) {
                 square.SimulationTemperature = _simulationTemperature;
+                square.CurrentTemperature = _simulationTemperature;
             }
+            CurrentTemperature = _simulationTemperature;
+            SimulationTemperature = _simulationTemperature;
         }
 
         /**
@@ -167,12 +171,30 @@ namespace TempoEngine.Engine {
             return "Rectangle";
         }
 
+        /**
+         * \brief Gets the object visible area as the left top and right bottom squares positions
+         * \param topLeft The top left corner of the visible area.
+         * \param bottomRight The bottom right corner of the visible area.
+         */
         public override void GetObjectVisibleArea(out Vector2 topLeft, out Vector2 bottomRight) {
-            throw new NotImplementedException();
+            topLeft = new Vector2((float)_position.X, (float)_position.Y);
+            bottomRight = new Vector2((float)(_position.X + _size.X), (float)(_position.Y + _size.Y));
         }
 
-        public override List<Polygon> GetPolygons() {
-            throw new NotImplementedException();
+        /**
+         * \brief Gets the polygons representing the object's shape.
+         * \param canvasManager The canvas manager.
+         * \returns The polygons(visible) representing the object's shape.
+         */
+        public override List<Polygon> GetPolygons(CanvasManager canvasManager) {
+            List<Polygon> polygons = new List<Polygon>();
+            foreach (GrainSquare sq in _grainSquares) {
+                //awful code, but it was made for inheritance and each grain square has only one polygon
+                if(sq.IsVisible(canvasManager))
+                   polygons.Add(sq.GetPolygons(canvasManager)[0]);
+            }
+
+            return polygons;
         }
 
         public override List<GrainSquare> GetSquares() {
@@ -180,15 +202,32 @@ namespace TempoEngine.Engine {
         }
 
         public override bool IsIntersecting(EngineObject obj) {
-            throw new NotImplementedException();
+            return false;
         }
-
+        
+        /**
+         * \brief Determines if the object is visible on the given canvas.
+         * \param canvasManager The canvas manager.
+         * \returns True if the object is visible on the given canvas, false otherwise.
+         */
         public override bool IsVisible(CanvasManager canvasManager) {
-            throw new NotImplementedException();
+            // we need to check coordinates of the canvas manager and check if there is any square in the visible area
+            Vector2 topLeft, bottomRight;
+            GetObjectVisibleArea(out topLeft, out bottomRight);
+            // check for intersecting with canvas manager
+            if (topLeft.X > canvasManager.CurrentRightXIndex || bottomRight.X < canvasManager.CurrentLeftXIndex ||
+                topLeft.Y > canvasManager.CurrentTopYIndex || bottomRight.Y < canvasManager.CurrentBottomYIndex) {
+                return false;
+            }
+            return true;
         }
 
+        /**
+         * Sets the initial temperature of the grain to the simulation temperature.
+         */
         public override void SetStartTemperature() {
-            throw new NotImplementedException();
+            _currentTemperature = _simulationTemperature;
+            OnPropertyChanged(nameof(CurrentTemperature));
         }
     }
 
